@@ -44,13 +44,13 @@
 // ==============================================================
 
 /**
- * @brief 표준 inline 매크로
- */
+* @brief 표준 inline 매크로
+*/
 #define INLINE inline
 
 /**
- * @brief 컴파일러에게 강제 inline 을 요청하는 매크로
- */
+* @brief 컴파일러에게 강제 inline 을 요청하는 매크로
+*/
 #if TDME_COMPILER_MSVC
     #define FORCE_INLINE __forceinline
 #elif TDME_COMPILER_CLANG || TDME_COMPILER_GCC

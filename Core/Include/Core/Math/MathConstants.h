@@ -3,8 +3,8 @@
 namespace TDME
 {
     /**
-     * @brief 수학 상수
-     */
+    * @brief 수학 상수
+    */
     namespace Math {
         constexpr float Pi = 3.14159265358979323846f;
         constexpr float Pi2 = Pi * 2.0f;
