@@ -18,7 +18,7 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Platform_Windows\WindowsWindow.h">
+    <ClInclude Include="Include\Platform_Windows\Win32Window.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -26,7 +26,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Source\WindowsWindow.cpp">
+    <ClCompile Include="Source\Win32Window.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

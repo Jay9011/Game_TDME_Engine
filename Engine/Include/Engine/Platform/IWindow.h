@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/CoreTypes.h"
+#include <Core/CoreTypes.h>
 
 namespace TDME
 {
@@ -17,7 +17,23 @@ namespace TDME
          * @param title 창의 제목
          * @return 성공 여부
          */
-        virtual bool Create(int32 width, int32 height, const char *title) = 0;
+        virtual bool Create(int32 width, int32 height, const char* title) = 0;
+
+        /**
+         * @brief 매 프레임마다 이벤트를 처리합니다.
+         */
+        virtual void PollEvents() = 0;
+
+        /**
+         * @brief 창의 제목을 설정합니다.
+         *
+         * @param title 창의 제목
+         */
+        virtual void SetTitle(const char* title) = 0;
+
+        //////////////////////////////////////////////////////////////
+        // Getter / Setter
+        //////////////////////////////////////////////////////////////
 
         /**
          * @brief 창이 열려있는지 확인합니다.
@@ -38,16 +54,11 @@ namespace TDME
         virtual int32 GetHeight() const = 0;
 
         /**
-         * @brief 매 프레임마다 이벤트를 처리합니다.
-         */
-        virtual void PollEvents() = 0;
-
-        /**
          * @brief 플랫폼 네이티브 창 핸들을 반환합니다.
          * @note Window의 경우 HWND, Mac의 경우 NSWindow* 등을 반환하기 위한 용도입니다.
          *
          * @return void* 형태의 네이티브 창 핸들
          */
-        virtual void *GetNativeHandle() const = 0;
+        virtual void* GetNativeHandle() const = 0;
     };
 } // namespace TDME

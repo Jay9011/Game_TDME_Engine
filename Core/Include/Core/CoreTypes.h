@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <string>
 
-
 namespace TDME
 {
     // 정수 타입
@@ -24,5 +23,9 @@ namespace TDME
     // 부동소수점 타입
 
     // 문자열 타입
-    using string = std::string;
+    using string  = std::string;
+    using wstring = std::wstring;
+
+    // 자료구조
+
 } // namespace TDME

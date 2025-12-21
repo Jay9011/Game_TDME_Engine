@@ -6,9 +6,17 @@ TabWidth: 4
 IndentWidth: 4
 IndentCaseLabels: false
 
+SortIncludes: false
+BreakBeforeBraces: Allman
+AccessModifierOffset: -4
+
 AlignConsecutiveAssignments: true           # 대입 연산자 정렬 (=)
+BreakBeforeBinaryOperators: NonAssignment   # 이항 연산자 정렬 (Align, DontAlign, AlwaysBefore, AlwaysAfter, NonAssignment)
+AlignOperands: AlignAfterOperator           # 연산자 정렬 (AlignBeforeOperator, AlignAfterOperator)
 AlignConsecutiveDeclarations: true          # 선언문 정렬 (int a)
+PointerAlignment: Left                      # 포인터 정렬 (Left, Right)
 AlignConsecutiveMacros: AcrossEmptyLines    # 매크로 정렬
+AlwaysBreakTemplateDeclarations: No         # 템플릿 선언 줄바꿈 (Never, Always, MultiLine)
 AlignTrailingComments:
     Kind: Always                            # 주석 정렬 (Always, Never, Leave)
     OverEmptyLines: 0                       # N개의 빈 줄을 포함하여 정렬
@@ -27,7 +35,3 @@ AllowShortIfStatementsOnASingleLine: false  # if문 줄바꿈 (Never, Empty, Alw
 AlwaysBreakBeforeMultilineStrings: false    # 문자열 리터럴 사용 시 항시 줄바꿈
 IndentPPDirectives: BeforeHash              # 전처리기 지시문 들여쓰기 (None, AfterHash, BeforeHash)
 NamespaceIndentation: All                   # 네임스페이스 들여쓰기 (All, None, Leave)
-
-BreakBeforeBraces: Allman
-
-AccessModifierOffset: -4
