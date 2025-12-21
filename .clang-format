@@ -1,0 +1,33 @@
+BasedOnStyle: LLVM
+
+ColumnLimit: 0
+UseTab: Never
+TabWidth: 4
+IndentWidth: 4
+IndentCaseLabels: false
+
+AlignConsecutiveAssignments: true           # 대입 연산자 정렬 (=)
+AlignConsecutiveDeclarations: true          # 선언문 정렬 (int a)
+AlignConsecutiveMacros: AcrossEmptyLines    # 매크로 정렬
+AlignTrailingComments:
+    Kind: Always                            # 주석 정렬 (Always, Never, Leave)
+    OverEmptyLines: 0                       # N개의 빈 줄을 포함하여 정렬
+
+ShortNamespaceLines: 0                      # FixNamespaceComments에서 사용 (0: 모두 허용, 1~: N줄 초과인 경우 허용)
+FixNamespaceComments: true                  # 네임스페이스 주석 정렬
+
+AllowShortCaseLabelsOnASingleLine: true     # 한 줄에 짧은 Switch-Case문 허용
+AlignConsecutiveShortCaseStatements:        # 짧은 Switch-Case문 정렬 옵션
+  Enabled: true                             # 정렬 사용 여부
+  AcrossEmptyLines: true                    # 빈 줄을 포함하여 정렬
+  AcrossComments: true                      # 주석을 포함하여 정렬
+  AlignCaseColons: false                    # case 뒤에 콜론(:) 정렬
+AllowShortBlocksOnASingleLine: Empty        # 빈 블록 줄바꿈 (Never, Empty, Always)
+AllowShortIfStatementsOnASingleLine: false  # if문 줄바꿈 (Never, Empty, Always)
+AlwaysBreakBeforeMultilineStrings: false    # 문자열 리터럴 사용 시 항시 줄바꿈
+IndentPPDirectives: BeforeHash              # 전처리기 지시문 들여쓰기 (None, AfterHash, BeforeHash)
+NamespaceIndentation: All                   # 네임스페이스 들여쓰기 (All, None, Leave)
+
+BreakBeforeBraces: Allman
+
+AccessModifierOffset: -4

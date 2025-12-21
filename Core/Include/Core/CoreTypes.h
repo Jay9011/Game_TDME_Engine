@@ -1,8 +1,9 @@
 #pragma once
 
-#include <string>
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
+#include <string>
+
 
 namespace TDME
 {
@@ -24,4 +25,4 @@ namespace TDME
 
     // 문자열 타입
     using string = std::string;
-}
+} // namespace TDME
