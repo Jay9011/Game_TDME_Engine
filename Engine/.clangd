@@ -1,7 +1,5 @@
 CompileFlags:
   Add:
-    - -include
-    - D:/Projects/GameProjects/P2DME/Engine/pch.h
     - -ID:/Projects/GameProjects/P2DME/Core/Include
     - -ID:/Projects/GameProjects/P2DME/Engine
     - -ID:/Projects/GameProjects/P2DME/Engine/Include

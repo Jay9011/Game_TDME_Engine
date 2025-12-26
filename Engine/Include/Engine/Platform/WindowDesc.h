@@ -1,7 +1,6 @@
 #pragma once
 
 #include "EWindowMode.h"
-#include <Core/CoreTypes.h>
 
 namespace TDME
 {

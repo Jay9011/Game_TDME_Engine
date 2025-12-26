@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Core/CoreTypes.h"
+#include <Core/CoreTypes.h>
+
 namespace TDME
 {
     struct DisplayMode

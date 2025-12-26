@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Core/Math/TVector2.h"
-#include "DisplayMode.h"
 #include <Core/CoreTypes.h>
+#include <Core/Math/TVector2.h>
 #include <Core/Geometry/TRect.h>
 #include <vector>
+#include "DisplayMode.h"
 
 namespace TDME
 {

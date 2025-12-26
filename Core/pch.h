@@ -1,8 +1,21 @@
 ﻿#ifndef PCH_H
 #define PCH_H
 
-#include "Core/CoreMacros.h"
-#include "Core/CoreTypes.h"
-#include "Core/Math/MathConstants.h"
+//////////////////////////////////////////////////////////////
+// C++ 표준 라이브러리
+//////////////////////////////////////////////////////////////
 
-#endif //PCH_H
+#include <cstdint>
+#include <cstddef>
+#include <cmath>
+#include <string>
+
+//////////////////////////////////////////////////////////////
+// Core 헤더
+//////////////////////////////////////////////////////////////
+
+#include "Core/CoreMacros.h"
+#include "Core/Math/MathConstants.h"
+#include "Core/CoreTypes.h"
+
+#endif // PCH_H

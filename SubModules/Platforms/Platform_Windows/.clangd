@@ -1,7 +1,5 @@
 CompileFlags:
   Add:
-    - -include
-    - D:/Projects/GameProjects/P2DME/SubModules/Platforms/Platform_Windows/pch.h
     - -ID:/Projects/GameProjects/P2DME/SubModules/Platforms/Platform_Windows
     - -ID:/Projects/GameProjects/P2DME/SubModules/Platforms/Platform_Windows/Include
     - -ID:/Projects/GameProjects/P2DME/Core/Include
