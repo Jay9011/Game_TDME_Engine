@@ -130,16 +130,19 @@ namespace TDME
 
     ATOM Win32Window::MyRegisterClass(HINSTANCE hInstance)
     {
-        WNDCLASSEXW wcex;
+        WNDCLASSEXW wcex = {};
 
-        wcex.cbSize = sizeof(WNDCLASSEXW);
-
+        wcex.cbSize        = sizeof(WNDCLASSEXW);
         wcex.style         = CS_HREDRAW | CS_VREDRAW;
         wcex.lpfnWndProc   = WndProc;
+        wcex.cbClsExtra    = 0;
+        wcex.cbWndExtra    = 0;
         wcex.hInstance     = hInstance;
+        wcex.hIcon         = nullptr;
         wcex.hCursor       = LoadCursor(nullptr, IDC_ARROW);
         wcex.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
         wcex.lpszClassName = WINDOW_CLASS_NAME;
+        wcex.hIconSm       = nullptr;
 
         return RegisterClassExW(&wcex);
     } // MyRegisterClass

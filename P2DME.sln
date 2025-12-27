@@ -15,8 +15,22 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{6A42F3D9-833D-48C5-9D11-4CD4A74DA08E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Platform_Windows", "SubModules\Platforms\Platform_Windows\Platform_Windows.vcxproj", "{8FE96E39-2467-450C-A00F-990D0E63A6D2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65DDC383-1837-4E61-B32F-E1B12ECC8CE0} = {65DDC383-1837-4E61-B32F-E1B12ECC8CE0}
+		{845F5B66-CC7C-4AE2-BDF7-9CB62901FBCC} = {845F5B66-CC7C-4AE2-BDF7-9CB62901FBCC}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj", "{B571F691-087E-459F-A9B7-5A49466F5437}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65DDC383-1837-4E61-B32F-E1B12ECC8CE0} = {65DDC383-1837-4E61-B32F-E1B12ECC8CE0}
+		{845F5B66-CC7C-4AE2-BDF7-9CB62901FBCC} = {845F5B66-CC7C-4AE2-BDF7-9CB62901FBCC}
+		{8FE96E39-2467-450C-A00F-990D0E63A6D2} = {8FE96E39-2467-450C-A00F-990D0E63A6D2}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D44D8BA-0574-4089-A737-A2B255E84306}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

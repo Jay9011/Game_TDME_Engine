@@ -1,5 +1,4 @@
-﻿#ifndef PCH_H
-#define PCH_H
+﻿#pragma once
 
 //////////////////////////////////////////////////////////////
 // C++ 표준 라이브러리
@@ -17,5 +16,3 @@
 #include "Core/CoreMacros.h"
 #include "Core/Math/MathConstants.h"
 #include "Core/CoreTypes.h"
-
-#endif // PCH_H
