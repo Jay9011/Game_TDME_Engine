@@ -1,12 +1,6 @@
 #include "pch.h"
 #include "Platform_Windows/Win32Window.h"
 
-#include <minwindef.h>
-#include <winnls.h>
-#include <winuser.h>
-#include <string>
-#include <stringapiset.h>
-
 namespace TDME
 {
     bool Win32Window::s_classRegistered = false;
@@ -44,8 +38,7 @@ namespace TDME
 
         // 창 크기 조정
         RECT  rect  = {0, 0, width, height};
-        DWORD style = WS_OVERLAPPEDWINDOW;
-        AdjustWindowRect(&rect, style, FALSE);
+        DWORD style = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPEDWINDOW;
 
         int32 windowWidth  = rect.right - rect.left;
         int32 windowHeight = rect.bottom - rect.top;
@@ -58,12 +51,12 @@ namespace TDME
 
         // 창 생성
         m_hWnd = CreateWindowExW(
-            0,
+            WS_EX_APPWINDOW,
             WINDOW_CLASS_NAME,
             wideTitle.c_str(),
             style,
-            posX, posY,
-            windowWidth, windowHeight,
+            posX, posY,                // CW_USEDEFAULT : 이전 윈도우 위치 사용
+            windowWidth, windowHeight, // CW_USEDEFAULT : 이전 윈도우 크기 사용
             nullptr,
             nullptr,
             hInstance,
@@ -78,7 +71,10 @@ namespace TDME
         m_height = height;
         m_isOpen = true;
 
+        AdjustWindowRect(&rect, style, FALSE);
         ShowWindow(m_hWnd, SW_SHOW);
+        SetForegroundWindow(m_hWnd);
+        SetFocus(m_hWnd);
         UpdateWindow(m_hWnd);
 
         return true;
@@ -132,17 +128,18 @@ namespace TDME
     {
         WNDCLASSEXW wcex = {};
 
-        wcex.cbSize        = sizeof(WNDCLASSEXW);
-        wcex.style         = CS_HREDRAW | CS_VREDRAW;
-        wcex.lpfnWndProc   = WndProc;
-        wcex.cbClsExtra    = 0;
-        wcex.cbWndExtra    = 0;
-        wcex.hInstance     = hInstance;
-        wcex.hIcon         = nullptr;
-        wcex.hCursor       = LoadCursor(nullptr, IDC_ARROW);
+        wcex.cbClsExtra    = 0; // 프로그램 추가 확장 메모리 구역
+        wcex.cbWndExtra    = 0; // Window 추가 확장 메모리 구역
         wcex.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
-        wcex.lpszClassName = WINDOW_CLASS_NAME;
+        wcex.hCursor       = LoadCursor(nullptr, IDC_ARROW);
+        wcex.hIcon         = nullptr;
         wcex.hIconSm       = nullptr;
+        wcex.hInstance     = hInstance;
+        wcex.lpfnWndProc   = WndProc;
+        wcex.lpszClassName = WINDOW_CLASS_NAME;
+        wcex.lpszMenuName  = nullptr;
+        wcex.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+        wcex.cbSize        = sizeof(WNDCLASSEXW);
 
         return RegisterClassExW(&wcex);
     } // MyRegisterClass

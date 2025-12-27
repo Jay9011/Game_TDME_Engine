@@ -78,10 +78,11 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Include;$(SolutionDir)Core\Include;$(SolutionDir)Engine\Include;$(SolutionDir)SubModules\Platforms\Platform_Windows\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Include;$(SolutionDir)Core\Include;$(SolutionDir)Engine\Include;$(SolutionDir)SubModules\Platforms\Platform_Windows\Include;$(SolutionDir)SubModules\Renderers\Renderer_DX9\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -98,10 +99,11 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Include;$(SolutionDir)Core\Include;$(SolutionDir)Engine\Include;$(SolutionDir)SubModules\Platforms\Platform_Windows\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Include;$(SolutionDir)Core\Include;$(SolutionDir)Engine\Include;$(SolutionDir)SubModules\Platforms\Platform_Windows\Include;$(SolutionDir)SubModules\Renderers\Renderer_DX9\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -116,10 +118,11 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Include;$(SolutionDir)Core\Include;$(SolutionDir)Engine\Include;$(SolutionDir)SubModules\Platforms\Platform_Windows\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Include;$(SolutionDir)Core\Include;$(SolutionDir)Engine\Include;$(SolutionDir)SubModules\Platforms\Platform_Windows\Include;$(SolutionDir)SubModules\Renderers\Renderer_DX9\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -136,10 +139,11 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Include;$(SolutionDir)Core\Include;$(SolutionDir)Engine\Include;$(SolutionDir)SubModules\Platforms\Platform_Windows\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Include;$(SolutionDir)Core\Include;$(SolutionDir)Engine\Include;$(SolutionDir)SubModules\Platforms\Platform_Windows\Include;$(SolutionDir)SubModules\Renderers\Renderer_DX9\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,6 +171,9 @@
     </ProjectReference>
     <ProjectReference Include="..\SubModules\Platforms\Platform_Windows\Platform_Windows.vcxproj">
       <Project>{8fe96e39-2467-450c-a00f-990d0e63a6d2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SubModules\Renderers\Renderer_DX9\Renderer_DX9.vcxproj">
+      <Project>{e196cef5-0f78-40af-94fa-f319be0449b2}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

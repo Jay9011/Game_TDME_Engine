@@ -5,6 +5,7 @@ CompileFlags:
     - -ID:/Projects/GameProjects/P2DME/Core/Include
     - -ID:/Projects/GameProjects/P2DME/Engine/Include
     - -ID:/Projects/GameProjects/P2DME/SubModules/Platforms/Platform_Windows/Include
+    - -ID:/Projects/GameProjects/P2DME/SubModules/Renderers/Renderer_DX9/Include
     - -std=c++17
     - -DWIN32
     - -D_DEBUG

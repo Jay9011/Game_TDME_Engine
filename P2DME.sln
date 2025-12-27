@@ -32,6 +32,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Renderers", "Renderers", "{83ACD761-539C-4FAD-9278-D08B5113C088}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Renderer_DX9", "SubModules\Renderers\Renderer_DX9\Renderer_DX9.vcxproj", "{E196CEF5-0F78-40AF-94FA-F319BE0449B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -72,6 +76,14 @@ Global
 		{B571F691-087E-459F-A9B7-5A49466F5437}.Release|x64.Build.0 = Release|x64
 		{B571F691-087E-459F-A9B7-5A49466F5437}.Release|x86.ActiveCfg = Release|Win32
 		{B571F691-087E-459F-A9B7-5A49466F5437}.Release|x86.Build.0 = Release|Win32
+		{E196CEF5-0F78-40AF-94FA-F319BE0449B2}.Debug|x64.ActiveCfg = Debug|x64
+		{E196CEF5-0F78-40AF-94FA-F319BE0449B2}.Debug|x64.Build.0 = Debug|x64
+		{E196CEF5-0F78-40AF-94FA-F319BE0449B2}.Debug|x86.ActiveCfg = Debug|Win32
+		{E196CEF5-0F78-40AF-94FA-F319BE0449B2}.Debug|x86.Build.0 = Debug|Win32
+		{E196CEF5-0F78-40AF-94FA-F319BE0449B2}.Release|x64.ActiveCfg = Release|x64
+		{E196CEF5-0F78-40AF-94FA-F319BE0449B2}.Release|x64.Build.0 = Release|x64
+		{E196CEF5-0F78-40AF-94FA-F319BE0449B2}.Release|x86.ActiveCfg = Release|Win32
+		{E196CEF5-0F78-40AF-94FA-F319BE0449B2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +91,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6A42F3D9-833D-48C5-9D11-4CD4A74DA08E} = {C8D5274F-AC00-46C7-1F8D-E88E81087A52}
 		{8FE96E39-2467-450C-A00F-990D0E63A6D2} = {6A42F3D9-833D-48C5-9D11-4CD4A74DA08E}
+		{83ACD761-539C-4FAD-9278-D08B5113C088} = {C8D5274F-AC00-46C7-1F8D-E88E81087A52}
+		{E196CEF5-0F78-40AF-94FA-F319BE0449B2} = {83ACD761-539C-4FAD-9278-D08B5113C088}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96C80B58-F6F0-4B65-879F-4FF6F9DEBD83}
