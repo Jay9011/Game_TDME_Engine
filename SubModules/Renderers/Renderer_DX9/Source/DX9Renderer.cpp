@@ -1,8 +1,23 @@
 #include "pch.h"
 #include "Renderer_DX9/DX9Renderer.h"
 
+#include <Core/Math/TVector2.h>
+#include <Core/Types/Color32.h>
+#include <Core/Render/Vertex2DTypes.h>
+
+#include <algorithm>
+#include <cmath>
+#include <d3d9types.h>
+
 namespace TDME
 {
+    // 임시 타입: D3DFVF_XYZRHW | D3DFVF_DIFFUSE 와 매칭
+    struct Vertex2DRHW
+    {
+        float   X, Y, Z, RHW; // 화면 좌표 (이미 변환됨)
+        Color32 Color;        // ARGB 포맷
+    };
+
     DX9Renderer::DX9Renderer() : m_d3d(nullptr), m_device(nullptr)
     {
     }
@@ -77,6 +92,53 @@ namespace TDME
     {
         m_device->EndScene();
         m_device->Present(nullptr, nullptr, nullptr, nullptr);
+    }
+
+    //////////////////////////////////////////////////////////////
+    // 2D 렌더링 관련 메서드
+    //////////////////////////////////////////////////////////////
+
+    void DX9Renderer::DrawTriangle(const Vector2& position, float width, float height, float rotation, const Color& color)
+    {
+        // 1. Color -> Color32 변환
+        Color32 color32 = Color32::FromColor(color);
+
+        // 2. 삼각형 로컬 좌표 생성 (중심 기준, 시계방향)
+        float halfWidth  = width / 2;
+        float halfHeight = height / 2;
+
+        Vector2 local[3] = {
+            Vector2(0.0f, -halfHeight),      // 상단 중앙
+            Vector2(halfWidth, halfHeight),  // 우하단
+            Vector2(-halfWidth, halfHeight), // 좌하단
+        };
+
+        // 3. 회전 변환 + RHW 정점 생성
+        float rad  = rotation * Math::DegToRad;
+        float cosR = std::cos(rad);
+        float sinR = std::sin(rad);
+
+        Vertex2DRHW vertices[3];
+        for (int i = 0; i < 3; i++)
+        {
+            // 회전 변환
+            float rx = local[i].X * cosR - local[i].Y * sinR;
+            float ry = local[i].X * sinR + local[i].Y * cosR;
+
+            // 화면 좌표 (Pre-transformed)
+            vertices[i].X     = position.X + rx;
+            vertices[i].Y     = position.Y + ry;
+            vertices[i].Z     = 0.0f;
+            vertices[i].RHW   = 1.0f;
+            vertices[i].Color = color32;
+        }
+
+        // 4. 렌더링 상태 설정
+        m_device->SetFVF(FVF_VERTEX2D);
+        m_device->SetTexture(0, nullptr);
+
+        // 5. 렌더링
+        m_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, 1, vertices, sizeof(Vertex2DRHW));
     }
 
 } // namespace TDME

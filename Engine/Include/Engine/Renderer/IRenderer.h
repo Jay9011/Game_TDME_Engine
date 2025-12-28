@@ -1,10 +1,15 @@
 #pragma once
 
+#include "Core/Math/TVector2.h"
 namespace TDME
 {
     class IWindow;
     struct Color;
 
+    /**
+     * @brief 렌더러 인터페이스
+     * @note 렌더러 기능을 제공하는 인터페이스
+     */
     class IRenderer
     {
     public:
@@ -36,5 +41,22 @@ namespace TDME
          * @note 백버퍼를 화면에 출력.
          */
         virtual void EndFrame() = 0;
+
+        //////////////////////////////////////////////////////////////
+        // 2D 렌더링 관련 메서드
+        //////////////////////////////////////////////////////////////
+
+        // NOTE: 우선 테스트용 삼각형 그리기 메서드 구현. 추후 다시 확인
+        /**
+         * @brief 삼각형 그리기
+         * @param position 중심 위치 (화면 좌표계)
+         * @param width 너비
+         * @param height 높이
+         * @param rotation 회전 각도 (도)
+         * @param color 색상
+         * @see TDME::Vector2
+         * @see TDME::Color
+         */
+        virtual void DrawTriangle(const Vector2& position, float width, float height, float rotation, const Color& color) = 0;
     };
 } // namespace TDME

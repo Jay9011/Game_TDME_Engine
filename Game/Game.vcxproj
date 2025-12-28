@@ -160,6 +160,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Game\Types\Color.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,8 @@
 
 #include <Engine/Renderer/IRenderer.h>
 #include <d3d9.h>
+#include <Windows.h>
+#include <d3d9types.h>
 #include <wrl/client.h>
 
 namespace TDME
@@ -36,6 +38,22 @@ namespace TDME
          * @brief 프레임을 종료합니다.
          */
         void EndFrame() override;
+
+        //////////////////////////////////////////////////////////////
+        // 2D 렌더링 관련 메서드
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 삼각형 그리기
+         * @param position 중심 위치 (화면 좌표계)
+         * @param width 너비
+         * @param height 높이
+         * @param rotation 회전 각도 (도)
+         * @param color 색상
+         * @see TDME::Vector2
+         * @see TDME::Color
+         */
+        void DrawTriangle(const Vector2& position, float width, float height, float rotation, const Color& color) override;
 
     private:
         /**
@@ -77,5 +95,7 @@ namespace TDME
          * @see Direct3DDevice9::Present()
          */
         ComPtr<IDirect3DDevice9> m_device;
+
+        static constexpr DWORD FVF_VERTEX2D = D3DFVF_XYZRHW | D3DFVF_DIFFUSE;
     };
 } // namespace TDME
