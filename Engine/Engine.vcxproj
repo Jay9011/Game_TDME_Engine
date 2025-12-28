@@ -157,6 +157,9 @@
   <ItemGroup>
     <ClInclude Include="Include\Engine\Display\DisplayInfo.h" />
     <ClInclude Include="Include\Engine\Display\DisplayMode.h" />
+    <ClInclude Include="Include\Engine\Input\EKeyCode.h" />
+    <ClInclude Include="Include\Engine\Input\EMouseButton.h" />
+    <ClInclude Include="Include\Engine\Input\IInputDevice.h" />
     <ClInclude Include="Include\Engine\Platform\EWindowMode.h" />
     <ClInclude Include="Include\Engine\Platform\IWindow.h" />
     <ClInclude Include="Include\Engine\Platform\WindowDesc.h" />

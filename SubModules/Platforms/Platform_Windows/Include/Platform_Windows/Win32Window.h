@@ -2,8 +2,6 @@
 
 #include <Engine/Platform/IWindow.h>
 #include <Windows.h>
-#include <minwindef.h>
-#include <winnt.h>
 
 namespace TDME
 {

@@ -35,3 +35,4 @@ AllowShortIfStatementsOnASingleLine: false  # if문 줄바꿈 (Never, Empty, Alw
 AlwaysBreakBeforeMultilineStrings: false    # 문자열 리터럴 사용 시 항시 줄바꿈
 IndentPPDirectives: BeforeHash              # 전처리기 지시문 들여쓰기 (None, AfterHash, BeforeHash)
 NamespaceIndentation: All                   # 네임스페이스 들여쓰기 (All, None, Leave)
+#AllowShortEnumsOnASingleLine: true          # 짧은 enum을 한 줄에 표시할지 여부

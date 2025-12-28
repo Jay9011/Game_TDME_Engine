@@ -68,10 +68,19 @@ namespace TDME
     //////////////////////////////////////////////////////////////
     // 타입 별칭
     //////////////////////////////////////////////////////////////
+    // Vector 별칭칭
 
     using Vector2F = TVector2<float>;  // float 2차원 벡터
     using Vector2D = TVector2<double>; // double 2차원 벡터
     using Vector2I = TVector2<int32>;  // int32 2차원 벡터
     using Vector2U = TVector2<uint32>; // uint32 2차원 벡터
     using Vector2  = Vector2F;         // 기본 타입은 float
+
+    // Point 별칭
+
+    using PointF  = TVector2<float>;
+    using PointI  = TVector2<int32>;
+    using PointLL = TVector2<int64>;
+    using Point   = PointI;
+
 } // namespace TDME

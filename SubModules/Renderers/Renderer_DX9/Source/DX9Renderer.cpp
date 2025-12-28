@@ -69,7 +69,7 @@ namespace TDME
             static_cast<uint8>(clearColor.G * 255),
             static_cast<uint8>(clearColor.B * 255));
 
-        m_device->Clear(0, nullptr, D3DCLEAR_TARGET, backColor, 1.0f, 0);
+        m_device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, backColor, 1.0f, 0);
         m_device->BeginScene();
     }
 
