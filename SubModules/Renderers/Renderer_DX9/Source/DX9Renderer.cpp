@@ -14,8 +14,8 @@ namespace TDME
     // 임시 타입: D3DFVF_XYZRHW | D3DFVF_DIFFUSE 와 매칭
     struct Vertex2DRHW
     {
-        float   X, Y, Z, RHW; // 화면 좌표 (이미 변환됨)
-        Color32 Color;        // ARGB 포맷
+        float   X = .0f, Y = .0f, Z = .0f, RHW = .0f; // 화면 좌표 (이미 변환됨)
+        Color32 Color = Color32();                    // ARGB 포맷
     };
 
     DX9Renderer::DX9Renderer() : m_d3d(nullptr), m_device(nullptr)

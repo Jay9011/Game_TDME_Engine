@@ -82,17 +82,19 @@ namespace TDME
         static constexpr Color Yellow() { return Color(1, 1, 0, 1); }
         static constexpr Color Magenta() { return Color(1, 0, 1, 1); }
         static constexpr Color Cyan() { return Color(0, 1, 1, 1); }
+        static constexpr Color DarkGray() { return Color(0.25f, 0.25f, 0.25f, 1); }
     };
 
     namespace Colors
     {
-        INLINE constexpr Color BLACK   = Color::Black();
-        INLINE constexpr Color WHITE   = Color::White();
-        INLINE constexpr Color RED     = Color::Red();
-        INLINE constexpr Color GREEN   = Color::Green();
-        INLINE constexpr Color BLUE    = Color::Blue();
-        INLINE constexpr Color YELLOW  = Color::Yellow();
-        INLINE constexpr Color MAGENTA = Color::Magenta();
-        INLINE constexpr Color CYAN    = Color::Cyan();
+        INLINE constexpr Color BLACK     = Color::Black();
+        INLINE constexpr Color WHITE     = Color::White();
+        INLINE constexpr Color RED       = Color::Red();
+        INLINE constexpr Color GREEN     = Color::Green();
+        INLINE constexpr Color BLUE      = Color::Blue();
+        INLINE constexpr Color YELLOW    = Color::Yellow();
+        INLINE constexpr Color MAGENTA   = Color::Magenta();
+        INLINE constexpr Color CYAN      = Color::Cyan();
+        INLINE constexpr Color DARK_GRAY = Color::DarkGray();
     } // namespace Colors
 } // namespace TDME

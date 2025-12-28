@@ -74,7 +74,7 @@ namespace TDME
         static constexpr size_t KEY_COUNT          = static_cast<size_t>(EKeyCode::COUNT);
         static constexpr size_t MOUSE_BUTTON_COUNT = static_cast<size_t>(EMouseButton::COUNT);
 
-        HWND m_hWnd; // Windows 창 핸들
+        HWND m_hWnd = nullptr; // Windows 창 핸들
 
         std::array<bool, KEY_COUNT> m_currentKeys;
         std::array<bool, KEY_COUNT> m_previousKeys;

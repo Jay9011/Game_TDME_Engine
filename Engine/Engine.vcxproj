@@ -164,6 +164,7 @@
     <ClInclude Include="Include\Engine\Platform\IWindow.h" />
     <ClInclude Include="Include\Engine\Platform\WindowDesc.h" />
     <ClInclude Include="Include\Engine\Renderer\IRenderer.h" />
+    <ClInclude Include="Include\Engine\Time\ITimer.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

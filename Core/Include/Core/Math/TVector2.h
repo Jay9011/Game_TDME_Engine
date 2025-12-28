@@ -13,6 +13,8 @@ namespace TDME
     template <typename T>
     struct TVector2 : TVectorOperations<TVector2<T>, T, 2>
     {
+#pragma warning(push)
+#pragma warning(disable : 4201) // 익명 구조체/공용체 사용에 대한 경고 비활성화
         union
         {
             struct
@@ -25,6 +27,7 @@ namespace TDME
             };
             T Data[2];
         };
+#pragma warning(pop)
 
         constexpr TVector2() : X(T(0)), Y(T(0)) {}
         constexpr TVector2(T x, T y) : X(x), Y(y) {}
