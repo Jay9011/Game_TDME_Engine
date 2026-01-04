@@ -1,0 +1,66 @@
+#pragma once
+
+#include "Core/CoreMacros.h"
+#include "Core/Math/MathConstants.h"
+#include "Core/Math/TMatrix4x4.h"
+
+namespace TDME
+{
+    /**
+     * @brief 2D 직교 투영 행렬 생성
+     * @details 월드 좌표 → NDC (Normalized Device Coordinates) 변환
+     * @li NDC X:[left, right] → [-1, 1]
+     * @li NDC Y:[bottom, top] → [-1, 1]
+     * @li NDC Z:[zNear, zFar] → [0, 1]
+     * @tparam T 행렬 요소 타입
+     * @param left 왼쪽 테두리
+     * @param right 오른쪽 테두리
+     * @param bottom 아래쪽 테두리
+     * @param top 위쪽 테두리
+     * @param zNear 근접 평면
+     * @param zFar 원근 평면
+     * @return TMatrix4x4<T> 2D 직교 투영 행렬
+     */
+    template <typename T>
+    FORCE_INLINE constexpr TMatrix4x4<T> OrthographicProjection2D(T left, T right, T bottom, T top, T zNear, T zFar)
+    {
+        // Row Vector, 왼손 좌표계, NDC [0, 1] 사용
+        T width  = right - left;
+        T height = top - bottom;
+        T depth  = zFar - zNear;
+
+        return TMatrix4x4<T>(T(2) / width, 0, 0, 0,
+                             0, T(2) / height, 0, 0,
+                             0, 0, T(1) / depth, 0,
+                             -(right + left) / width, -(top + bottom) / height, -zNear / depth, 1);
+    }
+
+    /**
+     * @brief 2D 화면 좌표계 직교 투영 행렬 생성
+     * @details 좌상단 원점 (0, 0) 사용
+     * @tparam T 행렬 요소 타입
+     * @param width 너비
+     * @param height 높이
+     * @return TMatrix4x4<T> 2D 직교 투영 행렬
+     */
+    template <typename T>
+    FORCE_INLINE constexpr TMatrix4x4<T> Orthographic2D(T width, T height)
+    {
+        return OrthographicProjection2D(T(0), width, height, T(0), T(0), T(1));
+    }
+
+    /**
+     * @brief 2D 화면 좌표계 직교 투영 행렬 생성 (중심 원점 사용)
+     * @tparam T 행렬 요소 타입
+     * @param width 너비
+     * @param height 높이
+     * @return TMatrix4x4<T> 2D 직교 투영 행렬
+     */
+    template <typename T>
+    FORCE_INLINE constexpr TMatrix4x4<T> Orthographic2DCentered(T width, T height)
+    {
+        T halfW = width / T(2);
+        T halfH = height / T(2);
+        return OrthographicProjection2D(-halfW, halfW, halfH, -halfH, T(0), T(1));
+    }
+} // namespace TDME

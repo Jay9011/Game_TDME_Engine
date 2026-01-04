@@ -1,7 +1,7 @@
 #pragma once
 
-#include "VectorOperations.h"
 #include "TVector2.h"
+#include "TVectorOperations.h"
 
 namespace TDME
 {

@@ -158,10 +158,15 @@
     <ClInclude Include="Include\Core\CoreMacros.h" />
     <ClInclude Include="Include\Core\CoreTypes.h" />
     <ClInclude Include="Include\Core\Geometry\TRect.h" />
+    <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Projection2D.h" />
+    <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Transform2D.h" />
+    <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Transform3D.h" />
     <ClInclude Include="Include\Core\Math\MathConstants.h" />
+    <ClInclude Include="Include\Core\Math\TMatrix4x4.h" />
     <ClInclude Include="Include\Core\Math\TVector2.h" />
     <ClInclude Include="Include\Core\Math\TVector3.h" />
-    <ClInclude Include="Include\Core\Math\VectorOperations.h" />
+    <ClInclude Include="Include\Core\Math\TVector4.h" />
+    <ClInclude Include="Include\Core\Math\TVectorOperations.h" />
     <ClInclude Include="Include\Core\Render\EVertexFormat.h" />
     <ClInclude Include="Include\Core\Render\EVertexSemantic.h" />
     <ClInclude Include="Include\Core\Render\Vertex2DTypes.h" />
