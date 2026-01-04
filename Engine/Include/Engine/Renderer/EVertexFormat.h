@@ -17,5 +17,6 @@ namespace TDME
         Float4,  // float * 4 (Vector4)
         UByte4,  // uint8 * 4
         UByte4N, // uint8 * 4 (normalized, 0-255 -> 0.0-1.0)
+        Color,   // Color32 (ARGB)
     };
 } // namespace TDME

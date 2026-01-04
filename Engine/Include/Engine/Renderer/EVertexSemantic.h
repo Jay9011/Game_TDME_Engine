@@ -17,7 +17,14 @@ namespace TDME
         TexCoord,     // 텍스처 좌표 (UV)
         Normal,       // 법선 벡터
         Tangent,      // 접선 벡터 (탄젠트)
+        Binormal,     // 바이노멀 벡터 (Bitangent)
         BlendWeight,  // Bone 가중치
         BlendIndices, // Bone 인덱스
+        //////////////////////////////////////////////////////////////
+        // 시스템 값 시멘틱
+        //////////////////////////////////////////////////////////////
+        SV_Position,   // 변환된 정점 위치 (정점 쉐이더에서 사용)
+        SV_VertexID,   // 정점 인덱스
+        SV_InstanceID, // 인스턴스 인덱스
     };
 } // namespace TDME

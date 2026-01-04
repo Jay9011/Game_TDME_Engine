@@ -42,16 +42,7 @@
     <ClInclude Include="Include\Core\Geometry\TRect.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Render\EVertexSemantic.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\Render\EVertexFormat.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Types\Color32.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\Render\Vertex2DTypes.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Math\TMatrix4x4.h">

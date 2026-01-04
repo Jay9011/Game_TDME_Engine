@@ -167,9 +167,6 @@
     <ClInclude Include="Include\Core\Math\TVector3.h" />
     <ClInclude Include="Include\Core\Math\TVector4.h" />
     <ClInclude Include="Include\Core\Math\TVectorOperations.h" />
-    <ClInclude Include="Include\Core\Render\EVertexFormat.h" />
-    <ClInclude Include="Include\Core\Render\EVertexSemantic.h" />
-    <ClInclude Include="Include\Core\Render\Vertex2DTypes.h" />
     <ClInclude Include="Include\Core\Types\Color.h" />
     <ClInclude Include="Include\Core\Types\Color32.h" />
     <ClInclude Include="pch.h" />

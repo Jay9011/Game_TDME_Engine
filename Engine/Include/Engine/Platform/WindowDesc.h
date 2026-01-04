@@ -10,7 +10,7 @@ namespace TDME
 
         uint32 DisplayIndex = 0; // 디스플레이 인덱스
 
-        wstring Title = L"TDME 창 제목"; // 창 제목
+        string Title = "TDME 창 제목"; // 창 제목
 
         uint32 Width  = 1280; // 창 너비
         uint32 Height = 720;  // 창 높이
