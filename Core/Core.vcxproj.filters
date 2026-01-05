@@ -60,9 +60,18 @@
     <ClInclude Include="Include\Core\Math\TVector4.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\String\Name.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\String\NameTypes.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\String\Name.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
