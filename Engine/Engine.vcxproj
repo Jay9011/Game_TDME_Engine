@@ -158,8 +158,10 @@
     <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplayInfo.h" />
     <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplayMode.h" />
     <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplaySettings.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\IApplication.h" />
     <ClInclude Include="Include\Engine\Input\EKeys.h" />
     <ClInclude Include="Include\Engine\Input\EKeyType.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\IApplicationMessageHandler.h" />
     <ClInclude Include="Include\Engine\Input\Key.h" />
     <ClInclude Include="Include\Engine\RHI\EGPUVendor.h" />
     <ClInclude Include="Include\Engine\RHI\GraphicsAdapterDesc.h" />
