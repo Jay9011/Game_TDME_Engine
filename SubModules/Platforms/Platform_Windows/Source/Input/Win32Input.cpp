@@ -24,13 +24,13 @@ namespace TDME
         // 키보드 상태 갱신
         for (size_t i = 0; i < KEY_COUNT; ++i)
         {
-            m_currentKeys[i] = (GetAsyncKeyState(static_cast<int>(i)) & 0x8000) != 0; // GetAsyncKeyState 함수는 키가 눌려있는지 여부를 반환하는데, 최상위 비트가 1인 경우 눌려있음을 의미
+            m_currentKeys[i] = (GetAsyncKeyState(static_cast<int32>(i)) & 0x8000) != 0; // GetAsyncKeyState 함수는 키가 눌려있는지 여부를 반환하는데, 최상위 비트가 1인 경우 눌려있음을 의미
         }
 
         // 마우스 상태 갱신
         for (size_t i = 0; i < MOUSE_BUTTON_COUNT; ++i)
         {
-            m_currentMouseButtons[i] = (GetAsyncKeyState(static_cast<int>(i)) & 0x8000) != 0;
+            m_currentMouseButtons[i] = (GetAsyncKeyState(static_cast<int32>(i)) & 0x8000) != 0;
         }
 
         POINT point;

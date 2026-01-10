@@ -11,7 +11,7 @@
 namespace TDME
 {
     /**
-     * @brief 디스플레이 정보의 구조체
+     * @brief 하드웨어 디스플레이(모니터) 정보 구조체
      */
     struct DisplayInfo
     {

@@ -18,28 +18,28 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Platform\IWindow.h">
+    <ClInclude Include="Include\Engine\ApplicationCore\IWindow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Platform\EWindowMode.h">
+    <ClInclude Include="Include\Engine\ApplicationCore\EWindowMode.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Display\DisplayInfo.h">
+    <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplayInfo.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Display\DisplayMode.h">
+    <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplayMode.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Platform\WindowDesc.h">
+    <ClInclude Include="Include\Engine\ApplicationCore\WindowDesc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Engine\Renderer\IRenderer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Input\EKeyCode.h">
+    <ClInclude Include="Include\Engine\ApplicationCore\Input\Windows\EKeyCode.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Input\EMouseButton.h">
+    <ClInclude Include="Include\Engine\ApplicationCore\Input\Windows\EMouseButton.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Engine\Input\IInputDevice.h">
@@ -48,39 +48,51 @@
     <ClInclude Include="Include\Engine\Time\ITimer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Renderer\EVertexFormat.h">
+    <ClInclude Include="Include\Engine\RHI\EVertexFormat.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Renderer\EVertexSemantic.h">
+    <ClInclude Include="Include\Engine\RHI\EVertexSemantic.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Engine\Renderer\Vertex2DTypes.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Renderer\VertexElement.h">
+    <ClInclude Include="Include\Engine\RHI\VertexElement.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Renderer\VertexLayoutDesc.h">
+    <ClInclude Include="Include\Engine\RHI\VertexLayoutDesc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Renderer\IVertexLayout.h">
+    <ClInclude Include="Include\Engine\RHI\IVertexLayout.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Display\EGPUVendor.h">
+    <ClInclude Include="Include\Engine\RHI\EGPUVendor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Display\GraphicsAdapterDesc.h">
+    <ClInclude Include="Include\Engine\RHI\GraphicsAdapterDesc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Display\IGraphicsAdapter.h">
+    <ClInclude Include="Include\Engine\RHI\IGraphicsAdapter.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Display\DisplaySettings.h">
+    <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplaySettings.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\Input\Key.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\Input\EKeyType.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\Input\EKeys.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\EKeys.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

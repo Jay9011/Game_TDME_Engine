@@ -192,10 +192,10 @@ namespace TDME
             return wstring();
         }
 
-        int len = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), static_cast<int>(str.size()), nullptr, 0);
+        int32 len = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), static_cast<int32>(str.size()), nullptr, 0);
 
         wstring wideStr(len, 0);
-        MultiByteToWideChar(CP_UTF8, 0, str.c_str(), static_cast<int>(str.size()), wideStr.data(), len);
+        MultiByteToWideChar(CP_UTF8, 0, str.c_str(), static_cast<int32>(str.size()), wideStr.data(), len);
 
         return wideStr;
     } // ToWideString

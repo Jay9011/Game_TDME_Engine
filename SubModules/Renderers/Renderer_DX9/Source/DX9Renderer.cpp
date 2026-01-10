@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <d3d9types.h>
 
 namespace TDME
@@ -119,7 +120,7 @@ namespace TDME
         float sinR = std::sin(rad);
 
         Vertex2DRHW vertices[3];
-        for (int i = 0; i < 3; i++)
+        for (size_t i = 0; i < 3; i++)
         {
             // 회전 변환
             float rx = local[i].X * cosR - local[i].Y * sinR;

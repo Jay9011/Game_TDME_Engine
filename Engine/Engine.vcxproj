@@ -155,25 +155,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Include\Engine\Display\DisplayInfo.h" />
-    <ClInclude Include="Include\Engine\Display\DisplayMode.h" />
-    <ClInclude Include="Include\Engine\Display\DisplaySettings.h" />
-    <ClInclude Include="Include\Engine\Display\EGPUVendor.h" />
-    <ClInclude Include="Include\Engine\Display\GraphicsAdapterDesc.h" />
-    <ClInclude Include="Include\Engine\Display\IGraphicsAdapter.h" />
-    <ClInclude Include="Include\Engine\Input\EKeyCode.h" />
-    <ClInclude Include="Include\Engine\Input\EMouseButton.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplayInfo.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplayMode.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplaySettings.h" />
+    <ClInclude Include="Include\Engine\Input\EKeys.h" />
+    <ClInclude Include="Include\Engine\Input\EKeyType.h" />
+    <ClInclude Include="Include\Engine\Input\Key.h" />
+    <ClInclude Include="Include\Engine\RHI\EGPUVendor.h" />
+    <ClInclude Include="Include\Engine\RHI\GraphicsAdapterDesc.h" />
+    <ClInclude Include="Include\Engine\RHI\IGraphicsAdapter.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\Input\Windows\EKeyCode.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\Input\Windows\EMouseButton.h" />
     <ClInclude Include="Include\Engine\Input\IInputDevice.h" />
-    <ClInclude Include="Include\Engine\Platform\EWindowMode.h" />
-    <ClInclude Include="Include\Engine\Platform\IWindow.h" />
-    <ClInclude Include="Include\Engine\Platform\WindowDesc.h" />
-    <ClInclude Include="Include\Engine\Renderer\EVertexFormat.h" />
-    <ClInclude Include="Include\Engine\Renderer\EVertexSemantic.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\EWindowMode.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\IWindow.h" />
+    <ClInclude Include="Include\Engine\ApplicationCore\WindowDesc.h" />
+    <ClInclude Include="Include\Engine\RHI\EVertexFormat.h" />
+    <ClInclude Include="Include\Engine\RHI\EVertexSemantic.h" />
     <ClInclude Include="Include\Engine\Renderer\IRenderer.h" />
-    <ClInclude Include="Include\Engine\Renderer\IVertexLayout.h" />
+    <ClInclude Include="Include\Engine\RHI\IVertexLayout.h" />
     <ClInclude Include="Include\Engine\Renderer\Vertex2DTypes.h" />
-    <ClInclude Include="Include\Engine\Renderer\VertexElement.h" />
-    <ClInclude Include="Include\Engine\Renderer\VertexLayoutDesc.h" />
+    <ClInclude Include="Include\Engine\RHI\VertexElement.h" />
+    <ClInclude Include="Include\Engine\RHI\VertexLayoutDesc.h" />
     <ClInclude Include="Include\Engine\Time\ITimer.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -184,6 +187,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Input\EKeys.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

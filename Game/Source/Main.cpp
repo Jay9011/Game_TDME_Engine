@@ -2,7 +2,7 @@
 
 #include <Core/Types/Color.h>
 #include <Core/Math/TVector2.h>
-#include <Engine/Input/EKeyCode.h>
+#include <Engine/ApplicationCore/Input/Windows/EKeyCode.h>
 #include <Platform_Windows/Win32Window.h>
 #include <Platform_Windows/Time/Win32Timer.h>
 #include <Platform_Windows/Input/Win32Input.h>

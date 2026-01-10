@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Engine/Platform/IWindow.h>
+#include <Engine/ApplicationCore/IWindow.h>
 #include <Windows.h>
 
 namespace TDME

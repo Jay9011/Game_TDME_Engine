@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Core/CoreMacros.h"
+#include "Engine/ApplicationCore/EWindowMode.h"
 #include "DisplayMode.h"
-#include "Engine/Platform/EWindowMode.h"
 
 namespace TDME
 {

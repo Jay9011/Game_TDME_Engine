@@ -5,7 +5,7 @@
 namespace TDME
 {
     /**
-     * @brief 디스플레이 모드 구조체
+     * @brief 디스플레이 출력 모드 구조체 (출력 가능 모드)
      * @details 너비, 높이, 주사율, 등의 정보를 포함하는 구조체
      */
     struct DisplayMode
