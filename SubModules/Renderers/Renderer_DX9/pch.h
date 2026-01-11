@@ -8,7 +8,7 @@
 
 #include <Core/Types/Color.h>
 #include <Core/Math/MathConstants.h>
-#include <Engine/Platform/IWindow.h>
+#include <Engine/ApplicationCore/IWindow.h>
 
 //////////////////////////////////////////////////////////////
 // Windows 헤더

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "DisplayMode.h"
 #include "GraphicsAdapterDesc.h"
+#include "Engine/ApplicationCore/Display/DisplayMode.h"
+
 #include <vector>
 
 namespace TDME

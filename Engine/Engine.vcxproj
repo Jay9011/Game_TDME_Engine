@@ -166,8 +166,6 @@
     <ClInclude Include="Include\Engine\RHI\EGPUVendor.h" />
     <ClInclude Include="Include\Engine\RHI\GraphicsAdapterDesc.h" />
     <ClInclude Include="Include\Engine\RHI\IGraphicsAdapter.h" />
-    <ClInclude Include="Include\Engine\ApplicationCore\Input\Windows\EKeyCode.h" />
-    <ClInclude Include="Include\Engine\ApplicationCore\Input\Windows\EMouseButton.h" />
     <ClInclude Include="Include\Engine\Input\IInputDevice.h" />
     <ClInclude Include="Include\Engine\ApplicationCore\EWindowMode.h" />
     <ClInclude Include="Include\Engine\ApplicationCore\IWindow.h" />

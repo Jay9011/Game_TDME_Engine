@@ -5,7 +5,6 @@
 
 #include "VertexElement.h"
 
-#include <cstddef>
 #include <vector>
 
 namespace TDME

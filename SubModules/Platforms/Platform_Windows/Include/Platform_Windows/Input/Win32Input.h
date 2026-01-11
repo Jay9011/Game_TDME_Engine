@@ -2,15 +2,17 @@
 
 #include <Core/Math/TVector2.h>
 #include <Engine/Input/IInputDevice.h>
-#include <array>
+#include <Engine/Input/Key.h>
+
 #include <Windows.h>
+#include <unordered_set>
 
 namespace TDME
 {
     class Win32Input : public IInputDevice
     {
     public:
-        Win32Input();
+        Win32Input()           = default;
         ~Win32Input() override = default;
 
         /**
@@ -23,25 +25,28 @@ namespace TDME
         void Update() override;
 
         //////////////////////////////////////////////////////////////
-        // 키보드
+        // 키 입력 이벤트
         //////////////////////////////////////////////////////////////
-        /*
-         * @brief 현재 키가 눌려있는지 확인합니다.
-         * @param key 키 코드
+        /**
+         * @brief 키가 눌려있는지 확인합니다.
+         * @param key 키
+         * @return true/false
          */
-        bool IsKeyDown(EKeyCode key) const override;
+        bool IsKeyDown(const Key& key) const override;
 
         /**
          * @brief 이번 프레임에 키가 눌려졌는지 확인합니다.
-         * @param key 키 코드
+         * @param key 키
+         * @return true/false
          */
-        bool IsKeyPressed(EKeyCode key) const override;
+        bool IsKeyPressed(const Key& key) const override;
 
         /**
          * @brief 이번 프레임에 키가 떼어졌는지 확인합니다.
-         * @param key 키 코드
+         * @param key 키
+         * @return true/false
          */
-        bool IsKeyReleased(EKeyCode key) const override;
+        bool IsKeyReleased(const Key& key) const override;
 
         //////////////////////////////////////////////////////////////
         // 마우스
@@ -52,35 +57,33 @@ namespace TDME
          */
         Vector2 GetMousePosition() const override;
 
+        //////////////////////////////////////////////////////////////
+        // Win32 Event Handle
+        //////////////////////////////////////////////////////////////
         /**
-         * @brief 마우스 버튼이 눌려있는지 확인합니다.
-         * @param button 마우스 버튼 코드
+         * @brief Windows 키 눌림 이벤트 처리
+         * @param key 눌린 키
          */
-        bool IsMouseButtonDown(EMouseButton button) const override;
+        void OnKeyDown(const Key& key);
 
         /**
-         * @brief 이번 프레임에 마우스 버튼이 눌려졌는지 확인합니다.
-         * @param button 마우스 버튼 코드
+         * @brief Windows 키 떼어짐 이벤트 처리
+         * @param key 떼어진 키
          */
-        bool IsMouseButtonPressed(EMouseButton button) const override;
+        void OnKeyUp(const Key& key);
 
         /**
-         * @brief 이번 프레임에 마우스 버튼이 떼어졌는지 확인합니다.
-         * @param button 마우스 버튼 코드
+         * @brief Windows 마우스 이동 이벤트 처리
+         * @param x 마우스 X 좌표
+         * @param y 마우스 Y 좌표
          */
-        bool IsMouseButtonReleased(EMouseButton button) const override;
+        void OnMouseMove(int32 x, int32 y);
 
     private:
-        static constexpr size_t KEY_COUNT          = static_cast<size_t>(EKeyCode::COUNT);
-        static constexpr size_t MOUSE_BUTTON_COUNT = static_cast<size_t>(EMouseButton::COUNT);
-
         HWND m_hWnd = nullptr; // Windows 창 핸들
 
-        std::array<bool, KEY_COUNT> m_currentKeys;
-        std::array<bool, KEY_COUNT> m_previousKeys;
-
-        std::array<bool, MOUSE_BUTTON_COUNT> m_currentMouseButtons;
-        std::array<bool, MOUSE_BUTTON_COUNT> m_previousMouseButtons;
+        std::unordered_set<Key> m_currentKeys;
+        std::unordered_set<Key> m_previousKeys;
 
         Vector2 m_mousePosition;
     };
