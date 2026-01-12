@@ -6,7 +6,45 @@ TabWidth: 4
 IndentWidth: 4
 IndentCaseLabels: false
 
-SortIncludes: false
+SortIncludes: CaseInsensitive    # true | false | CaseSensitive | CaseInsensitive
+IncludeBlocks: Regroup    # Preserve | Merge | Regroup
+IncludeIsMainRegex: '([-_](test|unittest))?$'
+
+# Include 카테고리 정의 (정규식 매칭)
+IncludeCategories:
+  # 1순위: 대응 헤더 (Main이면 Main.h)
+  - Regex: '"pch\.h"'
+    Priority: 0
+    
+  - Regex: '^"(Platform_Windows|Renderer_DX9|Core|Engine|Game)/'
+    Priority: 1
+
+  # 2순위: 프로젝트 헤더 <>  (의존성 순서대로)
+  - Regex: '^<Core/'
+    Priority: 2
+    SortPriority: 1
+  - Regex: '^<Engine/'
+    Priority: 2
+    SortPriority: 2
+  - Regex: '^<(Platform_Windows|Renderer_DX9)/'
+    Priority: 2
+    SortPriority: 3
+    
+  # 3순위: 외부 라이브러리
+  - Regex: '^<(d3d|DirectX|Windows)'
+    Priority: 3
+    SortPriority: 3
+    
+  # 4순위: 표준 라이브러리
+  - Regex: '^<.*>'
+    Priority: 4
+    SortPriority: 4
+    
+  # 5순위: 나머지 "" include
+  - Regex: '.*'
+    Priority: 5
+    SortPriority: 5
+
 BreakBeforeBraces: Allman
 AccessModifierOffset: -4
 

@@ -42,31 +42,31 @@
     <ClInclude Include="Include\Engine\Time\ITimer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\EVertexFormat.h">
+    <ClInclude Include="Include\Engine\RHI\Vertex\EVertexFormat.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\EVertexSemantic.h">
+    <ClInclude Include="Include\Engine\RHI\Vertex\EVertexSemantic.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Engine\Renderer\Vertex2DTypes.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\VertexElement.h">
+    <ClInclude Include="Include\Engine\RHI\Vertex\VertexElement.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\VertexLayoutDesc.h">
+    <ClInclude Include="Include\Engine\RHI\Vertex\VertexLayoutDesc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\IVertexLayout.h">
+    <ClInclude Include="Include\Engine\RHI\Vertex\IVertexLayout.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\EGPUVendor.h">
+    <ClInclude Include="Include\Engine\RHI\Adapter\EGPUVendor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\GraphicsAdapterDesc.h">
+    <ClInclude Include="Include\Engine\RHI\Adapter\GraphicsAdapterDesc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\IGraphicsAdapter.h">
+    <ClInclude Include="Include\Engine\RHI\Adapter\IGraphicsAdapter.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplaySettings.h">
@@ -85,6 +85,48 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Engine\ApplicationCore\IApplication.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\SwapChain\ESwapEffect.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\SwapChain\SwapChainDesc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\IRHIDevice.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Texture\ETextureFormat.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Texture\TextureDesc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Texture\ITexture.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Texture\ETextureUsage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Buffer\EBufferType.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Buffer\BufferDesc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Buffer\IBuffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Buffer\EBufferUsage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\Renderer\EPivot.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\Renderer\SpriteDesc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\Renderer\RenderSettings.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

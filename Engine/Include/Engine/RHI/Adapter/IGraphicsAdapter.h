@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GraphicsAdapterDesc.h"
 #include "Engine/ApplicationCore/Display/DisplayMode.h"
+#include "GraphicsAdapterDesc.h"
 
 #include <vector>
 

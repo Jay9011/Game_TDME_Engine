@@ -2,6 +2,7 @@ CompileFlags:
   Add:
     - -ID:/Projects/GameProjects/P2DME/Core
     - -ID:/Projects/GameProjects/P2DME/Core/Include
+
     - -std=c++17
     - -DWIN32
     - -D_DEBUG
@@ -9,4 +10,7 @@ CompileFlags:
     - -Wextra
 
 Diagnostics:
-  UnusedIncludes: None
+  UnusedIncludes: Strict # 사용하지 않는 include 경고
+  Includes:
+    IgnoreHeader:
+      - "pch\\.h"

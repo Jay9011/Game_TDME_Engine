@@ -1,9 +1,14 @@
 #pragma once
 
-#include "Core/Math/TVector2.h"
+#include <Core/Math/TMatrix4x4.h>
+#include <Core/Math/TVector2.h>
+
 namespace TDME
 {
     class IWindow;
+    class ITexture;
+    struct SpriteDesc;
+    struct RenderSettings;
     struct Color;
 
     /**
@@ -41,6 +46,53 @@ namespace TDME
          * @note 백버퍼를 화면에 출력.
          */
         virtual void EndFrame() = 0;
+
+        //////////////////////////////////////////////////////////////
+        // 행렬 설정 (World, View, Projection)
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 월드 행렬 설정
+         * @param matrix 월드 행렬
+         * @see TDME::Matrix4x4
+         */
+        virtual void SetWorldMatrix(const Matrix4x4& matrix) = 0;
+
+        /**
+         * @brief 뷰 행렬 설정
+         * @param matrix 뷰 행렬
+         * @see TDME::Matrix4x4
+         */
+        virtual void SetViewMatrix(const Matrix4x4& matrix) = 0;
+
+        /**
+         * @brief 투영 행렬 설정
+         * @param matrix 투영 행렬
+         * @see TDME::Matrix4x4
+         */
+        virtual void SetProjectionMatrix(const Matrix4x4& matrix) = 0;
+
+        //////////////////////////////////////////////////////////////
+        // 스프라이트 랜더링
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 스프라이트 랜더링
+         * @param sprite 스프라이트 파라미터
+         * @see TDME::SpriteDesc
+         */
+        virtual void DrawSprite(const SpriteDesc& sprite) = 0;
+
+        //////////////////////////////////////////////////////////////
+        // 렌더링 설정
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 렌더링 설정 적용
+         * @param settings 렌더링 설정
+         * @see TDME::RenderSettings
+         */
+        virtual void ApplyRenderSettings(const RenderSettings& settings) = 0;
 
         //////////////////////////////////////////////////////////////
         // 2D 렌더링 관련 메서드
