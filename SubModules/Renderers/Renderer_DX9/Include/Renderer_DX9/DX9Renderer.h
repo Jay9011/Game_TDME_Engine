@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Core/Math/TMatrix4x4.h>
 #include <Engine/Renderer/IRenderer.h>
 #include <d3d9.h>
 #include <Windows.h>
@@ -38,6 +39,53 @@ namespace TDME
          * @brief 프레임을 종료합니다.
          */
         void EndFrame() override;
+
+        //////////////////////////////////////////////////////////////
+        // 행렬 설정 (World, View, Projection)
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 월드 행렬 설정
+         * @param matrix 월드 행렬
+         * @see TDME::Matrix4x4
+         */
+        void SetWorldMatrix(const Matrix4x4& matrix) override;
+
+        /**
+         * @brief 뷰 행렬 설정
+         * @param matrix 뷰 행렬
+         * @see TDME::Matrix4x4
+         */
+        void SetViewMatrix(const Matrix4x4& matrix) override;
+
+        /**
+         * @brief 투영 행렬 설정
+         * @param matrix 투영 행렬
+         * @see TDME::Matrix4x4
+         */
+        void SetProjectionMatrix(const Matrix4x4& matrix) override;
+
+        //////////////////////////////////////////////////////////////
+        // 스프라이트 랜더링
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 스프라이트 랜더링
+         * @param sprite 스프라이트 파라미터
+         * @see TDME::SpriteDesc
+         */
+        void DrawSprite(const SpriteDesc& sprite) override;
+
+        //////////////////////////////////////////////////////////////
+        // 렌더링 설정
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 렌더링 설정 적용
+         * @param settings 렌더링 설정
+         * @see TDME::RenderSettings
+         */
+        void ApplyRenderSettings(const RenderSettings& settings) override;
 
         //////////////////////////////////////////////////////////////
         // 2D 렌더링 관련 메서드

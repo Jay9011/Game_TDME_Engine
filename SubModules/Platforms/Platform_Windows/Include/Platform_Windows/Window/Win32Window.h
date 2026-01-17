@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Platform_Windows/IWin32MessageProcessor.h"
+
 #include <Engine/ApplicationCore/IWindow.h>
 #include <Windows.h>
 
@@ -8,7 +10,7 @@ namespace TDME
     /**
      * @brief Win32 창 클래스
      */
-    class Win32Window : public IWindow
+    class Win32Window : public IWindow, public IWin32MessageProcessor
     {
     public:
         Win32Window();
@@ -24,15 +26,28 @@ namespace TDME
         bool Create(int32 width, int32 height, const char* title) override;
 
         /**
-         * @brief 이벤트 처리
-         */
-        void PollEvents() override;
-
-        /**
          * @brief 런타임 중 창의 제목을 설정
          * @param title 창의 제목
          */
         void SetTitle(const char* title) override;
+
+        //////////////////////////////////////////////////////////////
+        // Win32 Window 관리
+        //////////////////////////////////////////////////////////////
+
+        /** @brief 네이티브 창 핸들 반환 */
+        HWND GetHWnd() const { return m_hWnd; }
+
+        /**
+         * @brief Win32 메시지 처리
+         * @param hWnd 윈도우 핸들
+         * @param message 메시지
+         * @param wParam 추가 매개변수
+         * @param lParam 추가 매개변수
+         * @param outResult 처리 결과 (처리한 경우에만 유효)
+         * @return true 처리 완료, false 처리 안 함
+         */
+        bool ProcessMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT& outResult) override;
 
         //////////////////////////////////////////////////////////////
         // Getter / Setter
@@ -63,33 +78,18 @@ namespace TDME
         void* GetNativeHandle() const override;
 
     private:
-        /** @brief 윈도우 클래스 이름 */
-        static constexpr const WCHAR* WINDOW_CLASS_NAME = L"TDME_WindowClass";
-
-        /** @brief 윈도우 클래스 등록 여부 */
-        static bool s_classRegistered;
-
-        HWND  m_hWnd;
-        int32 m_width;
-        int32 m_height;
-        bool  m_isOpen;
+        /**
+         * @brief 창 크기 변경 이벤트 처리
+         *
+         * @param width 창의 너비
+         * @param height 창의 높이
+         */
+        void OnResize(int32 width, int32 height);
 
         /**
-         * @brief 윈도우 클래스 등록
-         * @param hInstance 인스턴스 핸들
-         * @return ATOM 윈도우 클래스 식별 번호(?)
+         * @brief 창 닫기 이벤트 처리
          */
-        static ATOM MyRegisterClass(HINSTANCE hInstance);
-
-        /**
-         * @brief 윈도우 프로시저 (명령 처리)
-         * @param hWnd 창 핸들
-         * @param message 메시지
-         * @param wParam 추가 매개변수
-         * @param lParam 추가 매개변수
-         * @return LRESULT 처리 결과
-         */
-        static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+        void OnClose();
 
         /**
          * @brief 문자열을 유니코드 문자열로 변환
@@ -97,5 +97,11 @@ namespace TDME
          * @return wstring 유니코드 문자열
          */
         static wstring ToWideString(const string& str);
+
+    private:
+        HWND  m_hWnd   = nullptr;
+        int32 m_width  = 0;
+        int32 m_height = 0;
+        bool  m_isOpen = false;
     };
 } // namespace TDME

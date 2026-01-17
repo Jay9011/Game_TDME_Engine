@@ -3,11 +3,8 @@
 
 #include <Core/Math/TVector2.h>
 #include <Core/Types/Color32.h>
-#include <Core/Render/Vertex2DTypes.h>
 
-#include <algorithm>
 #include <cmath>
-#include <cstddef>
 #include <d3d9types.h>
 
 namespace TDME
@@ -93,6 +90,36 @@ namespace TDME
     {
         m_device->EndScene();
         m_device->Present(nullptr, nullptr, nullptr, nullptr);
+    }
+
+    void DX9Renderer::SetWorldMatrix(const Matrix4x4& matrix)
+    {
+        // TODO: 구현
+    }
+
+    void DX9Renderer::SetViewMatrix(const Matrix4x4& matrix)
+    {
+        // TODO: 구현
+    }
+
+    void DX9Renderer::SetProjectionMatrix(const Matrix4x4& matrix)
+    {
+        // TODO: 구현
+    }
+
+    void DX9Renderer::DrawSprite(const SpriteDesc& sprite)
+    {
+        // TODO: 구현
+        // 1. 텍스처 설정
+        // 2. 쿼드 정점 생성 (position, size, pivot, rotation)
+        // 3. UV 설정 (sourceRect)
+        // 4. 색상/알파 적용
+        // 5. DrawPrimitiveUp
+    }
+
+    void DX9Renderer::ApplyRenderSettings(const RenderSettings& settings)
+    {
+        // TODO: 구현
     }
 
     //////////////////////////////////////////////////////////////

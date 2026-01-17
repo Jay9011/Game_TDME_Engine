@@ -20,11 +20,6 @@ namespace TDME
         virtual bool Create(int32 width, int32 height, const char* title) = 0;
 
         /**
-         * @brief 매 프레임마다 이벤트를 처리합니다.
-         */
-        virtual void PollEvents() = 0;
-
-        /**
          * @brief 창의 제목을 설정합니다.
          *
          * @param title 창의 제목

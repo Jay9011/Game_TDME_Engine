@@ -18,7 +18,7 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Platform_Windows\Win32Window.h">
+    <ClInclude Include="Include\Platform_Windows\Window\Win32Window.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Platform_Windows\Input\Win32Input.h">
@@ -30,12 +30,18 @@
     <ClInclude Include="Include\Platform_Windows\Input\Win32KeyMapping.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Platform_Windows\Win32Application.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Platform_Windows\IWin32MessageProcessor.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Win32Window.cpp">
+    <ClCompile Include="Source\Window\Win32Window.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Source\Input\Win32Input.cpp">
@@ -45,6 +51,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Source\Input\Win32KeyMapping.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Win32Application.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

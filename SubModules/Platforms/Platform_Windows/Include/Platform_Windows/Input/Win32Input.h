@@ -1,16 +1,17 @@
 #pragma once
 
+#include "Platform_Windows/IWin32MessageProcessor.h"
+
 #include <Core/Math/TVector2.h>
 #include <Engine/Input/IInputDevice.h>
 #include <Engine/Input/Key.h>
 
 #include <Windows.h>
-
 #include <unordered_set>
 
 namespace TDME
 {
-    class Win32Input : public IInputDevice
+    class Win32Input : public IInputDevice, public IWin32MessageProcessor
     {
     public:
         Win32Input()           = default;
@@ -56,7 +57,14 @@ namespace TDME
          * @brief 마우스의 현재 위치를 반환합니다.
          * @return Vector2 마우스의 현재 위치
          */
-        Vector2 GetMousePosition() const override;
+        Vector2 GetAxis2D(const Key& axis) const override;
+
+        /**
+         * @brief 마우스의 현재 입력 값을 반환합니다.
+         * @param axis 축
+         * @return float 축의 현재 값
+         */
+        float GetAxisValue(const Key& axis) const override;
 
         //////////////////////////////////////////////////////////////
         // Win32 Event Handle
@@ -79,6 +87,17 @@ namespace TDME
          * @param y 마우스 Y 좌표
          */
         void OnMouseMove(int32 x, int32 y);
+
+        /**
+         * @brief Win32 메시지 처리
+         * @param hWnd 윈도우 핸들
+         * @param message 메시지
+         * @param wParam 추가 매개변수
+         * @param lParam 추가 매개변수
+         * @param outResult 처리 결과 (처리한 경우에만 유효)
+         * @return true 처리 완료, false 처리 안 함
+         */
+        bool ProcessMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT& outResult) override;
 
     private:
         HWND m_hWnd = nullptr; // Windows 창 핸들

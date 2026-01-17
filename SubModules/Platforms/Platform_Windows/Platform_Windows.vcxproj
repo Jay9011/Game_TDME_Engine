@@ -157,8 +157,10 @@
   <ItemGroup>
     <ClInclude Include="Include\Platform_Windows\Input\Win32Input.h" />
     <ClInclude Include="Include\Platform_Windows\Input\Win32KeyMapping.h" />
+    <ClInclude Include="Include\Platform_Windows\IWin32MessageProcessor.h" />
     <ClInclude Include="Include\Platform_Windows\Time\Win32Timer.h" />
-    <ClInclude Include="Include\Platform_Windows\Win32Window.h" />
+    <ClInclude Include="Include\Platform_Windows\Win32Application.h" />
+    <ClInclude Include="Include\Platform_Windows\Window\Win32Window.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -171,7 +173,8 @@
     <ClCompile Include="Source\Input\Win32Input.cpp" />
     <ClCompile Include="Source\Input\Win32KeyMapping.cpp" />
     <ClCompile Include="Source\Time\Win32Timer.cpp" />
-    <ClCompile Include="Source\Win32Window.cpp" />
+    <ClCompile Include="Source\Win32Application.cpp" />
+    <ClCompile Include="Source\Window\Win32Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

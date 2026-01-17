@@ -26,9 +26,6 @@ namespace TDME
 
         virtual void Update() = 0;
 
-        //////////////////////////////////////////////////////////////
-        // 키 입력 이벤트
-        //////////////////////////////////////////////////////////////
         /**
          * @brief 키가 눌려있는지 확인합니다.
          * @param key 키
@@ -50,13 +47,18 @@ namespace TDME
          */
         virtual bool IsKeyReleased(const Key& key) const = 0;
 
-        //////////////////////////////////////////////////////////////
-        // 마우스
-        //////////////////////////////////////////////////////////////
         /**
-         * @brief 마우스의 현재 위치를 반환합니다.
-         * @return Vector2 마우스의 현재 위치
+         * @brief 좌표계 입력 장치 축의 현재 2D 값을 반환합니다.
+         * @param axis 축
+         * @return Vector2 축의 현재 값
          */
-        virtual Vector2 GetMousePosition() const = 0;
+        virtual Vector2 GetAxis2D(const Key& axis) const = 0;
+
+        /**
+         * @brief 좌표계 입력 장치 축의 현재 1D 값을 반환합니다.
+         * @param axis 축 (EKeys::MouseWheelAxis, EKeys::Gamepad_LeftTrigger, 등...)
+         * @return float 축의 현재 값 (-1.0f ~ 1.0f 또는 0.0f ~ 1.0f)
+         */
+        virtual float GetAxisValue(const Key& axis) const = 0;
     };
 } // namespace TDME

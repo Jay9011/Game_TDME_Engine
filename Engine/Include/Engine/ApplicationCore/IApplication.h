@@ -6,14 +6,14 @@ namespace TDME
 {
     class IWindow;
     class IApplicationMessageHandler;
-    class WindowDesc;
+    struct WindowDesc;
 
     /**
      * @brief 애플리케이션 인터페이스
      * @details OS 메시지 루프, 윈도우 생성, 이벤트 핸들러 관리 등
-     * @see TDME::IWindow
-     * @see TDME::IApplicationMessageHandler
-     * @see TDME::WindowDesc
+     * @ref "IWindow" TDME::IWindow
+     * @ref "IApplicationMessageHandler" TDME::IApplicationMessageHandler
+     * @ref "WindowDesc" TDME::WindowDesc
      */
     class IApplication
     {
@@ -34,7 +34,7 @@ namespace TDME
          * @brief 대기중인 OS 메시지 처리
          * @details 매 프레임 호출하여 입력/윈도우 이벤트 등을 처리
          */
-        virtual void PumpMessages() = 0;
+        virtual void ProcessMessages() = 0;
 
         //////////////////////////////////////////////////////////////
         // 윈도우 관리
@@ -46,7 +46,7 @@ namespace TDME
          * @return 생성된 윈도우 객체 (실패시 nullptr)
          * @see TDME::WindowDesc
          */
-        virtual IWindow* CreateWindow(const WindowDesc& windowDesc) = 0;
+        virtual IWindow* MakeWindow(const WindowDesc& windowDesc) = 0;
 
         /**
          * @brief 윈도우 제거

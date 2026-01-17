@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Platform_Windows/Win32Window.h"
+#include "Platform_Windows/Window/Win32Window.h"
 
 namespace TDME
 {
-    bool Win32Window::s_classRegistered = false;
+    static constexpr const WCHAR* WINDOW_CLASS_NAME = L"TDME_WindowClass";
 
     Win32Window::Win32Window() : m_hWnd(nullptr), m_width(0), m_height(0), m_isOpen(false)
     {
@@ -16,22 +16,11 @@ namespace TDME
             DestroyWindow(m_hWnd);
             m_hWnd = nullptr;
         }
-        m_isOpen = false;
     }
 
     bool Win32Window::Create(int32 width, int32 height, const char* title)
     {
         HINSTANCE hInstance = GetModuleHandle(nullptr);
-
-        // Window 클래스 등록
-        if (!s_classRegistered)
-        {
-            if (!MyRegisterClass(hInstance))
-            {
-                return false;
-            }
-            s_classRegistered = true;
-        }
 
         // Title 변환
         wstring wideTitle = ToWideString(title);
@@ -39,11 +28,11 @@ namespace TDME
         // 창 크기 조정
         RECT  rect  = {0, 0, width, height};
         DWORD style = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPEDWINDOW;
-
-        int32 windowWidth  = rect.right - rect.left;
-        int32 windowHeight = rect.bottom - rect.top;
+        AdjustWindowRect(&rect, style, FALSE);
 
         // 화면 크기 조정
+        int32 windowWidth  = rect.right - rect.left;
+        int32 windowHeight = rect.bottom - rect.top;
         int32 screenWidth  = GetSystemMetrics(SM_CXSCREEN);
         int32 screenHeight = GetSystemMetrics(SM_CYSCREEN);
         int32 posX         = (screenWidth - windowWidth) / 2;
@@ -71,14 +60,13 @@ namespace TDME
         m_height = height;
         m_isOpen = true;
 
-        AdjustWindowRect(&rect, style, FALSE);
         ShowWindow(m_hWnd, SW_SHOW);
         SetForegroundWindow(m_hWnd);
         SetFocus(m_hWnd);
         UpdateWindow(m_hWnd);
 
         return true;
-    }
+    } // Create
 
     void Win32Window::SetTitle(const char* title)
     {
@@ -86,14 +74,25 @@ namespace TDME
         SetWindowTextW(m_hWnd, wideTitle.c_str());
     }
 
-    void Win32Window::PollEvents()
+    bool Win32Window::ProcessMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT& outResult)
     {
-        MSG msg = {};
-        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        switch (message)
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+        case WM_SIZE:
+            OnResize(LOWORD(lParam), HIWORD(lParam));
+            outResult = 0;
+            break;
+        case WM_CLOSE:
+            OnClose();
+            outResult = 0;
+            return true;
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            outResult = 0;
+            return true;
         }
+
+        return false;
     }
 
     //////////////////////////////////////////////////////////////
@@ -124,66 +123,16 @@ namespace TDME
     // Private Functions
     //////////////////////////////////////////////////////////////
 
-    ATOM Win32Window::MyRegisterClass(HINSTANCE hInstance)
+    void Win32Window::OnResize(int32 width, int32 height)
     {
-        WNDCLASSEXW wcex = {};
+        m_width  = width;
+        m_height = height;
+    }
 
-        wcex.cbClsExtra    = 0; // 프로그램 추가 확장 메모리 구역
-        wcex.cbWndExtra    = 0; // Window 추가 확장 메모리 구역
-        wcex.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
-        wcex.hCursor       = LoadCursor(nullptr, IDC_ARROW);
-        wcex.hIcon         = nullptr;
-        wcex.hIconSm       = nullptr;
-        wcex.hInstance     = hInstance;
-        wcex.lpfnWndProc   = WndProc;
-        wcex.lpszClassName = WINDOW_CLASS_NAME;
-        wcex.lpszMenuName  = nullptr;
-        wcex.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-        wcex.cbSize        = sizeof(WNDCLASSEXW);
-
-        return RegisterClassExW(&wcex);
-    } // MyRegisterClass
-
-    LRESULT CALLBACK Win32Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+    void Win32Window::OnClose()
     {
-        Win32Window* window = nullptr;
-
-        if (message == WM_NCCREATE)
-        {
-            // 창 생성 매개변수 설정
-            CREATESTRUCTW* cs = reinterpret_cast<CREATESTRUCTW*>(lParam);
-            window            = static_cast<Win32Window*>(cs->lpCreateParams);
-            SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(window));
-        }
-        else
-        {
-            window = reinterpret_cast<Win32Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-        }
-
-        switch (message)
-        {
-        case WM_SIZE:
-            if (window)
-            {
-                window->m_width  = LOWORD(lParam);
-                window->m_height = HIWORD(lParam);
-            }
-            break;
-        case WM_CLOSE:
-            if (window)
-            {
-                window->m_isOpen = false;
-            }
-            break;
-        case WM_DESTROY:
-            PostQuitMessage(0);
-            break;
-        default:
-            return DefWindowProc(hWnd, message, wParam, lParam);
-        }
-
-        return 0;
-    } // WndProc
+        m_isOpen = false;
+    }
 
     wstring Win32Window::ToWideString(const string& str)
     {
