@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include <Core/Math/TMatrix4x4.h>
+#include <Core/Math/Detail/TMatrix4x4.Projection2D.h>
 #include <Core/Types/Color.h>
 #include <Core/Math/TVector2.h>
 #include <Engine/ApplicationCore/IWindow.h>
@@ -44,6 +46,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         MessageBoxA(nullptr, "Failed to create renderer", "Error", MB_OK | MB_ICONERROR);
         return -1;
     }
+
+    // DEBUG: 임시 투영 행렬 설정
+    TDME::Matrix4 projection = TDME::Orthographic2D(1280.0f, 720.0f);
+    renderer.SetProjectionMatrix(projection);
+    renderer.SetViewMatrix(TDME::Matrix::IDENTITY);
 
     // 4. Timer 생성
     TDME::Win32Timer timer;

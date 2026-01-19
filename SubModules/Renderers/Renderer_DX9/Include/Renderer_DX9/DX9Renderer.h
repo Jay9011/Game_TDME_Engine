@@ -1,10 +1,13 @@
 #pragma once
 
+#include "DX9VertexLayout.h"
 #include <Core/Math/TMatrix4x4.h>
+#include <Engine/RHI/Vertex/IVertexLayout.h>
 #include <Engine/Renderer/IRenderer.h>
+
 #include <d3d9.h>
 #include <Windows.h>
-#include <d3d9types.h>
+#include <memory>
 #include <wrl/client.h>
 
 namespace TDME
@@ -49,21 +52,21 @@ namespace TDME
          * @param matrix 월드 행렬
          * @see TDME::Matrix4x4
          */
-        void SetWorldMatrix(const Matrix4x4& matrix) override;
+        void SetWorldMatrix(const Matrix4& matrix) override;
 
         /**
          * @brief 뷰 행렬 설정
          * @param matrix 뷰 행렬
          * @see TDME::Matrix4x4
          */
-        void SetViewMatrix(const Matrix4x4& matrix) override;
+        void SetViewMatrix(const Matrix4& matrix) override;
 
         /**
          * @brief 투영 행렬 설정
          * @param matrix 투영 행렬
          * @see TDME::Matrix4x4
          */
-        void SetProjectionMatrix(const Matrix4x4& matrix) override;
+        void SetProjectionMatrix(const Matrix4& matrix) override;
 
         //////////////////////////////////////////////////////////////
         // 스프라이트 랜더링
@@ -88,8 +91,27 @@ namespace TDME
         void ApplyRenderSettings(const RenderSettings& settings) override;
 
         //////////////////////////////////////////////////////////////
-        // 2D 렌더링 관련 메서드
+        // 저수준 프리미티브 렌더링
         //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 정점 레이아웃 설정
+         * @param layout 정점 레이아웃 (nullptr 면 해제)
+         * @see TDME::IVertexLayout
+         */
+        void SetVertexLayout(IVertexLayout* layout) override;
+
+        /**
+         * @brief 프리미티브 타입 렌더링 (점, 선, 면)
+         * @param type 프리미티브 타입
+         * @param vertices 정점 데이터 포인터
+         * @param vertexCount 정점 개수
+         * @param stride 정점 하나의 바이트 크기
+         * @see TDME::EPrimitiveType
+         * @see TDME::void*
+         * @see TDME::uint32
+         */
+        void DrawPrimitives(EPrimitiveType type, const void* vertices, uint32 vertexCount, uint32 stride) override;
 
         /**
          * @brief 삼각형 그리기
@@ -143,6 +165,9 @@ namespace TDME
          * @see Direct3DDevice9::Present()
          */
         ComPtr<IDirect3DDevice9> m_device;
+
+        IVertexLayout*                   m_currentLayout = nullptr;
+        std::unique_ptr<DX9VertexLayout> m_layoutPC;
 
         static constexpr DWORD FVF_VERTEX2D = D3DFVF_XYZRHW | D3DFVF_DIFFUSE;
     };

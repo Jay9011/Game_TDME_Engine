@@ -301,4 +301,10 @@ namespace TDME
     using Matrix4x4  = Matrix4x4F;         // 기본 타입은 float
     using Matrix4    = Matrix4x4;          // 4x4 행렬 별칭
 
+    namespace Matrix
+    {
+        INLINE constexpr Matrix4x4 ZERO     = Matrix4x4::Zero();
+        INLINE constexpr Matrix4x4 IDENTITY = Matrix4x4::Identity();
+    } // namespace Matrix
+
 } // namespace TDME

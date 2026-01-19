@@ -156,6 +156,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\Renderer_DX9\DX9Renderer.h" />
+    <ClInclude Include="Include\Renderer_DX9\DX9TypeConversion.h" />
+    <ClInclude Include="Include\Renderer_DX9\DX9VertexLayout.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +168,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\DX9Renderer.cpp" />
+    <ClCompile Include="Source\DX9VertexLayout.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

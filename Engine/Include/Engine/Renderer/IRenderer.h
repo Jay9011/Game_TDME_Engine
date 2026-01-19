@@ -3,10 +3,13 @@
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/TVector2.h>
 
+#include "EPrimitiveType.h"
+
 namespace TDME
 {
     class IWindow;
     class ITexture;
+    class IVertexLayout;
     struct SpriteDesc;
     struct RenderSettings;
     struct Color;
@@ -95,8 +98,27 @@ namespace TDME
         virtual void ApplyRenderSettings(const RenderSettings& settings) = 0;
 
         //////////////////////////////////////////////////////////////
-        // 2D 렌더링 관련 메서드
+        // 저수준 프리미티브 렌더링
         //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 정점 레이아웃 설정
+         * @param layout 정점 레이아웃 (nullptr 면 해제)
+         * @see TDME::IVertexLayout
+         */
+        virtual void SetVertexLayout(IVertexLayout* layout) = 0;
+
+        /**
+         * @brief 프리미티브 타입 렌더링 (점, 선, 면)
+         * @param type 프리미티브 타입
+         * @param vertices 정점 데이터 포인터
+         * @param vertexCount 정점 개수
+         * @param stride 정점 하나의 바이트 크기
+         * @see TDME::EPrimitiveType
+         * @see TDME::void*
+         * @see TDME::uint32
+         */
+        virtual void DrawPrimitives(EPrimitiveType type, const void* vertices, uint32 vertexCount, uint32 stride) = 0;
 
         // NOTE: 우선 테스트용 삼각형 그리기 메서드 구현. 추후 다시 확인
         /**

@@ -1,11 +1,23 @@
 #include "pch.h"
 #include "Renderer_DX9/DX9Renderer.h"
 
+#include <Core/Math/MathConstants.h>
 #include <Core/Math/TVector2.h>
+#include <Core/Math/TMatrix4x4.h>
 #include <Core/Types/Color32.h>
+#include <Core/Math/Detail/TMatrix4x4.Transform2D.h>
+#include <Engine/RHI/Vertex/IVertexLayout.h>
+#include <Engine/RHI/Vertex/VertexLayoutDesc.h>
+#include <Engine/Renderer/Vertex2DTypes.h>
 
-#include <cmath>
-#include <d3d9types.h>
+#include "Renderer_DX9/DX9VertexLayout.h"
+#include "Renderer_DX9/DX9TypeConversion.h"
+
+//////////////////////////////////////////////////////////////
+// Matrix4 와 D3DMATRIX 호환성 검증
+//////////////////////////////////////////////////////////////
+static_assert(sizeof(TDME::Matrix4) == sizeof(D3DMATRIX), "Matrix4 and D3DMATRIX must have the same size");
+static_assert(sizeof(TDME::Matrix4) == sizeof(float) * 16, "Matrix4 must be 16 bytes (16 floats)");
 
 namespace TDME
 {
@@ -65,11 +77,28 @@ namespace TDME
             &d3dParam,                           // Present Parameters
             m_device.GetAddressOf());            // [출력] 생성된 디바이스 (GetAddressOf(): 내부 포인터 반환)
 
-        return SUCCEEDED(hr);
+        if (FAILED(hr))
+        {
+            return false;
+        }
+
+        // NOTE: 2D 렌더링 세팅 임시 테스트용
+        m_device->SetRenderState(D3DRS_LIGHTING, FALSE);
+        m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+        VertexLayoutDesc layoutDesc;
+        layoutDesc
+            .Add(EVertexSemantic::Position, EVertexFormat::Float3)
+            .Add(EVertexSemantic::Color, EVertexFormat::Color);
+
+        m_layoutPC = std::make_unique<DX9VertexLayout>(m_device.Get(), layoutDesc);
+
+        return true;
     } // bool DX9Renderer::Initialize(IWindow* window)
 
     void DX9Renderer::Shutdown()
     {
+        m_layoutPC.reset(); // 레이아웃 초기화 (임시 테스트용)
         m_device.Reset();
         m_d3d.Reset();
     }
@@ -92,19 +121,19 @@ namespace TDME
         m_device->Present(nullptr, nullptr, nullptr, nullptr);
     }
 
-    void DX9Renderer::SetWorldMatrix(const Matrix4x4& matrix)
+    void DX9Renderer::SetWorldMatrix(const Matrix4& matrix)
     {
-        // TODO: 구현
+        m_device->SetTransform(D3DTS_WORLD, reinterpret_cast<const D3DMATRIX*>(&matrix));
     }
 
-    void DX9Renderer::SetViewMatrix(const Matrix4x4& matrix)
+    void DX9Renderer::SetViewMatrix(const Matrix4& matrix)
     {
-        // TODO: 구현
+        m_device->SetTransform(D3DTS_VIEW, reinterpret_cast<const D3DMATRIX*>(&matrix));
     }
 
-    void DX9Renderer::SetProjectionMatrix(const Matrix4x4& matrix)
+    void DX9Renderer::SetProjectionMatrix(const Matrix4& matrix)
     {
-        // TODO: 구현
+        m_device->SetTransform(D3DTS_PROJECTION, reinterpret_cast<const D3DMATRIX*>(&matrix));
     }
 
     void DX9Renderer::DrawSprite(const SpriteDesc& sprite)
@@ -122,6 +151,38 @@ namespace TDME
         // TODO: 구현
     }
 
+    void DX9Renderer::SetVertexLayout(IVertexLayout* layout)
+    {
+        m_currentLayout = layout;
+
+        if (layout)
+        {
+            DX9VertexLayout* dx9Layout = static_cast<DX9VertexLayout*>(layout);
+            m_device->SetVertexDeclaration(dx9Layout->GetNativeDeclaration());
+        }
+        else
+        {
+            m_device->SetVertexDeclaration(nullptr);
+        }
+    }
+
+    void DX9Renderer::DrawPrimitives(EPrimitiveType type, const void* vertices, uint32 vertexCount, uint32 stride)
+    {
+        if (!vertices || vertexCount == 0)
+        {
+            return;
+        }
+
+        uint32 primitiveCount = CalcPrimitiveCount(type, vertexCount);
+        if (primitiveCount == 0)
+        {
+            return;
+        }
+
+        m_device->SetTexture(0, nullptr);
+        m_device->DrawPrimitiveUP(ToDX9PrimitiveType(type), primitiveCount, vertices, stride);
+    }
+
     //////////////////////////////////////////////////////////////
     // 2D 렌더링 관련 메서드
     //////////////////////////////////////////////////////////////
@@ -135,38 +196,20 @@ namespace TDME
         float halfWidth  = width / 2;
         float halfHeight = height / 2;
 
-        Vector2 local[3] = {
-            Vector2(0.0f, -halfHeight),      // 상단 중앙
-            Vector2(halfWidth, halfHeight),  // 우하단
-            Vector2(-halfWidth, halfHeight), // 좌하단
+        Vertex2DPC vertices[3] = {
+            Vertex2DPC(0.0f, -halfHeight, color32),      // 상단 중앙
+            Vertex2DPC(halfWidth, halfHeight, color32),  // 우하단
+            Vertex2DPC(-halfWidth, halfHeight, color32), // 좌하단
         };
 
-        // 3. 회전 변환 + RHW 정점 생성
-        float rad  = rotation * Math::DegToRad;
-        float cosR = std::cos(rad);
-        float sinR = std::sin(rad);
+        // 3. World 행렬로 위치/회전 설정
+        Matrix4 world = Rotation2D(rotation * Math::DegToRad) * Translation2D(position);
+        SetWorldMatrix(world);
 
-        Vertex2DRHW vertices[3];
-        for (size_t i = 0; i < 3; i++)
-        {
-            // 회전 변환
-            float rx = local[i].X * cosR - local[i].Y * sinR;
-            float ry = local[i].X * sinR + local[i].Y * cosR;
-
-            // 화면 좌표 (Pre-transformed)
-            vertices[i].X     = position.X + rx;
-            vertices[i].Y     = position.Y + ry;
-            vertices[i].Z     = 0.0f;
-            vertices[i].RHW   = 1.0f;
-            vertices[i].Color = color32;
-        }
-
-        // 4. 렌더링 상태 설정
-        m_device->SetFVF(FVF_VERTEX2D);
-        m_device->SetTexture(0, nullptr);
+        // 4. 레이아웃 설정
+        SetVertexLayout(m_layoutPC.get());
 
         // 5. 렌더링
-        m_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, 1, vertices, sizeof(Vertex2DRHW));
+        DrawPrimitives(EPrimitiveType::TriangleList, vertices, 3, sizeof(Vertex2DPC));
     }
-
 } // namespace TDME

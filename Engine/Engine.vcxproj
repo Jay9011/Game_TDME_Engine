@@ -164,6 +164,7 @@
     <ClInclude Include="Include\Engine\ApplicationCore\IApplicationMessageHandler.h" />
     <ClInclude Include="Include\Engine\Input\Key.h" />
     <ClInclude Include="Include\Engine\Renderer\EPivot.h" />
+    <ClInclude Include="Include\Engine\Renderer\EPrimitiveType.h" />
     <ClInclude Include="Include\Engine\Renderer\RenderSettings.h" />
     <ClInclude Include="Include\Engine\Renderer\SpriteDesc.h" />
     <ClInclude Include="Include\Engine\RHI\Adapter\EGPUVendor.h" />
