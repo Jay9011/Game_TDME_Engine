@@ -166,6 +166,7 @@
     <ClInclude Include="Include\Engine\Renderer\EPivot.h" />
     <ClInclude Include="Include\Engine\Renderer\EPrimitiveType.h" />
     <ClInclude Include="Include\Engine\Renderer\RenderSettings.h" />
+    <ClInclude Include="Include\Engine\Renderer\Shape\Shape2DRenderer.h" />
     <ClInclude Include="Include\Engine\Renderer\SpriteDesc.h" />
     <ClInclude Include="Include\Engine\RHI\Adapter\EGPUVendor.h" />
     <ClInclude Include="Include\Engine\RHI\Buffer\BufferDesc.h" />
@@ -203,6 +204,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Input\EKeys.cpp" />
+    <ClCompile Include="Source\Renderer\Shape\Shape2DRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

@@ -1,10 +1,11 @@
 #pragma once
 
-#include "DX9VertexLayout.h"
 #include <Core/Math/TMatrix4x4.h>
+#include <Engine/RHI/IRHIDevice.h>
 #include <Engine/RHI/Vertex/IVertexLayout.h>
 #include <Engine/Renderer/IRenderer.h>
 
+#include "DX9VertexLayout.h"
 #include <d3d9.h>
 #include <Windows.h>
 #include <memory>
