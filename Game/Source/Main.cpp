@@ -1,15 +1,15 @@
 #include "pch.h"
 
-#include <Core/Math/TMatrix4x4.h>
-#include <Core/Math/Detail/TMatrix4x4.Projection2D.h>
 #include <Core/Types/Color.h>
 #include <Core/Math/TVector2.h>
+#include <Core/Math/TMatrix4x4.h>
+#include <Core/Math/Detail/TMatrix4x4.Projection2D.h>
 #include <Engine/ApplicationCore/IWindow.h>
-#include <Engine/Input/EKeys.h>
 #include <Engine/ApplicationCore/WindowDesc.h>
+#include <Engine/Input/EKeys.h>
 #include <Engine/Input/IInputDevice.h>
-#include <Engine/RHI/IRHIDevice.h>
 #include <Engine/RHI/SwapChain/SwapChainDesc.h>
+#include <Engine/Renderer/Shape/Shape2DRenderer.h>
 #include <Platform_Windows/Win32Application.h>
 #include <Platform_Windows/Time/Win32Timer.h>
 #include <Platform_Windows/Input/Win32Input.h>
@@ -74,7 +74,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
     TDME::IInputDevice* input = application.GetInput();
 
-    // DEBUG: 삼각형 테스트
+    // 6. Shape2DRenderer 생성 (DEBUG: 삼각형 테스트)
+    TDME::Shape2DRenderer shape2D(&renderer, &device);
+
     float       rotation      = 0.0f;
     float       width         = 100.0f;
     float       height        = 100.0f;
@@ -136,7 +138,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
         // TODO: Render 렌더링
         // DEBUG: 삼각형 그리기
-        renderer.DrawTriangle(mousePosition, width, height, rotation, triangleColor);
+        shape2D.DrawTriangle(mousePosition, width, height, rotation, triangleColor);
 
         renderer.EndFrame();
         device.Present();

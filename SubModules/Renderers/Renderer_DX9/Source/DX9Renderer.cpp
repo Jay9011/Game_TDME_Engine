@@ -7,8 +7,8 @@
 #include <Core/Types/Color32.h>
 #include <Core/Math/Detail/TMatrix4x4.Transform2D.h>
 #include <Engine/RHI/Vertex/IVertexLayout.h>
-#include <Engine/RHI/Vertex/VertexLayoutDesc.h>
-#include <Engine/Renderer/Vertex2DTypes.h>
+#include <Engine/Renderer/ERenderMode.h>
+#include <d3d9types.h>
 
 #include "Renderer_DX9/DX9Device.h"
 #include "Renderer_DX9/DX9VertexLayout.h"
@@ -37,23 +37,13 @@ namespace TDME
             return false;
         }
 
-        // NOTE: 2D 렌더링 세팅 임시 테스트용
-        m_nativeDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-        m_nativeDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+        SetRenderMode(ERenderMode::Mode2D_Z);
 
-        VertexLayoutDesc layoutDesc;
-        layoutDesc
-            .Add(EVertexSemantic::Position, EVertexFormat::Float3)
-            .Add(EVertexSemantic::Color, EVertexFormat::Color);
-
-        m_layoutPC = m_device->CreateVertexLayout(layoutDesc);
-
-        return m_layoutPC != nullptr;
+        return true;
     } // bool DX9Renderer::Initialize(IWindow* window)
 
     void DX9Renderer::Shutdown()
     {
-        m_layoutPC.reset(); // 레이아웃 초기화 (임시 테스트용)
         m_currentLayout = nullptr;
         m_nativeDevice  = nullptr;
         m_device        = nullptr;
@@ -106,8 +96,38 @@ namespace TDME
         // TODO: 구현
     }
 
+    void DX9Renderer::SetRenderMode(ERenderMode mode)
+    {
+        switch (mode)
+        {
+        case ERenderMode::Mode2D:
+            m_nativeDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+            m_nativeDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+            m_nativeDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+            m_nativeDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+            break;
+        case ERenderMode::Mode2D_Z:
+            m_nativeDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+            m_nativeDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+            m_nativeDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+            m_nativeDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+            break;
+        case ERenderMode::Mode3D:
+            m_nativeDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+            m_nativeDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+            m_nativeDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+            m_nativeDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+            break;
+        default:
+            break;
+        }
+    }
+
     void DX9Renderer::SetVertexLayout(IVertexLayout* layout)
     {
+        if (m_currentLayout == layout)
+            return;
+
         m_currentLayout = layout;
 
         if (layout)
@@ -136,36 +156,6 @@ namespace TDME
 
         m_nativeDevice->SetTexture(0, nullptr);
         m_nativeDevice->DrawPrimitiveUP(ToDX9PrimitiveType(type), primitiveCount, vertices, stride);
-    }
-
-    //////////////////////////////////////////////////////////////
-    // 저수준 프리미티브 렌더링
-    //////////////////////////////////////////////////////////////
-
-    void DX9Renderer::DrawTriangle(const Vector2& position, float width, float height, float rotation, const Color& color)
-    {
-        // 1. Color -> Color32 변환
-        Color32 color32 = Color32::FromColor(color);
-
-        // 2. 삼각형 로컬 좌표 생성 (중심 기준, 시계방향)
-        float halfWidth  = width / 2;
-        float halfHeight = height / 2;
-
-        Vertex2DPC vertices[3] = {
-            Vertex2DPC(0.0f, -halfHeight, color32),      // 상단 중앙
-            Vertex2DPC(halfWidth, halfHeight, color32),  // 우하단
-            Vertex2DPC(-halfWidth, halfHeight, color32), // 좌하단
-        };
-
-        // 3. World 행렬로 위치/회전 설정
-        Matrix4 world = Rotation2D(rotation * Math::DegToRad) * Translation2D(position);
-        SetWorldMatrix(world);
-
-        // 4. 레이아웃 설정
-        SetVertexLayout(m_layoutPC.get());
-
-        // 5. 렌더링
-        DrawPrimitives(EPrimitiveType::TriangleList, vertices, 3, sizeof(Vertex2DPC));
     }
 
     //////////////////////////////////////////////////////////////

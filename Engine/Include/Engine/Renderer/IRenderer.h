@@ -4,6 +4,7 @@
 #include <Core/Math/TVector2.h>
 
 #include "EPrimitiveType.h"
+#include "ERenderMode.h"
 
 namespace TDME
 {
@@ -97,6 +98,13 @@ namespace TDME
          */
         virtual void ApplyRenderSettings(const RenderSettings& settings) = 0;
 
+        /**
+         * @brief 렌더링 모드 설정
+         * @param mode 렌더링 모드
+         * @see TDME::ERenderMode
+         */
+        virtual void SetRenderMode(ERenderMode mode) = 0;
+
         //////////////////////////////////////////////////////////////
         // 저수준 프리미티브 렌더링
         //////////////////////////////////////////////////////////////
@@ -119,18 +127,5 @@ namespace TDME
          * @see TDME::uint32
          */
         virtual void DrawPrimitives(EPrimitiveType type, const void* vertices, uint32 vertexCount, uint32 stride) = 0;
-
-        // NOTE: 우선 테스트용 삼각형 그리기 메서드 구현. 추후 다시 확인
-        /**
-         * @brief 삼각형 그리기
-         * @param position 중심 위치 (화면 좌표계)
-         * @param width 너비
-         * @param height 높이
-         * @param rotation 회전 각도 (도)
-         * @param color 색상
-         * @see TDME::Vector2
-         * @see TDME::Color
-         */
-        virtual void DrawTriangle(const Vector2& position, float width, float height, float rotation, const Color& color) = 0;
     };
 } // namespace TDME

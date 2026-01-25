@@ -89,6 +89,13 @@ namespace TDME
          */
         void ApplyRenderSettings(const RenderSettings& settings) override;
 
+        /**
+         * @brief 렌더링 모드 설정
+         * @param mode 렌더링 모드
+         * @see TDME::ERenderMode
+         */
+        void SetRenderMode(ERenderMode mode) override;
+
         //////////////////////////////////////////////////////////////
         // 저수준 프리미티브 렌더링
         //////////////////////////////////////////////////////////////
@@ -112,18 +119,6 @@ namespace TDME
          */
         void DrawPrimitives(EPrimitiveType type, const void* vertices, uint32 vertexCount, uint32 stride) override;
 
-        /**
-         * @brief 삼각형 그리기
-         * @param position 중심 위치 (화면 좌표계)
-         * @param width 너비
-         * @param height 높이
-         * @param rotation 회전 각도 (도)
-         * @param color 색상
-         * @see TDME::Vector2
-         * @see TDME::Color
-         */
-        void DrawTriangle(const Vector2& position, float width, float height, float rotation, const Color& color) override;
-
         //////////////////////////////////////////////////////////////
         // Getter / Setter
         //////////////////////////////////////////////////////////////
@@ -139,7 +134,6 @@ namespace TDME
         DX9Device*        m_device       = nullptr; // Engine 디바이스 객체
         IDirect3DDevice9* m_nativeDevice = nullptr; // Direct3D 9 디바이스 객체
 
-        IVertexLayout*                 m_currentLayout = nullptr;
-        std::unique_ptr<IVertexLayout> m_layoutPC;
+        IVertexLayout* m_currentLayout = nullptr;
     };
 } // namespace TDME

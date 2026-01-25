@@ -9,6 +9,7 @@
 namespace TDME
 {
     class IRenderer;
+    class IRHIDevice;
     struct Color;
 
     /**
@@ -17,7 +18,7 @@ namespace TDME
     class Shape2DRenderer
     {
     public:
-        explicit Shape2DRenderer(IRenderer* renderer);
+        explicit Shape2DRenderer(IRenderer* renderer, IRHIDevice* device);
         ~Shape2DRenderer() = default;
 
         /**
@@ -67,12 +68,13 @@ namespace TDME
         void DrawCircle(const Vector2& position, float radius, const Color& color, uint32 segments = 32);
 
     private:
-        IRenderer* m_renderer;
+        IRenderer*  m_renderer = nullptr;
+        IRHIDevice* m_device   = nullptr;
 
         /**
          * @brief 2D 정점 레이아웃
          * @see TDME::IVertexLayout
          */
-        std::unique_ptr<IVertexLayout> m_layoutPC;
+        std::unique_ptr<IVertexLayout> m_colorLayout;
     };
 } // namespace TDME
