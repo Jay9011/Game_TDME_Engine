@@ -8,10 +8,13 @@
 #include <Engine/Input/EKeys.h>
 #include <Engine/ApplicationCore/WindowDesc.h>
 #include <Engine/Input/IInputDevice.h>
+#include <Engine/RHI/IRHIDevice.h>
+#include <Engine/RHI/SwapChain/SwapChainDesc.h>
 #include <Platform_Windows/Win32Application.h>
 #include <Platform_Windows/Time/Win32Timer.h>
 #include <Platform_Windows/Input/Win32Input.h>
 #include <Renderer_DX9/DX9Renderer.h>
+#include <Renderer_DX9/DX9Device.h>
 
 #include "Game/Types/Color.h"
 
@@ -39,8 +42,21 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         return -1;
     }
 
-    // 3. Renderer 생성
+    // 3. Device 생성
+    TDME::SwapChainDesc swapChainDesc;
+    swapChainDesc.BackBufferCount = 1;
+    swapChainDesc.VSync           = true;
+
+    TDME::DX9Device device;
+    if (!device.Initialize(window, swapChainDesc))
+    {
+        MessageBoxA(nullptr, "Failed to create device", "Error", MB_OK | MB_ICONERROR);
+        return -1;
+    }
+
+    // 4. Renderer 생성
     TDME::DX9Renderer renderer;
+    renderer.SetDevice(&device);
     if (!renderer.Initialize(window))
     {
         MessageBoxA(nullptr, "Failed to create renderer", "Error", MB_OK | MB_ICONERROR);
@@ -52,7 +68,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     renderer.SetProjectionMatrix(projection);
     renderer.SetViewMatrix(TDME::Matrix::IDENTITY);
 
-    // 4. Timer 생성
+    // 5. Timer 생성
     TDME::Win32Timer timer;
     timer.Reset();
 
@@ -123,11 +139,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         renderer.DrawTriangle(mousePosition, width, height, rotation, triangleColor);
 
         renderer.EndFrame();
+        device.Present();
         //////////////////////////////////////////////////////////////
         // <----- 렌더링 종료
         //////////////////////////////////////////////////////////////
     }
 
     renderer.Shutdown();
+    device.Shutdown();
     return application.GetExitCode();
 }

@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Renderer_DX9\DX9Device.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9Renderer.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9TypeConversion.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9VertexLayout.h" />
@@ -167,6 +168,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\DX9Device.cpp" />
     <ClCompile Include="Source\DX9Renderer.cpp" />
     <ClCompile Include="Source\DX9VertexLayout.cpp" />
   </ItemGroup>
