@@ -138,6 +138,12 @@
     <ClInclude Include="Include\Engine\Renderer\ERenderMode.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Engine\Object\GameObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\Object\Actor\AActor.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -147,6 +153,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Source\Renderer\Shape\Shape2DRenderer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\GameObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Actor\AActor.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

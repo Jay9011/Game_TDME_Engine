@@ -163,6 +163,8 @@
     <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Transform3D.h" />
     <ClInclude Include="Include\Core\Math\MathConstants.h" />
     <ClInclude Include="Include\Core\Math\TMatrix4x4.h" />
+    <ClInclude Include="Include\Core\Math\TQuaternion.h" />
+    <ClInclude Include="Include\Core\Math\Transform.h" />
     <ClInclude Include="Include\Core\Math\TVector2.h" />
     <ClInclude Include="Include\Core\Math\TVector3.h" />
     <ClInclude Include="Include\Core\Math\TVector4.h" />

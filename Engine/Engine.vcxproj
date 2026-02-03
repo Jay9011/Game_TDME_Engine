@@ -163,6 +163,8 @@
     <ClInclude Include="Include\Engine\Input\EKeyType.h" />
     <ClInclude Include="Include\Engine\ApplicationCore\IApplicationMessageHandler.h" />
     <ClInclude Include="Include\Engine\Input\Key.h" />
+    <ClInclude Include="Include\Engine\Object\Actor\AActor.h" />
+    <ClInclude Include="Include\Engine\Object\GameObject.h" />
     <ClInclude Include="Include\Engine\Renderer\EPivot.h" />
     <ClInclude Include="Include\Engine\Renderer\EPrimitiveType.h" />
     <ClInclude Include="Include\Engine\Renderer\ERenderMode.h" />
@@ -205,6 +207,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Input\EKeys.cpp" />
+    <ClCompile Include="Source\Object\Actor\AActor.cpp" />
+    <ClCompile Include="Source\Object\GameObject.cpp" />
     <ClCompile Include="Source\Renderer\Shape\Shape2DRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
