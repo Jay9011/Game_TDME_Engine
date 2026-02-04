@@ -158,9 +158,8 @@
     <ClInclude Include="Include\Core\CoreMacros.h" />
     <ClInclude Include="Include\Core\CoreTypes.h" />
     <ClInclude Include="Include\Core\Geometry\TRect.h" />
-    <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Projection2D.h" />
-    <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Transform2D.h" />
-    <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Transform3D.h" />
+    <ClInclude Include="Include\Core\Math\Projections.h" />
+    <ClInclude Include="Include\Core\Math\Transformations.h" />
     <ClInclude Include="Include\Core\Math\MathConstants.h" />
     <ClInclude Include="Include\Core\Math\TMatrix4x4.h" />
     <ClInclude Include="Include\Core\Math\TQuaternion.h" />

@@ -3,7 +3,7 @@
 #include <Core/Types/Color.h>
 #include <Core/Math/TVector2.h>
 #include <Core/Math/TMatrix4x4.h>
-#include <Core/Math/Detail/TMatrix4x4.Projection2D.h>
+#include <Core/Math/Projections.h>
 #include <Engine/ApplicationCore/IWindow.h>
 #include <Engine/ApplicationCore/WindowDesc.h>
 #include <Engine/Input/EKeys.h>

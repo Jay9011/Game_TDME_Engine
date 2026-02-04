@@ -2,6 +2,7 @@
 
 #include "Core/CoreMacros.h"
 #include "TVector3.h"
+#include "TMatrix4x4.h"
 
 #include <algorithm>
 #include <cmath>
@@ -153,7 +154,7 @@ namespace TDME
          * @param t 보간 계수 (0.0 ~ 1.0)
          * @return TQuaternion 구면 선형 보간 결과
          */
-        static TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
+        static constexpr TQuaternion Slerp(const TQuaternion& a, const TQuaternion& b, T t)
         {
             T dot = Dot(a, b);
 
@@ -183,6 +184,25 @@ namespace TDME
                 a.Y * wa + b2.Y * wb, // Y
                 a.Z * wa + b2.Z * wb, // Z
                 a.W * wa + b2.W * wb  // W
+            );
+        }
+
+        /**
+         * @brief 쿼터니언을 행렬로 변환
+         * @param quaternion 쿼터니언
+         * @return TMatrix4x4<T> 쿼터니언을 행렬로 변환한 행렬
+         */
+        static constexpr TMatrix4x4<T> ToMatrix(const TQuaternion& quaternion)
+        {
+            T xx = quaternion.X * quaternion.X, yy = quaternion.Y * quaternion.Y, zz = quaternion.Z * quaternion.Z;
+            T xy = quaternion.X * quaternion.Y, xz = quaternion.X * quaternion.Z, yz = quaternion.Y * quaternion.Z;
+            T wx = quaternion.W * quaternion.X, wy = quaternion.W * quaternion.Y, wz = quaternion.W * quaternion.Z;
+
+            return TMatrix4x4<T>(
+                T(1) - T(2) * (yy + zz), T(2) * (xy + wz), T(2) * (xz - wy), T(0), // X
+                T(2) * (xy - wz), T(1) - T(2) * (xx + zz), T(2) * (yz + wx), T(0), // Y
+                T(2) * (xz + wy), T(2) * (yz - wx), T(1) - T(2) * (xx + yy), T(0), // Z
+                T(0), T(0), T(0), T(1)                                             // W
             );
         }
 

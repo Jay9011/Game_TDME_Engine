@@ -48,13 +48,10 @@
     <ClInclude Include="Include\Core\Math\TMatrix4x4.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Transform2D.h">
+    <ClInclude Include="Include\Core\Math\Transformations.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Projection2D.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\Math\Detail\TMatrix4x4.Transform3D.h">
+    <ClInclude Include="Include\Core\Math\Projections.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Math\TVector4.h">

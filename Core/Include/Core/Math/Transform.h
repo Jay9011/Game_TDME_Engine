@@ -5,7 +5,7 @@
 #include "TVector3.h"
 #include "TQuaternion.h"
 #include "TMatrix4x4.h"
-#include "Detail/TMatrix4x4.Transform3D.h"
+#include "Transformations.h"
 
 #include <cmath>
 
@@ -35,7 +35,7 @@ namespace TDME
             Matrix4 scaleMatrix = Scale3D(Scale.X, Scale.Y, Scale.Z);
 
             // 2. 회전 행렬 (쿼터니언 => 행렬)
-            Matrix4 rotationMatrix = QuaternionToMatrix(Rotation);
+            Matrix4 rotationMatrix = Quaternion::ToMatrix(Rotation);
 
             // 3. 이동 행렬
             Matrix4 translationMatrix = Translation3D(Position);
@@ -120,21 +120,5 @@ namespace TDME
         {
             return Transform(Vector3(position.X, position.Y, 0), Quaternion::FromRotationZ(rotation), Vector3(scale.X, scale.Y, 1));
         }
-
-    private:
-        static Matrix4 QuaternionToMatrix(const Quaternion& quaternion)
-        {
-            float xx = quaternion.X * quaternion.X, yy = quaternion.Y * quaternion.Y, zz = quaternion.Z * quaternion.Z;
-            float xy = quaternion.X * quaternion.Y, xz = quaternion.X * quaternion.Z, yz = quaternion.Y * quaternion.Z;
-            float wx = quaternion.W * quaternion.X, wy = quaternion.W * quaternion.Y, wz = quaternion.W * quaternion.Z;
-
-            return Matrix4(
-                1.0f - 2.0f * (yy + zz), 2.0f * (xy + wz), 2.0f * (xz - wy), 0.0f, // X
-                2.0f * (xy - wz), 1.0f - 2.0f * (xx + zz), 2.0f * (yz + wx), 0.0f, // Y
-                2.0f * (xz + wy), 2.0f * (yz - wx), 1.0f - 2.0f * (xx + yy), 0.0f, // Z
-                0.0f, 0.0f, 0.0f, 1.0f                                             // W
-            );
-        }
-
     }; // struct Transform
 } // namespace TDME
