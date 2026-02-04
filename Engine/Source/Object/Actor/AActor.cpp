@@ -1,63 +1,49 @@
 #include "pch.h"
 #include "Engine/Object/Actor/AActor.h"
 
-#include <algorithm>
+#include <Core/Math/Transform.h>
+
+#include "Engine/Object/Component/GSceneComponent.h"
 
 namespace TDME
 {
+    static Transform s_defaultTransform; // Root Component가 없을 경우 기본 트랜스폼 (위치, 회전, 스케일 없음)
+
     AActor::AActor()
-        : GameObject(), m_transform(), m_parent(nullptr), m_children()
+        : GameObject(), m_rootComponent(nullptr), m_components()
     {
     }
 
     AActor::~AActor()
     {
-        DetachFromParent(); // 부모로부터 분리
+        m_components.clear();
+        m_rootComponent = nullptr;
+    }
 
-        // 자식즐의 부모 참조 제거
-        for (AActor* child : m_children)
+    Transform& AActor::GetTransform()
+    {
+        if (m_rootComponent)
         {
-            if (child)
-                child->m_parent = nullptr;
+            return m_rootComponent->GetTransform();
         }
-        m_children.clear();
+        return s_defaultTransform;
+    }
+
+    const Transform& AActor::GetTransform() const
+    {
+        if (m_rootComponent)
+        {
+            return static_cast<const GSceneComponent*>(m_rootComponent)->GetTransform();
+        }
+        return s_defaultTransform;
     }
 
     Matrix4x4 AActor::GetWorldMatrix() const
     {
-        Matrix4x4 localMatrix = m_transform.ToMatrix();
-
-        if (m_parent)
+        if (m_rootComponent)
         {
-            // Loacl Matrix x Parent World Matrix (Parent의 World Transform으로 계산된 World Matrix가 재귀적으로 호출되어 적용됨)
-            return localMatrix * m_parent->GetWorldMatrix();
+            return m_rootComponent->GetWorldMatrix();
         }
-
-        return localMatrix;
-    }
-
-    void AActor::AttachToActor(AActor* parent)
-    {
-        if (m_parent == parent)
-            return;
-
-        DetachFromParent(); // 기존 부모로부터 분리
-
-        // 새 부모에 부착
-        m_parent = parent;
-        if (m_parent)
-        {
-            m_parent->m_children.push_back(this);
-        }
-    }
-
-    void AActor::DetachFromParent()
-    {
-        if (m_parent)
-        {
-            std::vector<AActor*>& parentChildren = m_parent->m_children;
-            parentChildren.erase(std::remove(parentChildren.begin(), parentChildren.end(), this), parentChildren.end());
-            m_parent = nullptr;
-        }
+        return Matrix4x4::Identity();
     }
 } // namespace TDME
