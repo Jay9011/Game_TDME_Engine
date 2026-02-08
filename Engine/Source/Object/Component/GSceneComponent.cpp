@@ -21,9 +21,9 @@ namespace TDME
         m_children.clear();
     }
 
-    Matrix4x4 GSceneComponent::GetWorldMatrix() const
+    Matrix GSceneComponent::GetWorldMatrix() const
     {
-        Matrix4x4 localMatrix = m_transform.ToMatrix();
+        Matrix localMatrix = m_transform.ToMatrix();
 
         if (m_parent)
         {

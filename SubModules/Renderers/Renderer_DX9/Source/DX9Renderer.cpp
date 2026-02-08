@@ -15,10 +15,10 @@
 #include "Renderer_DX9/DX9TypeConversion.h"
 
 //////////////////////////////////////////////////////////////
-// Matrix4 와 D3DMATRIX 호환성 검증
+// Matrix 와 D3DMATRIX 호환성 검증
 //////////////////////////////////////////////////////////////
-static_assert(sizeof(TDME::Matrix4) == sizeof(D3DMATRIX), "Matrix4 and D3DMATRIX must have the same size");
-static_assert(sizeof(TDME::Matrix4) == sizeof(float) * 16, "Matrix4 must be 16 bytes (16 floats)");
+static_assert(sizeof(TDME::Matrix) == sizeof(D3DMATRIX), "Matrix and D3DMATRIX must have the same size");
+static_assert(sizeof(TDME::Matrix) == sizeof(float) * 16, "Matrix must be 16 bytes (16 floats)");
 
 namespace TDME
 {
@@ -66,17 +66,17 @@ namespace TDME
         m_nativeDevice->EndScene();
     }
 
-    void DX9Renderer::SetWorldMatrix(const Matrix4& matrix)
+    void DX9Renderer::SetWorldMatrix(const Matrix& matrix)
     {
         m_nativeDevice->SetTransform(D3DTS_WORLD, reinterpret_cast<const D3DMATRIX*>(&matrix));
     }
 
-    void DX9Renderer::SetViewMatrix(const Matrix4& matrix)
+    void DX9Renderer::SetViewMatrix(const Matrix& matrix)
     {
         m_nativeDevice->SetTransform(D3DTS_VIEW, reinterpret_cast<const D3DMATRIX*>(&matrix));
     }
 
-    void DX9Renderer::SetProjectionMatrix(const Matrix4& matrix)
+    void DX9Renderer::SetProjectionMatrix(const Matrix& matrix)
     {
         m_nativeDevice->SetTransform(D3DTS_PROJECTION, reinterpret_cast<const D3DMATRIX*>(&matrix));
     }

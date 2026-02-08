@@ -27,18 +27,18 @@ namespace TDME
         /**
          * @brief Transform을 행렬로 변환
          * @details SRT (Scale * Rotation * Translation) 행렬 계산
-         * @return Matrix4 변환된 행렬
+         * @return Matrix 변환된 행렬
          */
-        Matrix4 ToMatrix() const
+        Matrix ToMatrix() const
         {
             // 1. 스케일 행렬
-            Matrix4 scaleMatrix = Scale3D(Scale.X, Scale.Y, Scale.Z);
+            Matrix scaleMatrix = Scale3D(Scale.X, Scale.Y, Scale.Z);
 
             // 2. 회전 행렬 (쿼터니언 => 행렬)
-            Matrix4 rotationMatrix = Quaternion::ToMatrix(Rotation);
+            Matrix rotationMatrix = Quaternion::ToMatrix(Rotation);
 
             // 3. 이동 행렬
-            Matrix4 translationMatrix = Translation3D(Position);
+            Matrix translationMatrix = Translation3D(Position);
 
             // SRT 행렬 계산
             return scaleMatrix * rotationMatrix * translationMatrix;
@@ -71,7 +71,7 @@ namespace TDME
          * @brief 2D 회전 각도 반환
          * @return float 2D 회전 각도 (라디안)
          */
-        constexpr float GetRotation2D() const
+        float GetRotation2D() const
         {
             // 쿼터니언에서 Z축 회전 각도 추출
             return 2.0f * std::atan2(Rotation.Z, Rotation.W);

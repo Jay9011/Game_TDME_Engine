@@ -31,6 +31,11 @@ namespace TDME
 
     void Shape2DRenderer::DrawLine(const Vector2& start, const Vector2& end, const Color& color)
     {
+        DrawLine(Matrix::Identity(), start, end, color);
+    }
+
+    void Shape2DRenderer::DrawLine(const Matrix& worldMatrix, const Vector2& start, const Vector2& end, const Color& color)
+    {
         Color32 color32 = Color32::FromColor(color);
 
         Vertex2DPC vertices[2] = {
@@ -38,12 +43,18 @@ namespace TDME
             Vertex2DPC(end.X, end.Y, color32),
         };
 
-        m_renderer->SetWorldMatrix(Matrix::IDENTITY);
+        m_renderer->SetWorldMatrix(worldMatrix);
         m_renderer->SetVertexLayout(m_colorLayout.get());
         m_renderer->DrawPrimitives(EPrimitiveType::LineList, vertices, 2, sizeof(Vertex2DPC));
     }
 
     void Shape2DRenderer::DrawTriangle(const Vector2& position, float width, float height, float rotation, const Color& color)
+    {
+        Matrix world = Rotation2D(rotation * Math::DegToRad) * Translation2D(position);
+        DrawTriangle(world, width, height, color);
+    }
+
+    void Shape2DRenderer::DrawTriangle(const Matrix& worldMatrix, float width, float height, const Color& color)
     {
         Color32 color32 = Color32::FromColor(color);
 
@@ -56,13 +67,18 @@ namespace TDME
             Vertex2DPC(-halfWidth, halfHeight, color32), // 좌하단
         };
 
-        Matrix4 world = Rotation2D(rotation * Math::DegToRad) * Translation2D(position);
-        m_renderer->SetWorldMatrix(world);
+        m_renderer->SetWorldMatrix(worldMatrix);
         m_renderer->SetVertexLayout(m_colorLayout.get());
         m_renderer->DrawPrimitives(EPrimitiveType::TriangleList, vertices, 3, sizeof(Vertex2DPC));
     }
 
     void Shape2DRenderer::DrawRect(const Vector2& position, float width, float height, float rotation, const Color& color)
+    {
+        Matrix world = Rotation2D(rotation * Math::DegToRad) * Translation2D(position);
+        DrawRect(world, width, height, color);
+    }
+
+    void Shape2DRenderer::DrawRect(const Matrix& worldMatrix, float width, float height, const Color& color)
     {
         Color32 color32 = Color32::FromColor(color);
 
@@ -79,13 +95,17 @@ namespace TDME
             Vertex2DPC(-halfWidth, halfHeight, color32), // 좌하단
         };
 
-        Matrix4 world = Rotation2D(rotation * Math::DegToRad) * Translation2D(position);
-        m_renderer->SetWorldMatrix(world);
+        m_renderer->SetWorldMatrix(worldMatrix);
         m_renderer->SetVertexLayout(m_colorLayout.get());
         m_renderer->DrawPrimitives(EPrimitiveType::TriangleList, vertices, 6, sizeof(Vertex2DPC));
     }
 
     void Shape2DRenderer::DrawCircle(const Vector2& position, float radius, const Color& color, uint32 segments)
+    {
+        DrawCircle(Translation2D(position), radius, color, segments);
+    }
+
+    void Shape2DRenderer::DrawCircle(const Matrix& worldMatrix, float radius, const Color& color, uint32 segments)
     {
         Color32 color32 = Color32::FromColor(color);
 
@@ -95,9 +115,9 @@ namespace TDME
         // 중심점
         vertices.emplace_back(0.0f, 0.0f, color32);
 
-        // 원 각 점들
+        // 원 각 점들 (로컬 좌표)
         float angleStep = Math::Pi2 / static_cast<float>(segments);
-        for (size_t i = 0; i < segments; i++)
+        for (size_t i = 0; i <= segments; i++)
         {
             float angle = angleStep * i;
             float x     = radius * std::cos(angle);
@@ -105,7 +125,7 @@ namespace TDME
             vertices.emplace_back(x, y, color32);
         }
 
-        m_renderer->SetWorldMatrix(Translation2D(position));
+        m_renderer->SetWorldMatrix(worldMatrix);
         m_renderer->SetVertexLayout(m_colorLayout.get());
         m_renderer->DrawPrimitives(EPrimitiveType::TriangleFan, vertices.data(), static_cast<uint32>(vertices.size()), sizeof(Vertex2DPC));
     }

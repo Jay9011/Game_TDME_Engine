@@ -68,9 +68,9 @@ namespace TDME
         /**
          * @brief World Matrix 반환
          * @details 부모 컴포넌트의 World Matrix를 재귀적으로 계산하여 반환
-         * @return Matrix4x4 월드 Matrix
+         * @return Matrix 월드 Matrix
          */
-        [[nodiscard]] Matrix4x4 GetWorldMatrix() const;
+        [[nodiscard]] Matrix GetWorldMatrix() const;
 
     protected:
         Transform m_transform;

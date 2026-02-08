@@ -58,23 +58,23 @@ namespace TDME
         /**
          * @brief 월드 행렬 설정
          * @param matrix 월드 행렬
-         * @see TDME::Matrix4x4
+         * @see TDME::Matrix
          */
-        virtual void SetWorldMatrix(const Matrix4x4& matrix) = 0;
+        virtual void SetWorldMatrix(const Matrix& matrix) = 0;
 
         /**
          * @brief 뷰 행렬 설정
          * @param matrix 뷰 행렬
-         * @see TDME::Matrix4x4
+         * @see TDME::Matrix
          */
-        virtual void SetViewMatrix(const Matrix4x4& matrix) = 0;
+        virtual void SetViewMatrix(const Matrix& matrix) = 0;
 
         /**
          * @brief 투영 행렬 설정
          * @param matrix 투영 행렬
-         * @see TDME::Matrix4x4
+         * @see TDME::Matrix
          */
-        virtual void SetProjectionMatrix(const Matrix4x4& matrix) = 0;
+        virtual void SetProjectionMatrix(const Matrix& matrix) = 0;
 
         //////////////////////////////////////////////////////////////
         // 스프라이트 랜더링

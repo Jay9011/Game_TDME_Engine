@@ -111,7 +111,7 @@ namespace TDME
          * @brief World Matrix 반환
          * @details Root Component의 World Matrix를 반환
          */
-        [[nodiscard]] Matrix4x4 GetWorldMatrix() const;
+        [[nodiscard]] Matrix GetWorldMatrix() const;
 
     protected:
         GSceneComponent*                              m_rootComponent = nullptr;

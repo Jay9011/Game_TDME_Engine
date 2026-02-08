@@ -17,6 +17,7 @@
 #include <Renderer_DX9/DX9Device.h>
 
 #include "Game/Types/Color.h"
+#include "Game/Object/Actor/APlanet.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow)
@@ -64,9 +65,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     }
 
     // DEBUG: 임시 투영 행렬 설정
-    TDME::Matrix4 projection = TDME::Orthographic2D(1280.0f, 720.0f);
+    TDME::Matrix projection = TDME::Orthographic2DCentered(1280.0f, 720.0f);
     renderer.SetProjectionMatrix(projection);
-    renderer.SetViewMatrix(TDME::Matrix::IDENTITY);
+    renderer.SetViewMatrix(TDME::Matrix::Identity());
 
     // 5. Timer 생성
     TDME::Win32Timer timer;
@@ -77,13 +78,30 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     // 6. Shape2DRenderer 생성 (DEBUG: 삼각형 테스트)
     TDME::Shape2DRenderer shape2D(&renderer, &device);
 
-    float       rotation      = 0.0f;
-    float       width         = 100.0f;
-    float       height        = 100.0f;
-    TDME::Color triangleColor = TDME::Colors::WHITE;
+    TDME::APlanet sun;
+    sun.SetColor(TDME::Colors::YELLOW);
+    sun.SetBodyRadius(50.0f);
 
-    constexpr float ROTATION_SPEED = 180.0f; // 1초에 180도 회전
-    constexpr float SIZE_SPEED     = 100.0f; // 1초에 100픽셀 이동
+    sun.SetSpinSpeed(0.5f);
+
+    TDME::APlanet earth;
+    earth.SetColor(TDME::Colors::AQUA);
+    earth.SetOrbitRadius(200.0f);
+    earth.SetBodyRadius(20.0f);
+
+    earth.SetSpinSpeed(3.0f);
+    earth.SetOrbitSpeed(1.0f);
+
+    TDME::APlanet moon;
+    moon.SetColor(TDME::Colors::WHITE);
+    moon.SetOrbitRadius(50.0f);
+    moon.SetBodyRadius(8.0f);
+
+    moon.SetSpinSpeed(0.0f);
+    moon.SetOrbitSpeed(2.5f);
+
+    earth.OrbitAround(&sun);
+    moon.OrbitAround(&earth);
 
     // Main loop
     while (!application.IsQuitRequested() && window->IsOpen())
@@ -102,31 +120,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         // 게임 Update 로직
         //////////////////////////////////////////////////////////////
         // TODO: Update 게임 로직
-        // DEBUG: 입력 테스트
-        // 색상 변경
-        if (input->IsKeyPressed(TDME::EKeys::W))
-            triangleColor = TDME::Colors::WHITE;
-        if (input->IsKeyPressed(TDME::EKeys::A))
-            triangleColor = TDME::Colors::AQUA;
-        if (input->IsKeyPressed(TDME::EKeys::S))
-            triangleColor = TDME::Colors::SAGE_GREEN;
-        if (input->IsKeyPressed(TDME::EKeys::D))
-            triangleColor = TDME::Colors::DARK_VIOLET;
-        // 회전 (Space를 누르고 있는 동안)
-        if (input->IsKeyDown(TDME::EKeys::SpaceBar))
-            rotation += ROTATION_SPEED * deltaTime;
-        // 크기 조절 (화살표를 누르고 있는 동안)
-        if (input->IsKeyDown(TDME::EKeys::Up))
-            height += SIZE_SPEED * deltaTime;
-        if (input->IsKeyDown(TDME::EKeys::Down))
-            height -= SIZE_SPEED * deltaTime;
-        if (input->IsKeyDown(TDME::EKeys::Left))
-            width -= SIZE_SPEED * deltaTime;
-        if (input->IsKeyDown(TDME::EKeys::Right))
-            width += SIZE_SPEED * deltaTime;
-        // 크기 최소값 제한
-        width  = std::max<float>(width, 10.0f);
-        height = std::max<float>(height, 10.0f);
+        // DEBUG: 태양계 테스트
+        sun.Update(deltaTime);
+        earth.Update(deltaTime);
+        moon.Update(deltaTime);
+
         // 마우스 위치
         TDME::Vector2 mousePosition = input->GetAxis2D(TDME::EKeys::Mouse2D);
 
@@ -137,8 +135,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         renderer.BeginFrame(TDME::Colors::DARK_GRAY);
 
         // TODO: Render 렌더링
-        // DEBUG: 삼각형 그리기
-        shape2D.DrawTriangle(mousePosition, width, height, rotation, triangleColor);
+        // DEBUG: 태양계 그리기
+        sun.Render(shape2D);
+        earth.Render(shape2D);
+        moon.Render(shape2D);
 
         renderer.EndFrame();
         device.Present();

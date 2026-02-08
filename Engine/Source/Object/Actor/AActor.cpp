@@ -38,12 +38,12 @@ namespace TDME
         return s_defaultTransform;
     }
 
-    Matrix4x4 AActor::GetWorldMatrix() const
+    Matrix AActor::GetWorldMatrix() const
     {
         if (m_rootComponent)
         {
             return m_rootComponent->GetWorldMatrix();
         }
-        return Matrix4x4::Identity();
+        return Matrix::Identity();
     }
 } // namespace TDME

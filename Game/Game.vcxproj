@@ -158,8 +158,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Object\Actor\APlanet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Game\Object\Actor\APlanet.h" />
     <ClInclude Include="Include\Game\Types\Color.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/TVector2.h>
 
 #include "Engine/RHI/Vertex/IVertexLayout.h"
@@ -32,6 +33,17 @@ namespace TDME
         void DrawLine(const Vector2& start, const Vector2& end, const Color& color);
 
         /**
+         * @brief 선 그리기
+         * @param worldMatrix 월드 행렬
+         * @param start 시작 위치
+         * @param end 끝 위치
+         * @param color 색상
+         * @see TDME::Matrix
+         * @see TDME::Color
+         */
+        void DrawLine(const Matrix& worldMatrix, const Vector2& start, const Vector2& end, const Color& color);
+
+        /**
          * @brief 삼각형 그리기
          * @param position 위치
          * @param width 너비
@@ -42,6 +54,17 @@ namespace TDME
          * @see TDME::Color
          */
         void DrawTriangle(const Vector2& position, float width, float height, float rotation, const Color& color);
+
+        /**
+         * @brief 삼각형 그리기
+         * @param worldMatrix 월드 행렬
+         * @param width 너비
+         * @param height 높이
+         * @param color 색상
+         * @see TDME::Matrix
+         * @see TDME::Color
+         */
+        void DrawTriangle(const Matrix& worldMatrix, float width, float height, const Color& color);
 
         /**
          * @brief 사각형 그리기
@@ -56,6 +79,17 @@ namespace TDME
         void DrawRect(const Vector2& position, float width, float height, float rotation, const Color& color);
 
         /**
+         * @brief 사각형 그리기
+         * @param worldMatrix 월드 행렬
+         * @param width 너비
+         * @param height 높이
+         * @param color 색상
+         * @see TDME::Matrix
+         * @see TDME::Color
+         */
+        void DrawRect(const Matrix& worldMatrix, float width, float height, const Color& color);
+
+        /**
          * @brief 원 그리기
          * @param position 위치
          * @param radius 반지름
@@ -66,6 +100,18 @@ namespace TDME
          * @see TDME::uint32
          */
         void DrawCircle(const Vector2& position, float radius, const Color& color, uint32 segments = 32);
+
+        /**
+         * @brief 원 그리기
+         * @param worldMatrix 월드 행렬
+         * @param radius 반지름
+         * @param color 색상
+         * @param segments 분할 개수
+         * @see TDME::Matrix
+         * @see TDME::Color
+         * @see TDME::uint32
+         */
+        void DrawCircle(const Matrix& worldMatrix, float radius, const Color& color, uint32 segments = 32);
 
     private:
         IRenderer*  m_renderer = nullptr;
