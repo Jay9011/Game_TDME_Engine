@@ -82,7 +82,7 @@ namespace TDME
         void SetColor(const Color& color) { m_color = color; }
 
     private:
-        GSceneComponent* m_orbit       = nullptr; // 공전 회전
+        GSceneComponent* m_orbit       = nullptr; // 공전 공간(Root Component)
         GSceneComponent* m_orbitOffset = nullptr; // 공전 반경 오프셋
         GSceneComponent* m_body        = nullptr; // 자전 및 행성 몸체
 

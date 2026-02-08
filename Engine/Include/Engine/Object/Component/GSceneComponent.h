@@ -50,12 +50,7 @@ namespace TDME
         [[nodiscard]] const std::vector<GSceneComponent*>& GetChildrenComponents() const { return m_children; }
 
         /**
-         * @brief 트랜스폼 반환
-         */
-        [[nodiscard]] Transform& GetTransform() { return m_transform; }
-
-        /**
-         * @brief 트랜스폼 상수(const) 반환
+         * @brief 트랜스폼 상수(const) 반환 (읽기 전용)
          */
         [[nodiscard]] const Transform& GetTransform() const { return m_transform; }
 
@@ -63,19 +58,56 @@ namespace TDME
          * @brief 트랜스폼 설정
          * @param transform 트랜스폼
          */
-        void SetTransform(const Transform& transform) { m_transform = transform; }
+        void SetTransform(const Transform& transform);
+
+        /**
+         * @brief 트랜스폼 더티 플래그 설정 (부모 컴포넌트의 World Matrix 계산 필요 시 호출)
+         */
+        void SetTransformDirty();
+
+        /**
+         * @brief 위치 설정
+         * @param position 위치
+         */
+        void SetPosition(const Vector3& position);
+
+        /**
+         * @brief 회전 설정
+         * @param rotation 회전
+         */
+        void SetRotation(const Quaternion& rotation);
+
+        /**
+         * @brief 스케일 설정
+         * @param scale 스케일
+         */
+        void SetScale(const Vector3& scale);
 
         /**
          * @brief World Matrix 반환
-         * @details 부모 컴포넌트의 World Matrix를 재귀적으로 계산하여 반환
-         * @return Matrix 월드 Matrix
+         * @details Dirty Flag가 설정되어 있으면 부모 컴포넌트의 World Matrix를 재귀적으로 계산하여 반환
+         * @return const Matrix& 월드 Matrix
          */
-        [[nodiscard]] Matrix GetWorldMatrix() const;
+        [[nodiscard]] const Matrix& GetWorldMatrix() const;
 
     protected:
         Transform m_transform;
 
         GSceneComponent*              m_parent = nullptr;
         std::vector<GSceneComponent*> m_children;
+
+    private:
+        mutable Matrix m_cachedWorldMatrix = Matrix::Identity();
+        mutable bool   m_isDirty           = true;
+
+        /**
+         * @brief 자손 컴포넌트들에 Dirty Flag 를 Top-Down 방식으로 전파
+         */
+        void PropagateDirtyFlagToChildren();
+
+        /**
+         * @brief World Matrix 재계산
+         */
+        void RecalculateWorldMatrix() const;
     };
 } // namespace TDME

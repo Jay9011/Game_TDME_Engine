@@ -21,19 +21,6 @@ namespace TDME
         m_children.clear();
     }
 
-    Matrix GSceneComponent::GetWorldMatrix() const
-    {
-        Matrix localMatrix = m_transform.ToMatrix();
-
-        if (m_parent)
-        {
-            // Loacl Matrix x Parent World Matrix (Parent의 World Transform으로 계산된 World Matrix가 재귀적으로 호출되어 적용됨)
-            return localMatrix * m_parent->GetWorldMatrix();
-        }
-
-        return localMatrix;
-    }
-
     void GSceneComponent::AttachToComponent(GSceneComponent* parent)
     {
         if (m_parent == parent)
@@ -46,6 +33,8 @@ namespace TDME
         {
             m_parent->m_children.push_back(this);
         }
+
+        SetTransformDirty(); // 부모 컴포넌트 변경 시 World Matrix 캐시 무효화
     }
 
     void GSceneComponent::DetachFromParent()
@@ -55,6 +44,88 @@ namespace TDME
             std::vector<GSceneComponent*>& parentChildren = m_parent->m_children;
             parentChildren.erase(std::remove(parentChildren.begin(), parentChildren.end(), this), parentChildren.end());
             m_parent = nullptr;
+
+            SetTransformDirty(); // 부모에서 분리되었으므로 World Matrix 캐시 무효화
         }
     }
+
+    //////////////////////////////////////////////////////////////
+    // Getter / Setter
+    //////////////////////////////////////////////////////////////
+
+    void GSceneComponent::SetTransform(const Transform& transform)
+    {
+        m_transform = transform;
+        SetTransformDirty();
+    }
+
+    void GSceneComponent::SetTransformDirty()
+    {
+        if (!m_isDirty)
+        {
+            m_isDirty = true;
+            PropagateDirtyFlagToChildren();
+        }
+    }
+
+    void GSceneComponent::SetPosition(const Vector3& position)
+    {
+        m_transform.Position = position;
+        SetTransformDirty();
+    }
+
+    void GSceneComponent::SetRotation(const Quaternion& rotation)
+    {
+        m_transform.Rotation = rotation;
+        SetTransformDirty();
+    }
+
+    void GSceneComponent::SetScale(const Vector3& scale)
+    {
+        m_transform.Scale = scale;
+        SetTransformDirty();
+    }
+
+    const Matrix& GSceneComponent::GetWorldMatrix() const
+    {
+        if (m_isDirty)
+        {
+            RecalculateWorldMatrix();
+        }
+        return m_cachedWorldMatrix;
+    }
+
+    //////////////////////////////////////////////////////////////
+    // Private Functions
+    //////////////////////////////////////////////////////////////
+
+    void GSceneComponent::PropagateDirtyFlagToChildren()
+    {
+        for (GSceneComponent* child : m_children)
+        {
+            if (child && !child->m_isDirty)
+            {
+                child->m_isDirty = true;
+                child->PropagateDirtyFlagToChildren();
+            }
+        }
+    }
+
+    void GSceneComponent::RecalculateWorldMatrix() const
+    {
+        Matrix localMatrix = m_transform.ToMatrix();
+
+        if (m_parent)
+        {
+            // Loacl Matrix x Parent World Matrix (부모가 Dirty Flag면 부모도 재계산 수 캐시 반환)
+            m_cachedWorldMatrix = localMatrix * m_parent->GetWorldMatrix();
+        }
+        else
+        {
+            m_cachedWorldMatrix = localMatrix;
+        }
+
+        m_isDirty = false;
+    }
+
 } // namespace TDME

@@ -96,13 +96,7 @@ namespace TDME
         void SetRootComponent(GSceneComponent* component) { m_rootComponent = component; }
 
         /**
-         * @brief Transform 반환
-         * @details Root Component의 Transform을 반환
-         */
-        [[nodiscard]] Transform& GetTransform();
-
-        /**
-         * @brief Transform 상수(const) 반환
+         * @brief Transform 상수(const) 반환 (읽기 전용)
          * @details Root Component의 Transform을 반환
          */
         [[nodiscard]] const Transform& GetTransform() const;
@@ -111,7 +105,7 @@ namespace TDME
          * @brief World Matrix 반환
          * @details Root Component의 World Matrix를 반환
          */
-        [[nodiscard]] Matrix GetWorldMatrix() const;
+        [[nodiscard]] const Matrix& GetWorldMatrix() const;
 
     protected:
         GSceneComponent*                              m_rootComponent = nullptr;

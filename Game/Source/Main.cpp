@@ -81,14 +81,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     TDME::APlanet sun;
     sun.SetColor(TDME::Colors::YELLOW);
     sun.SetBodyRadius(50.0f);
-
     sun.SetSpinSpeed(0.5f);
 
     TDME::APlanet earth;
     earth.SetColor(TDME::Colors::AQUA);
     earth.SetOrbitRadius(200.0f);
     earth.SetBodyRadius(20.0f);
-
     earth.SetSpinSpeed(3.0f);
     earth.SetOrbitSpeed(1.0f);
 
@@ -96,7 +94,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     moon.SetColor(TDME::Colors::WHITE);
     moon.SetOrbitRadius(50.0f);
     moon.SetBodyRadius(8.0f);
-
     moon.SetSpinSpeed(0.0f);
     moon.SetOrbitSpeed(2.5f);
 

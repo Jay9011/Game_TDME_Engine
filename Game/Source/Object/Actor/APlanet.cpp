@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "Game/Object/Actor/APlanet.h"
 
-#include <Core/Math/TVector2.h>
 #include <Core/Math/Transform.h>
+#include <Core/Math/TQuaternion.h>
+#include <Core/Math/TVector3.h>
 #include <Engine/Object/Component/GSceneComponent.h>
 #include <Engine/Renderer/Shape/Shape2DRenderer.h>
 
@@ -11,9 +12,9 @@ namespace TDME
     APlanet::APlanet()
         : AActor()
     {
-        m_orbit       = AddComponent<GSceneComponent>(true); // Root Component로 설정
-        m_orbitOffset = AddComponent<GSceneComponent>();
-        m_body        = AddComponent<GSceneComponent>();
+        m_orbit       = AddComponent<GSceneComponent>(true); // 공전 공간(Root Component) 설정
+        m_orbitOffset = AddComponent<GSceneComponent>();     // 공전 반경 추가
+        m_body        = AddComponent<GSceneComponent>();     // 자전
 
         m_orbitOffset->AttachToComponent(m_orbit);
         m_body->AttachToComponent(m_orbitOffset); // Body를 OrbitPivot에 부착
@@ -24,15 +25,15 @@ namespace TDME
         // 공전 (OrbitPivot 회전)
         if (m_orbitSpeed != 0.0f)
         {
-            Transform& orbitTransform = m_orbit->GetTransform();
-            orbitTransform.SetRotation2D(orbitTransform.GetRotation2D() + m_orbitSpeed * deltaTime); // 궤도 속도만큼 회전
+            const Transform& orbitTransform = m_orbit->GetTransform();
+            m_orbit->SetRotation(Quaternion::FromRotationZ(orbitTransform.GetRotation2D() + m_orbitSpeed * deltaTime)); // 궤도 속도만큼 회전
         }
 
         // 자전 (Body 회전)
         if (m_spinSpeed != 0.0f)
         {
-            Transform& bodyTransform = m_body->GetTransform();
-            bodyTransform.SetRotation2D(bodyTransform.GetRotation2D() + m_spinSpeed * deltaTime); // 자전 속도만큼 회전
+            const Transform& bodyTransform = m_body->GetTransform();
+            m_body->SetRotation(Quaternion::FromRotationZ(bodyTransform.GetRotation2D() + m_spinSpeed * deltaTime)); // 자전 속도만큼 회전
         }
     }
 
@@ -51,6 +52,6 @@ namespace TDME
 
     void APlanet::SetOrbitRadius(float radius)
     {
-        m_orbitOffset->GetTransform().SetPosition2D(Vector2(radius, 0.0f));
+        m_orbitOffset->SetPosition(Vector3(radius, 0.0f, 0.0f));
     }
 } // namespace TDME
