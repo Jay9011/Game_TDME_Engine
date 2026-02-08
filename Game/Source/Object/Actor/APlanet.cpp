@@ -45,7 +45,7 @@ namespace TDME
     {
         if (parent)
         {
-            m_orbit->AttachToComponent(parent->GetOrbitOffsetComponent()); // Root Component 를 Parent의 Root Component에 부착
+            m_orbit->AttachToComponent(parent->GetOrbitOffsetComponent()); // 공전 컴포넌트를 부모의 공전 Offset 컴포넌트에 부착
         }
     }
 

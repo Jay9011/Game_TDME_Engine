@@ -41,7 +41,7 @@ namespace TDME
          * @return GSceneComponent* 공전 반경 offset 컴포넌트 (자식 부착용)
          * @see TDME::GSceneComponent
          */
-        GSceneComponent* GetOrbitOffsetComponent() const { return m_orbitOffset; }
+        [[nodiscard]] GSceneComponent* GetOrbitOffsetComponent() const { return m_orbitOffset; }
 
         /**
          * @brief 행성 Body 컴포넌트 반환
