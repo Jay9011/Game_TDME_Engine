@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Core/CoreTypes.h>
+
 #include <memory>
 
 namespace TDME
@@ -9,10 +10,16 @@ namespace TDME
     class ITexture;
     class IBuffer;
     class IVertexLayout;
+    class IRasterizerState;
+    class IBlendState;
+    class IDepthStencilState;
     struct SwapChainDesc;
     struct TextureDesc;
     struct BufferDesc;
     struct VertexLayoutDesc;
+    struct RasterizerStateDesc;
+    struct BlendStateDesc;
+    struct DepthStencilStateDesc;
 
     /**
      * @brief RHI 디바이스 인터페이스
@@ -51,6 +58,37 @@ namespace TDME
          * @return true/false 성공 여부
          */
         virtual bool ResizeSwapChain(uint32 width, uint32 height) = 0;
+
+        //////////////////////////////////////////////////////////////
+        // 상태 객체 생성
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 래스터라이저 상태 객체 생성
+         * @param desc 래스터라이저 상태 설정 구조체
+         * @return std::unique_ptr<IRasterizerState> 생성된 래스터라이저 상태 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IRasterizerState
+         * @see TDME::RasterizerStateDesc
+         */
+        [[nodiscard]] virtual std::unique_ptr<IRasterizerState> CreateRasterizerState(const RasterizerStateDesc& desc) = 0;
+
+        /**
+         * @brief 블렌딩 상태 객체 생성
+         * @param desc 블렌딩 상태 설정 구조체
+         * @return std::unique_ptr<IBlendState> 생성된 블렌딩 상태 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IBlendState
+         * @see TDME::BlendStateDesc
+         */
+        [[nodiscard]] virtual std::unique_ptr<IBlendState> CreateBlendState(const BlendStateDesc& desc) = 0;
+
+        /**
+         * @brief 깊이/스텐실 상태 객체 생성
+         * @param desc 깊이/스텐실 상태 설정 구조체
+         * @return std::unique_ptr<IDepthStencilState> 생성된 깊이/스텐실 상태 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IDepthStencilState
+         * @see TDME::DepthStencilStateDesc
+         */
+        [[nodiscard]] virtual std::unique_ptr<IDepthStencilState> CreateDepthStencilState(const DepthStencilStateDesc& desc) = 0;
 
         //////////////////////////////////////////////////////////////
         // 리소스 생성

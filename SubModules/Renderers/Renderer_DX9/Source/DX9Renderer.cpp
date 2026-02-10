@@ -6,12 +6,17 @@
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Types/Color32.h>
 #include <Core/Math/Transformations.h>
+#include <Engine/RHI/State/DepthStencil/DepthStencilStateDesc.h>
+#include <Engine/RHI/State/Rasterizer/RasterizerStateDesc.h>
 #include <Engine/RHI/Vertex/IVertexLayout.h>
-#include <Engine/Renderer/ERenderMode.h>
+#include <Engine/RHI/State/IRasterizerState.h>
+#include <Engine/RHI/State/IBlendState.h>
+#include <Engine/RHI/State/IDepthStencilState.h>
 #include <d3d9types.h>
+#include <minwindef.h>
 
 #include "Renderer_DX9/DX9Device.h"
-#include "Renderer_DX9/DX9VertexLayout.h"
+#include "Renderer_DX9/Vertex/DX9VertexLayout.h"
 #include "Renderer_DX9/DX9TypeConversion.h"
 
 //////////////////////////////////////////////////////////////
@@ -37,7 +42,7 @@ namespace TDME
             return false;
         }
 
-        SetRenderMode(ERenderMode::Mode2D_Z);
+        m_nativeDevice->SetRenderState(D3DRS_LIGHTING, FALSE); // DX9 전용: 고정 기능 라이팅 비활성화 (셰이더에서 처리 예정)
 
         return true;
     } // bool DX9Renderer::Initialize(IWindow* window)
@@ -81,46 +86,46 @@ namespace TDME
         m_nativeDevice->SetTransform(D3DTS_PROJECTION, reinterpret_cast<const D3DMATRIX*>(&matrix));
     }
 
-    void DX9Renderer::DrawSprite(const SpriteDesc& sprite)
+    void DX9Renderer::SetRasterizerState(IRasterizerState* state)
     {
-        // TODO: 구현
-        // 1. 텍스처 설정
-        // 2. 쿼드 정점 생성 (position, size, pivot, rotation)
-        // 3. UV 설정 (sourceRect)
-        // 4. 색상/알파 적용
-        // 5. DrawPrimitiveUp
+        if (!state)
+            return;
+
+        const RasterizerStateDesc& desc = state->GetDesc();
+        m_nativeDevice->SetRenderState(D3DRS_CULLMODE, ToDX9CullMode(desc.CullMode));
+        m_nativeDevice->SetRenderState(D3DRS_FILLMODE, ToDX9FillMode(desc.FillMode));
+    }
+
+    void DX9Renderer::SetBlendState(IBlendState* state)
+    {
+        if (!state)
+            return;
+
+        const BlendStateDesc& desc = state->GetDesc();
+        m_nativeDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, desc.BlendEnable ? TRUE : FALSE);
+
+        if (desc.BlendEnable)
+        {
+            m_nativeDevice->SetRenderState(D3DRS_SRCBLEND, ToDX9BlendFactor(desc.SrcBlend));
+            m_nativeDevice->SetRenderState(D3DRS_DESTBLEND, ToDX9BlendFactor(desc.DestBlend));
+            m_nativeDevice->SetRenderState(D3DRS_BLENDOP, ToDX9BlendOp(desc.BlendOp));
+        }
+    }
+
+    void DX9Renderer::SetDepthStencilState(IDepthStencilState* state)
+    {
+        if (!state)
+            return;
+
+        const DepthStencilStateDesc& desc = state->GetDesc();
+        m_nativeDevice->SetRenderState(D3DRS_ZENABLE, desc.DepthEnable ? TRUE : FALSE);
+        m_nativeDevice->SetRenderState(D3DRS_ZWRITEENABLE, desc.DepthWriteEnable ? TRUE : FALSE);
+        m_nativeDevice->SetRenderState(D3DRS_ZFUNC, ToDX9ComparisonFunc(desc.DepthFunc));
     }
 
     void DX9Renderer::ApplyRenderSettings(const RenderSettings& settings)
     {
         // TODO: 구현
-    }
-
-    void DX9Renderer::SetRenderMode(ERenderMode mode)
-    {
-        switch (mode)
-        {
-        case ERenderMode::Mode2D:
-            m_nativeDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-            m_nativeDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-            m_nativeDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
-            m_nativeDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-            break;
-        case ERenderMode::Mode2D_Z:
-            m_nativeDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-            m_nativeDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-            m_nativeDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-            m_nativeDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-            break;
-        case ERenderMode::Mode3D:
-            m_nativeDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-            m_nativeDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-            m_nativeDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-            m_nativeDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-            break;
-        default:
-            break;
-        }
     }
 
     void DX9Renderer::SetVertexLayout(IVertexLayout* layout)
@@ -139,6 +144,16 @@ namespace TDME
         {
             m_nativeDevice->SetVertexDeclaration(nullptr);
         }
+    }
+
+    void DX9Renderer::DrawSprite(const SpriteDesc& sprite)
+    {
+        // TODO: 구현
+        // 1. 텍스처 설정
+        // 2. 쿼드 정점 생성 (position, size, pivot, rotation)
+        // 3. UV 설정 (sourceRect)
+        // 4. 색상/알파 적용
+        // 5. DrawPrimitiveUp
     }
 
     void DX9Renderer::DrawPrimitives(EPrimitiveType type, const void* vertices, uint32 vertexCount, uint32 stride)

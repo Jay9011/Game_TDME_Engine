@@ -68,15 +68,29 @@ namespace TDME
         void SetProjectionMatrix(const Matrix& matrix) override;
 
         //////////////////////////////////////////////////////////////
-        // 스프라이트 랜더링
+        // 상태 객체 바인딩
         //////////////////////////////////////////////////////////////
 
         /**
-         * @brief 스프라이트 랜더링
-         * @param sprite 스프라이트 파라미터
-         * @see TDME::SpriteDesc
+         * @brief 래스터라이저 상태 바인딩
+         * @param state 래스터라이저 상태 객체 (nullptr이면 무시)
+         * @see TDME::IRasterizerState
          */
-        void DrawSprite(const SpriteDesc& sprite) override;
+        void SetRasterizerState(IRasterizerState* state) override;
+
+        /**
+         * @brief 블렌딩 상태 바인딩
+         * @param state 블렌딩 상태 객체 (nullptr이면 무시)
+         * @see TDME::IBlendState
+         */
+        void SetBlendState(IBlendState* state) override;
+
+        /**
+         * @brief 깊이/스텐실 상태 바인딩
+         * @param state 깊이/스텐실 상태 객체 (nullptr이면 무시)
+         * @see TDME::IDepthStencilState
+         */
+        void SetDepthStencilState(IDepthStencilState* state) override;
 
         //////////////////////////////////////////////////////////////
         // 렌더링 설정
@@ -89,12 +103,16 @@ namespace TDME
          */
         void ApplyRenderSettings(const RenderSettings& settings) override;
 
+        //////////////////////////////////////////////////////////////
+        // 스프라이트 랜더링
+        //////////////////////////////////////////////////////////////
+
         /**
-         * @brief 렌더링 모드 설정
-         * @param mode 렌더링 모드
-         * @see TDME::ERenderMode
+         * @brief 스프라이트 랜더링
+         * @param sprite 스프라이트 파라미터
+         * @see TDME::SpriteDesc
          */
-        void SetRenderMode(ERenderMode mode) override;
+        void DrawSprite(const SpriteDesc& sprite) override;
 
         //////////////////////////////////////////////////////////////
         // 저수준 프리미티브 렌더링

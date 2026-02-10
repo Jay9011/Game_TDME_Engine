@@ -21,13 +21,22 @@
     <ClInclude Include="Include\Renderer_DX9\DX9Renderer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Renderer_DX9\DX9VertexLayout.h">
+    <ClInclude Include="Include\Renderer_DX9\Vertex\DX9VertexLayout.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Renderer_DX9\DX9TypeConversion.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Renderer_DX9\DX9Device.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Renderer_DX9\State\DX9RasterizerState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Renderer_DX9\State\DX9BlendState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Renderer_DX9\State\DX9DepthStencilState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,7 +47,7 @@
     <ClCompile Include="Source\DX9Renderer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Source\DX9VertexLayout.cpp">
+    <ClCompile Include="Source\Vertex\DX9VertexLayout.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Source\DX9Device.cpp">

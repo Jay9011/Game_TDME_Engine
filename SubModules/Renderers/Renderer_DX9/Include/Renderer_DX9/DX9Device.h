@@ -46,6 +46,37 @@ namespace TDME
         bool ResizeSwapChain(uint32 width, uint32 height) override;
 
         //////////////////////////////////////////////////////////////
+        // 상태 객체 생성
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 래스터라이저 상태 객체 생성
+         * @param desc 래스터라이저 상태 설정 구조체
+         * @return std::unique_ptr<IRasterizerState> 생성된 래스터라이저 상태 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IRasterizerState
+         * @see TDME::RasterizerStateDesc
+         */
+        [[nodiscard]] std::unique_ptr<IRasterizerState> CreateRasterizerState(const RasterizerStateDesc& desc) override;
+
+        /**
+         * @brief 블렌딩 상태 객체 생성
+         * @param desc 블렌딩 상태 설정 구조체
+         * @return std::unique_ptr<IBlendState> 생성된 블렌딩 상태 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IBlendState
+         * @see TDME::BlendStateDesc
+         */
+        [[nodiscard]] std::unique_ptr<IBlendState> CreateBlendState(const BlendStateDesc& desc) override;
+
+        /**
+         * @brief 깊이/스텐실 상태 객체 생성
+         * @param desc 깊이/스텐실 상태 설정 구조체
+         * @return std::unique_ptr<IDepthStencilState> 생성된 깊이/스텐실 상태 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IDepthStencilState
+         * @see TDME::DepthStencilStateDesc
+         */
+        [[nodiscard]] std::unique_ptr<IDepthStencilState> CreateDepthStencilState(const DepthStencilStateDesc& desc) override;
+
+        //////////////////////////////////////////////////////////////
         // 리소스 생성
         //////////////////////////////////////////////////////////////
 

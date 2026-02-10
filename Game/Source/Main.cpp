@@ -8,6 +8,9 @@
 #include <Engine/ApplicationCore/WindowDesc.h>
 #include <Engine/Input/EKeys.h>
 #include <Engine/Input/IInputDevice.h>
+#include <Engine/RHI/State/IRasterizerState.h>
+#include <Engine/RHI/State/IBlendState.h>
+#include <Engine/RHI/State/IDepthStencilState.h>
 #include <Engine/RHI/SwapChain/SwapChainDesc.h>
 #include <Engine/Renderer/Shape/Shape2DRenderer.h>
 #include <Platform_Windows/Win32Application.h>
@@ -64,6 +67,25 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         return -1;
     }
 
+    TDME::RasterizerStateDesc rsDesc;
+    rsDesc.CullMode      = TDME::ECullMode::None;
+    rsDesc.FillMode      = TDME::EFillMode::Solid;
+    auto rasterizerState = device.CreateRasterizerState(rsDesc);
+
+    TDME::BlendStateDesc bsDesc;
+    bsDesc.BlendEnable = false;
+    auto blendState    = device.CreateBlendState(bsDesc);
+
+    TDME::DepthStencilStateDesc dsDesc;
+    dsDesc.DepthEnable      = true;
+    dsDesc.DepthWriteEnable = true;
+    dsDesc.DepthFunc        = TDME::EComparisonFunc::Less;
+    auto depthStencilState  = device.CreateDepthStencilState(dsDesc);
+
+    renderer.SetRasterizerState(rasterizerState.get());
+    renderer.SetBlendState(blendState.get());
+    renderer.SetDepthStencilState(depthStencilState.get());
+
     // DEBUG: 임시 투영 행렬 설정
     TDME::Matrix projection = TDME::Orthographic2DCentered(1280.0f, 720.0f);
     renderer.SetProjectionMatrix(projection);
@@ -79,22 +101,28 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     TDME::Shape2DRenderer shape2D(&renderer, &device);
 
     TDME::APlanet sun;
+#pragma region 속도 및 반경 설정
     sun.SetColor(TDME::Colors::YELLOW);
     sun.SetBodyRadius(50.0f);
     sun.SetSpinSpeed(0.5f);
+#pragma endregion
 
     TDME::APlanet earth;
+#pragma region 속도 및 반경 설정
     earth.SetColor(TDME::Colors::AQUA);
     earth.SetOrbitRadius(200.0f);
     earth.SetBodyRadius(20.0f);
     earth.SetSpinSpeed(3.0f);
+#pragma endregion
     earth.SetOrbitSpeed(1.0f);
 
     TDME::APlanet moon;
+#pragma region 속도 및 반경 설정
     moon.SetColor(TDME::Colors::WHITE);
     moon.SetOrbitRadius(50.0f);
     moon.SetBodyRadius(8.0f);
     moon.SetSpinSpeed(0.0f);
+#pragma endregion
     moon.SetOrbitSpeed(2.5f);
 
     earth.OrbitAround(&sun);

@@ -4,13 +4,15 @@
 #include <Core/Math/TVector2.h>
 
 #include "EPrimitiveType.h"
-#include "ERenderMode.h"
 
 namespace TDME
 {
     class IWindow;
     class ITexture;
     class IVertexLayout;
+    class IRasterizerState;
+    class IBlendState;
+    class IDepthStencilState;
     struct SpriteDesc;
     struct RenderSettings;
     struct Color;
@@ -77,15 +79,29 @@ namespace TDME
         virtual void SetProjectionMatrix(const Matrix& matrix) = 0;
 
         //////////////////////////////////////////////////////////////
-        // 스프라이트 랜더링
+        // 상태 객체 바인딩
         //////////////////////////////////////////////////////////////
 
         /**
-         * @brief 스프라이트 랜더링
-         * @param sprite 스프라이트 파라미터
-         * @see TDME::SpriteDesc
+         * @brief 래스터라이저 상태 바인딩
+         * @param state 래스터라이저 상태 객체 (nullptr이면 무시)
+         * @see TDME::IRasterizerState
          */
-        virtual void DrawSprite(const SpriteDesc& sprite) = 0;
+        virtual void SetRasterizerState(IRasterizerState* state) = 0;
+
+        /**
+         * @brief 블렌딩 상태 바인딩
+         * @param state 블렌딩 상태 객체 (nullptr이면 무시)
+         * @see TDME::IBlendState
+         */
+        virtual void SetBlendState(IBlendState* state) = 0;
+
+        /**
+         * @brief 깊이/스텐실 상태 바인딩
+         * @param state 깊이/스텐실 상태 객체 (nullptr이면 무시)
+         * @see TDME::IDepthStencilState
+         */
+        virtual void SetDepthStencilState(IDepthStencilState* state) = 0;
 
         //////////////////////////////////////////////////////////////
         // 렌더링 설정
@@ -98,12 +114,16 @@ namespace TDME
          */
         virtual void ApplyRenderSettings(const RenderSettings& settings) = 0;
 
+        //////////////////////////////////////////////////////////////
+        // 스프라이트 랜더링
+        //////////////////////////////////////////////////////////////
+
         /**
-         * @brief 렌더링 모드 설정
-         * @param mode 렌더링 모드
-         * @see TDME::ERenderMode
+         * @brief 스프라이트 랜더링
+         * @param sprite 스프라이트 파라미터
+         * @see TDME::SpriteDesc
          */
-        virtual void SetRenderMode(ERenderMode mode) = 0;
+        virtual void DrawSprite(const SpriteDesc& sprite) = 0;
 
         //////////////////////////////////////////////////////////////
         // 저수준 프리미티브 렌더링

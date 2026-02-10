@@ -158,7 +158,10 @@
     <ClInclude Include="Include\Renderer_DX9\DX9Device.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9Renderer.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9TypeConversion.h" />
-    <ClInclude Include="Include\Renderer_DX9\DX9VertexLayout.h" />
+    <ClInclude Include="Include\Renderer_DX9\State\DX9BlendState.h" />
+    <ClInclude Include="Include\Renderer_DX9\State\DX9DepthStencilState.h" />
+    <ClInclude Include="Include\Renderer_DX9\State\DX9RasterizerState.h" />
+    <ClInclude Include="Include\Renderer_DX9\Vertex\DX9VertexLayout.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -170,7 +173,7 @@
     </ClCompile>
     <ClCompile Include="Source\DX9Device.cpp" />
     <ClCompile Include="Source\DX9Renderer.cpp" />
-    <ClCompile Include="Source\DX9VertexLayout.cpp" />
+    <ClCompile Include="Source\Vertex\DX9VertexLayout.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

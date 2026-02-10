@@ -1,6 +1,11 @@
 #pragma once
 
 #include <Core/CoreMacros.h>
+#include <Engine/RHI/State/Blend/EBlendFactor.h>
+#include <Engine/RHI/State/Blend/EBlendOp.h>
+#include <Engine/RHI/State/DepthStencil/EComparisonFunc.h>
+#include <Engine/RHI/State/Rasterizer/ECullMode.h>
+#include <Engine/RHI/State/Rasterizer/EFillMode.h>
 #include <Engine/RHI/Vertex/EVertexSemantic.h>
 #include <Engine/RHI/Vertex/EVertexFormat.h>
 #include <Engine/Renderer/EPrimitiveType.h>
@@ -73,6 +78,78 @@ namespace TDME
         case EPrimitiveType::TriangleStrip: return (vertexCount > 2) ? (vertexCount - 2) : 0;
         case EPrimitiveType::TriangleFan:   return (vertexCount > 2) ? (vertexCount - 2) : 0;
         default:                            return 0;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////
+    // State 관련 변환 함수
+    //////////////////////////////////////////////////////////////
+
+    constexpr FORCE_INLINE DWORD ToDX9CullMode(ECullMode mode)
+    {
+        switch (mode)
+        {
+        case ECullMode::None:  return D3DCULL_NONE; // 양면 렌더링
+        case ECullMode::Front: return D3DCULL_CW;   // Clockwise (시계방향), DX9에서 CW(시계방향)가 Front face
+        case ECullMode::Back:  return D3DCULL_CCW;  // Counter-Clockwise (반시계방향), DX9에서 CCW(반시계방향)가 Back face
+        default:               return D3DCULL_NONE;
+        }
+    }
+
+    constexpr FORCE_INLINE DWORD ToDX9FillMode(EFillMode mode)
+    {
+        switch (mode)
+        {
+        case EFillMode::Wireframe: return D3DFILL_WIREFRAME;
+        case EFillMode::Solid:     return D3DFILL_SOLID;
+        default:                   return D3DFILL_SOLID;
+        }
+    }
+
+    constexpr FORCE_INLINE DWORD ToDX9BlendFactor(EBlendFactor factor)
+    {
+        switch (factor)
+        {
+        case EBlendFactor::Zero:         return D3DBLEND_ZERO;
+        case EBlendFactor::One:          return D3DBLEND_ONE;
+        case EBlendFactor::SrcAlpha:     return D3DBLEND_SRCALPHA;
+        case EBlendFactor::InvSrcAlpha:  return D3DBLEND_INVSRCALPHA;
+        case EBlendFactor::DestAlpha:    return D3DBLEND_DESTALPHA;
+        case EBlendFactor::InvDestAlpha: return D3DBLEND_INVDESTALPHA;
+        case EBlendFactor::SrcColor:     return D3DBLEND_SRCCOLOR;
+        case EBlendFactor::InvSrcColor:  return D3DBLEND_INVSRCCOLOR;
+        case EBlendFactor::DestColor:    return D3DBLEND_DESTCOLOR;
+        case EBlendFactor::InvDestColor: return D3DBLEND_INVDESTCOLOR;
+        default:                         return D3DBLEND_ONE;
+        }
+    }
+
+    constexpr FORCE_INLINE DWORD ToDX9BlendOp(EBlendOp op)
+    {
+        switch (op)
+        {
+        case EBlendOp::Add:             return D3DBLENDOP_ADD;
+        case EBlendOp::Subtract:        return D3DBLENDOP_SUBTRACT;
+        case EBlendOp::ReverseSubtract: return D3DBLENDOP_REVSUBTRACT;
+        case EBlendOp::Min:             return D3DBLENDOP_MIN;
+        case EBlendOp::Max:             return D3DBLENDOP_MAX;
+        default:                        return D3DBLENDOP_ADD;
+        }
+    }
+
+    constexpr FORCE_INLINE DWORD ToDX9ComparisonFunc(EComparisonFunc func)
+    {
+        switch (func)
+        {
+        case EComparisonFunc::Never:        return D3DCMP_NEVER;
+        case EComparisonFunc::Less:         return D3DCMP_LESS;
+        case EComparisonFunc::Equal:        return D3DCMP_EQUAL;
+        case EComparisonFunc::LessEqual:    return D3DCMP_LESSEQUAL;
+        case EComparisonFunc::Greater:      return D3DCMP_GREATER;
+        case EComparisonFunc::NotEqual:     return D3DCMP_NOTEQUAL;
+        case EComparisonFunc::GreaterEqual: return D3DCMP_GREATEREQUAL;
+        case EComparisonFunc::Always:       return D3DCMP_ALWAYS;
+        default:                            return D3DCMP_LESS;
         }
     }
 } // namespace TDME

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer_DX9/DX9VertexLayout.h"
+#include "Renderer_DX9/Vertex/DX9VertexLayout.h"
 
 #include <Engine/RHI/Vertex/VertexLayoutDesc.h>
 

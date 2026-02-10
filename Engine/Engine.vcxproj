@@ -171,7 +171,6 @@
     <ClInclude Include="Include\Engine\Object\IUpdatable.h" />
     <ClInclude Include="Include\Engine\Renderer\EPivot.h" />
     <ClInclude Include="Include\Engine\Renderer\EPrimitiveType.h" />
-    <ClInclude Include="Include\Engine\Renderer\ERenderMode.h" />
     <ClInclude Include="Include\Engine\Renderer\RenderSettings.h" />
     <ClInclude Include="Include\Engine\Renderer\Shape\Shape2DRenderer.h" />
     <ClInclude Include="Include\Engine\Renderer\SpriteDesc.h" />
@@ -180,6 +179,19 @@
     <ClInclude Include="Include\Engine\RHI\Buffer\EBufferType.h" />
     <ClInclude Include="Include\Engine\RHI\Buffer\EBufferUsage.h" />
     <ClInclude Include="Include\Engine\RHI\Buffer\IBuffer.h" />
+    <ClInclude Include="Include\Engine\RHI\State\Blend\BlendStateDesc.h" />
+    <ClInclude Include="Include\Engine\RHI\State\Blend\EBlendFactor.h" />
+    <ClInclude Include="Include\Engine\RHI\State\Blend\EBlendOp.h" />
+    <ClInclude Include="Include\Engine\RHI\State\DepthStencil\DepthStencilStateDesc.h" />
+    <ClInclude Include="Include\Engine\RHI\State\DepthStencil\EComparisonFunc.h" />
+    <ClInclude Include="Include\Engine\RHI\State\DepthStencil\EStencilOp.h" />
+    <ClInclude Include="Include\Engine\RHI\State\DepthStencil\StencilOpDesc.h" />
+    <ClInclude Include="Include\Engine\RHI\State\IDepthStencilState.h" />
+    <ClInclude Include="Include\Engine\RHI\State\Rasterizer\ECullMode.h" />
+    <ClInclude Include="Include\Engine\RHI\State\Rasterizer\EFillMode.h" />
+    <ClInclude Include="Include\Engine\RHI\State\IBlendState.h" />
+    <ClInclude Include="Include\Engine\RHI\State\IRasterizerState.h" />
+    <ClInclude Include="Include\Engine\RHI\State\Rasterizer\RasterizerStateDesc.h" />
     <ClInclude Include="Include\Engine\RHI\SwapChain\ESwapEffect.h" />
     <ClInclude Include="Include\Engine\RHI\Texture\ETextureFormat.h" />
     <ClInclude Include="Include\Engine\RHI\Texture\ETextureUsage.h" />

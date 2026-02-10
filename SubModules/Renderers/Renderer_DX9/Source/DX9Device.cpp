@@ -4,9 +4,13 @@
 #include <Engine/RHI/SwapChain/SwapChainDesc.h>
 #include <Engine/RHI/Vertex/VertexLayoutDesc.h>
 
-#include "Renderer_DX9/DX9VertexLayout.h"
+#include "Renderer_DX9/State/DX9RasterizerState.h"
+#include "Renderer_DX9/State/DX9BlendState.h"
+#include "Renderer_DX9/State/DX9DepthStencilState.h"
+#include "Renderer_DX9/Vertex/DX9VertexLayout.h"
 #include <Windows.h>
 #include <d3d9.h>
+#include <memory>
 
 namespace TDME
 {
@@ -83,6 +87,21 @@ namespace TDME
     {
         // TODO: 구현 필요
         return true;
+    }
+
+    std::unique_ptr<IRasterizerState> DX9Device::CreateRasterizerState(const RasterizerStateDesc& desc)
+    {
+        return std::make_unique<DX9RasterizerState>(desc);
+    }
+
+    std::unique_ptr<IBlendState> DX9Device::CreateBlendState(const BlendStateDesc& desc)
+    {
+        return std::make_unique<DX9BlendState>(desc);
+    }
+
+    std::unique_ptr<IDepthStencilState> DX9Device::CreateDepthStencilState(const DepthStencilStateDesc& desc)
+    {
+        return std::make_unique<DX9DepthStencilState>(desc);
     }
 
     std::unique_ptr<IVertexLayout> DX9Device::CreateVertexLayout(const VertexLayoutDesc& desc)
