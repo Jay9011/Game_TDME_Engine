@@ -2,19 +2,19 @@
 #include "Engine/Renderer/Shape/Shape2DRenderer.h"
 
 #include <Core/CoreTypes.h>
-#include <Core/Types/Color32.h>
 #include <Core/Math/MathConstants.h>
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/Transformations.h>
+#include <Core/Math/TVector2.h>
+#include <Core/Types/Color32.h>
+#include <vector>
+#include "Engine/Renderer/EPrimitiveType.h"
+#include "Engine/Renderer/IRenderer.h"
+#include "Engine/Renderer/Vertex2DTypes.h"
 #include "Engine/RHI/IRHIDevice.h"
 #include "Engine/RHI/Vertex/EVertexFormat.h"
 #include "Engine/RHI/Vertex/EVertexSemantic.h"
 #include "Engine/RHI/Vertex/VertexLayoutDesc.h"
-#include "Engine/Renderer/IRenderer.h"
-#include "Engine/Renderer/Vertex2DTypes.h"
-#include "Engine/Renderer/EPrimitiveType.h"
-
-#include <vector>
 
 namespace TDME
 {

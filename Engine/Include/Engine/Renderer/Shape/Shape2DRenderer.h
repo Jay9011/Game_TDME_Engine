@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Core/CoreTypes.h>
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/TVector2.h>
 

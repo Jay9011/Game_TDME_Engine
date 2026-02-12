@@ -1,11 +1,9 @@
 #pragma once
 
-#include <Core/Math/Transform.h>
 #include <Core/Math/TMatrix4x4.h>
-
-#include "Engine/Object/Component/GActorComponent.h"
-
+#include <Core/Math/Transform.h>
 #include <vector>
+#include "Engine/Object/Component/GActorComponent.h"
 
 namespace TDME
 {
