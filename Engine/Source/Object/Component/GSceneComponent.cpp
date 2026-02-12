@@ -7,7 +7,7 @@ namespace TDME
         : GActorComponent(), m_transform(), m_parent(nullptr), m_children()
     {
     }
-
+    
     GSceneComponent::~GSceneComponent()
     {
         DetachFromParent();

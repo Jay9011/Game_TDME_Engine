@@ -4,6 +4,8 @@
 #include "Core/Math/MathConstants.h"
 #include "Core/Math/TMatrix4x4.h"
 
+#include <cmath>
+
 namespace TDME
 {
     /**
@@ -62,5 +64,32 @@ namespace TDME
         T halfW = width / T(2);
         T halfH = height / T(2);
         return OrthographicProjection2D(-halfW, halfW, halfH, -halfH, T(0), T(1));
+    }
+
+    /**
+     * @brief 원근 투영 행렬 생성 (왼손 좌표계)
+     * @details 절두체(Frustum)를 NDC로 변환
+     * @li NDC X: [-1, 1]
+     * @li NDC Y: [-1, 1]
+     * @li NDC Z: [0, 1]
+     * @tparam T 행렬 요소 타입
+     * @param fovY 수직 시야각 (라디안)
+     * @param aspectRatio 종횡비 (너비 / 높이)
+     * @param zNear 근접 평면 거리 (> 0)
+     * @param zFar 원근 평면 거리 (> zNear)
+     * @return TMatrix4x4<T> 원근 투영 행렬
+     */
+    template <typename T>
+    FORCE_INLINE constexpr TMatrix4x4<T> PerspectiveFovLH(T fovY, T aspectRatio, T zNear, T zFar)
+    {
+        // Row Vector, 왼손 좌표계, NDC [0, 1] 사용
+        T yScale = T(1) / std::tan(fovY * T(0.5));
+        T xScale = yScale / aspectRatio;
+        T depth  = zFar - zNear;
+
+        return TMatrix4x4<T>(xScale, 0, 0, 0,
+                             0, yScale, 0, 0,
+                             0, 0, zFar / depth, 1,
+                             0, 0, -zNear * zFar / depth, 0);
     }
 } // namespace TDME

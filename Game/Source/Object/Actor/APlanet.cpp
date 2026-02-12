@@ -5,7 +5,7 @@
 #include <Core/Math/TQuaternion.h>
 #include <Core/Math/TVector3.h>
 #include <Engine/Object/Component/GSceneComponent.h>
-#include <Engine/Renderer/Shape/Shape2DRenderer.h>
+#include <Engine/Renderer/Shape/Shape3DRenderer.h>
 
 namespace TDME
 {
@@ -37,9 +37,9 @@ namespace TDME
         }
     }
 
-    void APlanet::Render(Shape2DRenderer& renderer)
+    void APlanet::Render(Shape3DRenderer& renderer)
     {
-        renderer.DrawCircle(m_body->GetWorldMatrix(), m_bodyRadius, m_color, 5);
+        renderer.DrawSphere(m_body->GetWorldMatrix(), m_bodyRadius, m_color, 8, 16);
     }
 
     void APlanet::OrbitAround(APlanet* parent)

@@ -173,6 +173,7 @@
     <ClInclude Include="Include\Engine\Renderer\EPrimitiveType.h" />
     <ClInclude Include="Include\Engine\Renderer\RenderSettings.h" />
     <ClInclude Include="Include\Engine\Renderer\Shape\Shape2DRenderer.h" />
+    <ClInclude Include="Include\Engine\Renderer\Shape\Shape3DRenderer.h" />
     <ClInclude Include="Include\Engine\Renderer\SpriteDesc.h" />
     <ClInclude Include="Include\Engine\RHI\Adapter\EGPUVendor.h" />
     <ClInclude Include="Include\Engine\RHI\Buffer\BufferDesc.h" />
@@ -228,6 +229,7 @@
     <ClCompile Include="Source\Object\Component\GSceneComponent.cpp" />
     <ClCompile Include="Source\Object\GameObject.cpp" />
     <ClCompile Include="Source\Renderer\Shape\Shape2DRenderer.cpp" />
+    <ClCompile Include="Source\Renderer\Shape\Shape3DRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

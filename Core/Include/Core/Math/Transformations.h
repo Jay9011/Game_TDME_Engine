@@ -241,6 +241,33 @@ namespace TDME
                            vector.X * matrix._13 + vector.Y * matrix._23 + vector.Z * matrix._33);
     }
 
-    // TODO: 추후 3D 구현할 때 나머지 구현 (RotationX, RotationY, RotationZ, LookAt 등...)
+    //////////////////////////////////////////////////////////////
+    // 뷰 행렬 생성
+    //////////////////////////////////////////////////////////////
+
+    /**
+     * @brief 왼손 좌표계 LookAt 뷰 행렬 생성
+     * @details 카메라 위치, 바라보는 점, 위쪽 방향으로 뷰 행렬을 생성 (Row-vector(v × M) 기준)
+     * @tparam T 행렬 요소 타입
+     * @param eye 카메라 위치
+     * @param target 바라보는 점
+     * @param up 위쪽 방향
+     * @return TMatrix4x4<T> 뷰 행렬
+     */
+    template <typename T>
+    INLINE constexpr TMatrix4x4<T> LookAtLH(const TVector3<T>& eye, const TVector3<T>& target, const TVector3<T>& up)
+    {
+        TVector3<T> zAxis = (target - eye).Normalized();  // 카메라 전방
+        TVector3<T> xAxis = up.Cross(zAxis).Normalized(); // 카메라 오른쪽
+        TVector3<T> yAxis = zAxis.Cross(xAxis);           // 카메라 위쪽
+
+        return TMatrix4x4<T>(
+            xAxis.X, yAxis.X, zAxis.X, T(0),
+            xAxis.Y, yAxis.Y, zAxis.Y, T(0),
+            xAxis.Z, yAxis.Z, zAxis.Z, T(0),
+            -xAxis.Dot(eye), -yAxis.Dot(eye), -zAxis.Dot(eye), T(1));
+    }
+
+    // TODO: 추후 3D 구현할 때 나머지 구현 (RotationX, RotationY, RotationZ 등...)
 
 } // namespace TDME

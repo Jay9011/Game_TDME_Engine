@@ -7,7 +7,7 @@
 namespace TDME
 {
     class GSceneComponent;
-    class Shape2DRenderer;
+    class Shape3DRenderer;
 
     class APlanet : public AActor
     {
@@ -20,7 +20,7 @@ namespace TDME
         //////////////////////////////////////////////////////////////
 
         void Update(float deltaTime) override;
-        void Render(Shape2DRenderer& renderer);
+        void Render(Shape3DRenderer& renderer);
 
         //////////////////////////////////////////////////////////////
         // 메서드들
