@@ -158,6 +158,9 @@
     <ClInclude Include="Include\Core\CoreMacros.h" />
     <ClInclude Include="Include\Core\CoreTypes.h" />
     <ClInclude Include="Include\Core\Geometry\TRect.h" />
+    <ClInclude Include="Include\Core\Image\EImageFormat.h" />
+    <ClInclude Include="Include\Core\Image\ImageData.h" />
+    <ClInclude Include="Include\Core\IO\FileUtility.h" />
     <ClInclude Include="Include\Core\Math\Projections.h" />
     <ClInclude Include="Include\Core\Math\Transformations.h" />
     <ClInclude Include="Include\Core\Math\MathConstants.h" />
