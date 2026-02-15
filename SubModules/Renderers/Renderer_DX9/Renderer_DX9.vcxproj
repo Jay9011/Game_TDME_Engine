@@ -155,12 +155,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Renderer_DX9\Buffer\DX9Buffer.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9Device.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9Renderer.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9TypeConversion.h" />
     <ClInclude Include="Include\Renderer_DX9\State\DX9BlendState.h" />
     <ClInclude Include="Include\Renderer_DX9\State\DX9DepthStencilState.h" />
     <ClInclude Include="Include\Renderer_DX9\State\DX9RasterizerState.h" />
+    <ClInclude Include="Include\Renderer_DX9\Texture\DX9Texture.h" />
     <ClInclude Include="Include\Renderer_DX9\Vertex\DX9VertexLayout.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -171,8 +173,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Buffer\DX9Buffer.cpp" />
     <ClCompile Include="Source\DX9Device.cpp" />
     <ClCompile Include="Source\DX9Renderer.cpp" />
+    <ClCompile Include="Source\Texture\DX9Texture.cpp" />
     <ClCompile Include="Source\Vertex\DX9VertexLayout.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

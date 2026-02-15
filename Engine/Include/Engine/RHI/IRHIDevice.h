@@ -102,5 +102,25 @@ namespace TDME
          * @see TDME::VertexLayoutDesc
          */
         [[nodiscard]] virtual std::unique_ptr<IVertexLayout> CreateVertexLayout(const VertexLayoutDesc& desc) = 0;
+
+        /**
+         * @brief GPU 버퍼 객체 생성 (Vertex/Index)
+         * @param desc 버퍼 설정 구조체 (타입, 용도, 크기 등)
+         * @param initialData 초기 데이터 포인터 (nullptr이면 빈 버퍼 생성)
+         * @return std::unique_ptr<IBuffer> 생성된 버퍼 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IBuffer
+         * @see TDME::BufferDesc
+         */
+        [[nodiscard]] virtual std::unique_ptr<IBuffer> CreateBuffer(const BufferDesc& desc, const void* initialData = nullptr) = 0;
+
+        /**
+         * @brief GPU 텍스처 객체 생성
+         * @param desc 텍스처 설정 구조체 (크기, 포맷, 밉맵 등)
+         * @param initialData 초기 픽셀 데이터 포인터 (nullptr이면 빈 텍스처 생성)
+         * @return std::unique_ptr<ITexture> 생성된 텍스처 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::ITexture
+         * @see TDME::TextureDesc
+         */
+        [[nodiscard]] virtual std::unique_ptr<ITexture> CreateTexture(const TextureDesc& desc, const void* initialData = nullptr) = 0;
     };
 } // namespace TDME

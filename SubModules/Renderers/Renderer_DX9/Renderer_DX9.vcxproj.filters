@@ -39,6 +39,12 @@
     <ClInclude Include="Include\Renderer_DX9\State\DX9DepthStencilState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Renderer_DX9\Texture\DX9Texture.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Renderer_DX9\Buffer\DX9Buffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -51,6 +57,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Source\DX9Device.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Texture\DX9Texture.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Buffer\DX9Buffer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,11 +6,13 @@
 #include <Engine/RHI/State/DepthStencil/EComparisonFunc.h>
 #include <Engine/RHI/State/Rasterizer/ECullMode.h>
 #include <Engine/RHI/State/Rasterizer/EFillMode.h>
+#include <Engine/RHI/Texture/ETextureFormat.h>
 #include <Engine/RHI/Vertex/EVertexSemantic.h>
 #include <Engine/RHI/Vertex/EVertexFormat.h>
 #include <Engine/Renderer/EPrimitiveType.h>
 
 #include <d3d9.h>
+#include <d3d9types.h>
 
 namespace TDME
 {
@@ -46,6 +48,23 @@ namespace TDME
         case EVertexFormat::UByte4:  return D3DDECLTYPE_UBYTE4;
         case EVertexFormat::UByte4N: return D3DDECLTYPE_UBYTE4N;
         default:                     return D3DDECLTYPE_FLOAT3;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////
+    // Texture 관련 변환 함수
+    //////////////////////////////////////////////////////////////
+
+    constexpr FORCE_INLINE D3DFORMAT ToDX9TextureFormat(ETextureFormat format)
+    {
+        switch (format)
+        {
+        case ETextureFormat::R8G8B8A8: return D3DFMT_A8R8G8B8;
+        case ETextureFormat::R8:       return D3DFMT_L8;
+        case ETextureFormat::BC1:      return D3DFMT_DXT1;
+        case ETextureFormat::BC3:      return D3DFMT_DXT5;
+        case ETextureFormat::D24S8:    return D3DFMT_D24S8;
+        default:                       return D3DFMT_A8R8G8B8;
         }
     }
 

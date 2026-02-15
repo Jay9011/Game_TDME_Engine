@@ -6,6 +6,7 @@
 // Core / Engine 헤더
 //////////////////////////////////////////////////////////////
 
+#include <Core/CoreTypes.h>
 #include <Core/Types/Color.h>
 #include <Core/Math/MathConstants.h>
 #include <Engine/ApplicationCore/IWindow.h>

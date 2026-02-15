@@ -4,12 +4,12 @@
 #include <Engine/RHI/SwapChain/SwapChainDesc.h>
 #include <Engine/RHI/Vertex/VertexLayoutDesc.h>
 
+#include "Renderer_DX9/Buffer/DX9Buffer.h"
 #include "Renderer_DX9/State/DX9RasterizerState.h"
 #include "Renderer_DX9/State/DX9BlendState.h"
 #include "Renderer_DX9/State/DX9DepthStencilState.h"
+#include "Renderer_DX9/Texture/DX9Texture.h"
 #include "Renderer_DX9/Vertex/DX9VertexLayout.h"
-#include <Windows.h>
-#include <d3d9.h>
 #include <memory>
 
 namespace TDME
@@ -111,5 +111,36 @@ namespace TDME
             return nullptr;
         }
         return std::make_unique<DX9VertexLayout>(m_device.Get(), desc);
+    }
+
+    std::unique_ptr<IBuffer> DX9Device::CreateBuffer(const BufferDesc& desc, const void* initialData)
+    {
+        if (!m_device)
+        {
+            return nullptr;
+        }
+
+        std::unique_ptr<DX9Buffer> buffer = std::make_unique<DX9Buffer>(m_device.Get(), desc, initialData);
+        if (!buffer->IsValid())
+        {
+            return nullptr;
+        }
+        return buffer;
+    }
+
+    std::unique_ptr<ITexture> DX9Device::CreateTexture(const TextureDesc& desc, const void* initialData)
+    {
+        if (!m_device)
+        {
+            return nullptr;
+        }
+
+        std::unique_ptr<DX9Texture> texture = std::make_unique<DX9Texture>(m_device.Get(), desc, initialData);
+        if (!texture->IsValid())
+        {
+            return nullptr;
+        }
+
+        return texture;
     }
 } // namespace TDME

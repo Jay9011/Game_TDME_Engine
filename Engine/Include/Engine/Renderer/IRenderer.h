@@ -104,6 +104,18 @@ namespace TDME
         virtual void SetDepthStencilState(IDepthStencilState* state) = 0;
 
         //////////////////////////////////////////////////////////////
+        // 리소스 바인딩
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 텍스처를 지정 슬롯에 바인딩
+         * @param slot 텍스처 슬롯 번호 (0부터 시작)
+         * @param texture 바인딩할 텍스처 (nullptr이면 해당 슬롯 해제)
+         * @see TDME::ITexture
+         */
+        virtual void SetTexture(uint32 slot, ITexture* texture) = 0;
+
+        //////////////////////////////////////////////////////////////
         // 렌더링 설정
         //////////////////////////////////////////////////////////////
 

@@ -158,6 +158,7 @@
     <ClInclude Include="Include\Core\CoreMacros.h" />
     <ClInclude Include="Include\Core\CoreTypes.h" />
     <ClInclude Include="Include\Core\Geometry\TRect.h" />
+    <ClInclude Include="Include\Core\Image\BMPLoader.h" />
     <ClInclude Include="Include\Core\Image\EImageFormat.h" />
     <ClInclude Include="Include\Core\Image\ImageData.h" />
     <ClInclude Include="Include\Core\IO\FileUtility.h" />
@@ -184,6 +185,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Image\BMPLoader.cpp" />
     <ClCompile Include="Source\String\Name.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

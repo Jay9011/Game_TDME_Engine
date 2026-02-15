@@ -1,19 +1,17 @@
 #include "pch.h"
 #include "Renderer_DX9/DX9Renderer.h"
 
-#include <Core/Math/MathConstants.h>
 #include <Core/Math/TVector2.h>
 #include <Core/Math/TMatrix4x4.h>
-#include <Core/Types/Color32.h>
 #include <Core/Math/Transformations.h>
+#include <Core/Types/Color32.h>
 #include <Engine/RHI/State/DepthStencil/DepthStencilStateDesc.h>
 #include <Engine/RHI/State/Rasterizer/RasterizerStateDesc.h>
 #include <Engine/RHI/Vertex/IVertexLayout.h>
 #include <Engine/RHI/State/IRasterizerState.h>
 #include <Engine/RHI/State/IBlendState.h>
 #include <Engine/RHI/State/IDepthStencilState.h>
-#include <d3d9types.h>
-#include <minwindef.h>
+#include <Engine/RHI/Texture/ITexture.h>
 
 #include "Renderer_DX9/DX9Device.h"
 #include "Renderer_DX9/Vertex/DX9VertexLayout.h"
@@ -123,6 +121,24 @@ namespace TDME
         m_nativeDevice->SetRenderState(D3DRS_ZFUNC, ToDX9ComparisonFunc(desc.DepthFunc));
     }
 
+    void DX9Renderer::SetTexture(uint32 slot, ITexture* texture)
+    {
+        if (!m_nativeDevice)
+        {
+            return;
+        }
+
+        if (texture)
+        {
+            IDirect3DTexture9* nativeTexture = static_cast<IDirect3DTexture9*>(texture->GetNativeHandle());
+            m_nativeDevice->SetTexture(slot, nativeTexture);
+        }
+        else
+        {
+            m_nativeDevice->SetTexture(slot, nullptr);
+        }
+    }
+
     void DX9Renderer::ApplyRenderSettings(const RenderSettings& settings)
     {
         // TODO: 구현
@@ -169,7 +185,6 @@ namespace TDME
             return;
         }
 
-        m_nativeDevice->SetTexture(0, nullptr);
         m_nativeDevice->DrawPrimitiveUP(ToDX9PrimitiveType(type), primitiveCount, vertices, stride);
     }
 
