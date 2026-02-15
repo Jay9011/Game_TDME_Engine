@@ -1,0 +1,21 @@
+CompileFlags:
+  Add:
+    - -ID:/Projects/GameProjects/P2DME/SubModules/Renderers/Renderer_DX9
+    - -ID:/Projects/GameProjects/P2DME/SubModules/Renderers/Renderer_DX9/Include
+    # 다른 모듈 - <> 스타일로 변경
+    - -isystem
+    - D:/Projects/GameProjects/P2DME/Core/Include
+    - -isystem
+    - D:/Projects/GameProjects/P2DME/Engine/Include
+
+    - -std=c++17
+    - -DWIN32
+    - -D_DEBUG
+    - -Wall
+    - -Wextra
+
+Diagnostics:
+  UnusedIncludes: Strict # 사용하지 않는 include 경고
+  Includes:
+    IgnoreHeader:
+      - "pch\\.h"
