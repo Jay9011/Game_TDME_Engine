@@ -6,6 +6,7 @@
 
 namespace TDME
 {
+    class ITexture;
     class GSceneComponent;
     class Shape3DRenderer;
 
@@ -45,7 +46,7 @@ namespace TDME
 
         /**
          * @brief 행성 Body 컴포넌트 반환
-         * @return GSceneComponent* 행성 Body 컴포넌트a
+         * @return GSceneComponent* 행성 Body 컴포넌트
          * @see TDME::GSceneComponent
          */
         [[nodiscard]] GSceneComponent* GetBodyComponent() const { return m_body; }
@@ -81,15 +82,23 @@ namespace TDME
          */
         void SetColor(const Color& color) { m_color = color; }
 
+        /**
+         * @brief 행성 텍스처 설정
+         * @param texture 행성 텍스처 (nullptr이면 색상 기반 렌더링)
+         * @see TDME::ITexture
+         */
+        void SetTexture(ITexture* texture) { m_texture = texture; }
+
     private:
         GSceneComponent* m_orbit       = nullptr; // 공전 공간(Root Component)
         GSceneComponent* m_orbitOffset = nullptr; // 공전 반경 오프셋
         GSceneComponent* m_body        = nullptr; // 자전 및 행성 몸체
 
-        float m_bodyRadius = 0.0f;          // 행성 반지름
-        Color m_color      = Colors::WHITE; // 행성 색상
-
+        float m_bodyRadius = 0.0f; // 행성 반지름
         float m_orbitSpeed = 0.0f; // 궤도 속도
         float m_spinSpeed  = 0.0f; // 자전 속도
+
+        Color     m_color   = Colors::WHITE; // 행성 색상
+        ITexture* m_texture = nullptr;       // 행성 텍스처
     }; // class APlanet
 } // namespace TDME

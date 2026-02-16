@@ -10,9 +10,7 @@ namespace TDME
         : m_desc(desc)
     {
         if (!device || desc.ByteSize == 0)
-        {
             return;
-        }
 
         // Usage/Pool 결정
         //      Default -> D3DPOOL_MANAGED (GPU + 시스템 메모리, 디바이스 로스트 자동 복구)
@@ -43,9 +41,7 @@ namespace TDME
         }
 
         if (FAILED(hr))
-        {
             return;
-        }
 
         // 초기 데이터 업로드
         if (initialData)

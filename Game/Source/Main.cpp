@@ -4,16 +4,23 @@
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/Projections.h>
 #include <Core/Math/Transformations.h>
+#include <Core/IO/FileUtility.h>
+#include <Core/Image/BMPLoader.h>
+#include <Core/Image/ImageData.h>
 #include <Engine/ApplicationCore/IWindow.h>
 #include <Engine/ApplicationCore/WindowDesc.h>
 #include <Engine/Input/EKeys.h>
 #include <Engine/Input/IInputDevice.h>
+#include <Engine/RHI/IRHIDevice.h>
 #include <Engine/RHI/State/IRasterizerState.h>
 #include <Engine/RHI/State/IBlendState.h>
 #include <Engine/RHI/State/IDepthStencilState.h>
 #include <Engine/RHI/State/Rasterizer/ECullMode.h>
 #include <Engine/RHI/State/Rasterizer/EFillMode.h>
 #include <Engine/RHI/State/Rasterizer/RasterizerStateDesc.h>
+#include <Engine/RHI/Texture/ETextureFormat.h>
+#include <Engine/RHI/Texture/ITexture.h>
+#include <Engine/RHI/Texture/TextureDesc.h>
 #include <Engine/RHI/SwapChain/SwapChainDesc.h>
 #include <Engine/Renderer/Shape/Shape3DRenderer.h>
 #include <Platform_Windows/Win32Application.h>
@@ -128,11 +135,41 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     // 6. Shape3DRenderer 생성
     TDME::Shape3DRenderer shape3D(&renderer, &device);
 
+    // 7. Texture 로딩
+    auto LoadTexture = [&device](const char* path) -> std::unique_ptr<TDME::ITexture>
+    {
+        auto fileData = TDME::FileUtility::ReadBinaryFile(path);
+        if (!fileData)
+            return nullptr;
+
+        auto imageData = TDME::BMPLoader::Load(*fileData);
+        if (!imageData)
+            return nullptr;
+
+        TDME::TextureDesc texDesc;
+        texDesc.Width     = imageData->Width;
+        texDesc.Height    = imageData->Height;
+        texDesc.MipLevels = 1;
+        texDesc.Format    = TDME::ETextureFormat::R8G8B8A8;
+
+        return device.CreateTexture(texDesc, imageData->Pixels.data());
+    };
+
+    auto sunTexture   = LoadTexture("Assets/Textures/sun.bmp");
+    auto earthTexture = LoadTexture("Assets/Textures/earth.bmp");
+    auto moonTexture  = LoadTexture("Assets/Textures/moon.bmp");
+
+    //////////////////////////////////////////////////////////////
+    // 8. 행성 생성
+    //////////////////////////////////////////////////////////////
+
     TDME::APlanet sun;
 #pragma region 속도 및 반경 설정
     sun.SetColor(TDME::Colors::YELLOW);
     sun.SetBodyRadius(50.0f);
     sun.SetSpinSpeed(0.5f);
+    if (sunTexture)
+        sun.SetTexture(sunTexture.get());
 #pragma endregion
 
     TDME::APlanet earth;
@@ -141,6 +178,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     earth.SetOrbitRadius(200.0f);
     earth.SetBodyRadius(20.0f);
     earth.SetSpinSpeed(3.0f);
+    if (earthTexture)
+        earth.SetTexture(earthTexture.get());
 #pragma endregion
     earth.SetOrbitSpeed(1.0f);
 
@@ -150,6 +189,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     moon.SetOrbitRadius(50.0f);
     moon.SetBodyRadius(8.0f);
     moon.SetSpinSpeed(0.0f);
+    if (moonTexture)
+        moon.SetTexture(moonTexture.get());
 #pragma endregion
     moon.SetOrbitSpeed(2.5f);
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Core/CoreTypes.h>
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/TVector2.h>
 
@@ -7,6 +8,7 @@
 
 namespace TDME
 {
+    class IBuffer;
     class IWindow;
     class ITexture;
     class IVertexLayout;
@@ -159,5 +161,18 @@ namespace TDME
          * @see TDME::uint32
          */
         virtual void DrawPrimitives(EPrimitiveType type, const void* vertices, uint32 vertexCount, uint32 stride) = 0;
+
+        /**
+         * @brief 인덱스 기반 프리미티브 렌더링
+         * @note GPU 버퍼를 사용하므로 stride는 vertexBuffer에서 직접 가져옴.
+         * @note indexCount는 버퍼의 전체가 아닌 일부만 렌더링 할 수 있도록 할 수 있도록 함.
+         * @param type 프리미티브 타입
+         * @param vertexBuffer 정점 버퍼
+         * @param indexBuffer 인덱스 버퍼
+         * @param indexCount 인덱스 개수
+         * @see TDME::EPrimitiveType
+         * @see TDME::IBuffer
+         */
+        virtual void DrawIndexedPrimitives(EPrimitiveType type, IBuffer* vertexBuffer, IBuffer* indexBuffer, uint32 indexCount) = 0;
     };
 } // namespace TDME

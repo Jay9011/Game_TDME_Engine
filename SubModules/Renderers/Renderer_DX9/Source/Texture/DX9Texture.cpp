@@ -7,9 +7,7 @@ namespace TDME
         : m_desc(desc)
     {
         if (!device || desc.Width == 0 || desc.Height == 0)
-        {
             return;
-        }
 
         // 1. DX9 텍스처 생성
         //    D3DFMT_A8R8G8B8 : DX9에서 RGBA 32비트에 해당 (실제 메모리는 BGRA)
@@ -26,9 +24,7 @@ namespace TDME
         );
 
         if (FAILED(hr) || !m_texture)
-        {
             return;
-        }
 
         // 2. 초기 데이터가 있으면 GPU 에 업로드
         if (initialData)

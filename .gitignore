@@ -426,6 +426,9 @@ CLAUDE.md
 # cursor
 .cursor/
 
+# antigravity
+.agent/
+
 # Local History for Visual Studio Code
 .history/
 

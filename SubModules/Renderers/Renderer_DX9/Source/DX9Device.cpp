@@ -64,7 +64,7 @@ namespace TDME
             d3dParam.hDeviceWindow,              // 렌더링 대상 윈도우
             D3DCREATE_SOFTWARE_VERTEXPROCESSING, // 버텍스 처리 방식
             &d3dParam,                           // Present Parameters
-            m_device.GetAddressOf());            // [출력] 생성된 디바이스 (GetAddressOf(): 내부 포인터 반환)
+            m_device.GetAddressOf());            // 생성된 디바이스 (GetAddressOf(): 내부 포인터 반환)
 
         return SUCCEEDED(hr);
     } // bool DX9Device::Initialize(IWindow* window, const SwapChainDesc& swapChainDesc)

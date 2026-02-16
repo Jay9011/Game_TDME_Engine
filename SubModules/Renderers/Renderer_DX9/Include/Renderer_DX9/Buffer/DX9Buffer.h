@@ -19,7 +19,7 @@ namespace TDME
     {
     public:
         /**
-         * @briefDX9 버퍼 생성
+         * @brief DX9 버퍼 생성
          * @param device DX9 네이티브 디바이스
          * @param desc 버퍼 설정 (타입, 용도, 크기)
          * @param initialData 초기 데이터 (nullptr 허용)

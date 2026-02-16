@@ -5,6 +5,7 @@
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/Transformations.h>
 #include <Core/Types/Color32.h>
+#include <Engine/RHI/Buffer/IBuffer.h>
 #include <Engine/RHI/State/DepthStencil/DepthStencilStateDesc.h>
 #include <Engine/RHI/State/Rasterizer/RasterizerStateDesc.h>
 #include <Engine/RHI/Vertex/IVertexLayout.h>
@@ -124,9 +125,7 @@ namespace TDME
     void DX9Renderer::SetTexture(uint32 slot, ITexture* texture)
     {
         if (!m_nativeDevice)
-        {
             return;
-        }
 
         if (texture)
         {
@@ -175,17 +174,44 @@ namespace TDME
     void DX9Renderer::DrawPrimitives(EPrimitiveType type, const void* vertices, uint32 vertexCount, uint32 stride)
     {
         if (!vertices || vertexCount == 0)
-        {
             return;
-        }
 
         uint32 primitiveCount = CalcPrimitiveCount(type, vertexCount);
         if (primitiveCount == 0)
-        {
             return;
-        }
 
         m_nativeDevice->DrawPrimitiveUP(ToDX9PrimitiveType(type), primitiveCount, vertices, stride);
+    }
+
+    void DX9Renderer::DrawIndexedPrimitives(EPrimitiveType type, IBuffer* vertexBuffer, IBuffer* indexBuffer, uint32 indexCount)
+    {
+        if (!vertexBuffer || !indexBuffer || indexCount == 0)
+            return;
+
+        // 1. 정점 버퍼 바인딩 (Stream 0)
+        IDirect3DVertexBuffer9* nativeVB = static_cast<IDirect3DVertexBuffer9*>(vertexBuffer->GetNativeHandle());
+        m_nativeDevice->SetStreamSource(0, nativeVB, 0, vertexBuffer->GetStride());
+
+        // 2. 인덱스 버퍼 바인딩
+        IDirect3DIndexBuffer9* nativeIB = static_cast<IDirect3DIndexBuffer9*>(indexBuffer->GetNativeHandle());
+        m_nativeDevice->SetIndices(nativeIB);
+
+        // 3. 인덱스 기반 Draw Call
+        const uint32 primitiveCount = CalcPrimitiveCount(type, indexCount);
+        if (primitiveCount == 0)
+            return;
+
+        // 정점 수 = 버퍼 전체 크기 / stride
+        const uint32 vertexCount = vertexBuffer->GetByteSize() / vertexBuffer->GetStride();
+
+        m_nativeDevice->DrawIndexedPrimitive(
+            ToDX9PrimitiveType(type),
+            0,             // BaseVertexIndex: 인덱스에 더할 오프셋. 여러 메시를 하나의 정점 버퍼에 합칠 때 사용. (0 = 없음)
+            0,             // MinVertexIndex: 참조되는 최소 정점 인덱스.
+            vertexCount,   // NumVertices: 참조되는 정점 범위.
+            0,             // StartIndex: 인덱스 버퍼에서 읽기 시작하는 위치. 하나의 인덱스 버퍼에 여러 메시의 인덱스를 합칠 때 사용.
+            primitiveCount // PrimitiveCount - 그릴 프리미티브 수
+        );
     }
 
     //////////////////////////////////////////////////////////////
