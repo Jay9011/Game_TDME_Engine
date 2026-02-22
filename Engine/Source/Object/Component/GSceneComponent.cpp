@@ -1,4 +1,6 @@
 #include "pch.h"
+#include <Core/Math/TMatrix4x4.h>
+#include <Core/Math/TVector3.h>
 #include "Engine/Object/Component/GSceneComponent.h"
 
 namespace TDME
@@ -93,6 +95,24 @@ namespace TDME
             RecalculateWorldMatrix();
         }
         return m_cachedWorldMatrix;
+    }
+
+    Vector3 GSceneComponent::GetForwardVector() const
+    {
+        const Matrix& world = GetWorldMatrix();
+        return Vector3(world.Zx, world.Zy, world.Zz).Normalized();
+    }
+
+    Vector3 GSceneComponent::GetUpVector() const
+    {
+        const Matrix& world = GetWorldMatrix();
+        return Vector3(world.Yx, world.Yy, world.Yz).Normalized();
+    }
+
+    Vector3 GSceneComponent::GetRightVector() const
+    {
+        const Matrix& world = GetWorldMatrix();
+        return Vector3(world.Xx, world.Xy, world.Xz).Normalized();
     }
 
     //////////////////////////////////////////////////////////////

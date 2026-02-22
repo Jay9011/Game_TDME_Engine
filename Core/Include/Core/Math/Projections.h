@@ -40,6 +40,8 @@ namespace TDME
     /**
      * @brief 2D 화면 좌표계 직교 투영 행렬 생성
      * @details 좌상단 원점 (0, 0) 사용
+     * @note bottom = height, top = 0 으로 전달하여 Y축을 반전.
+     * @note 스크린 좌표계(좌상단 원점, Y 아래 증가)를 NDC Y[-1 = 하단, +1 = 상단]으로 매핑.
      * @tparam T 행렬 요소 타입
      * @param width 너비
      * @param height 높이
@@ -63,7 +65,7 @@ namespace TDME
     {
         T halfW = width / T(2);
         T halfH = height / T(2);
-        return OrthographicProjection2D(-halfW, halfW, halfH, -halfH, T(0), T(1));
+        return OrthographicProjection2D(-halfW, halfW, -halfH, halfH, T(0), T(1));
     }
 
     /**

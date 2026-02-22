@@ -2,6 +2,7 @@
 
 #include "Core/CoreMacros.h"
 #include "Core/Math/TVector3.h"
+#include "MathConstants.h"
 #include "TVector3.h"
 #include "TMatrix4x4.h"
 
@@ -48,7 +49,7 @@ namespace TDME
         constexpr void Normalize()
         {
             T len = Length();
-            if (len > T(0))
+            if (len > T(Math::SmallNumber))
             {
                 T invLen = T(1) / len;
                 X *= invLen;
@@ -374,7 +375,9 @@ namespace TDME
 
         /**
          * @brief 쿼터니언 곱셈 (회전 합성)
-         * @details q1 * q2 = q2 회전 후 q1 회전
+         * @details (this * other): other를 먼저 적용 후 this를 적용한 합성 회전
+         *          - 로컬축 회전 추가: current * delta (delta가 current의 로컬 공간에서 적용)
+         *          - 월드축 회전 추가: delta * current (delta가 월드 공간에서 적용)
          * @param other 다른 Quaternion
          * @return TQuaternion 두 Quaternion의 곱
          */

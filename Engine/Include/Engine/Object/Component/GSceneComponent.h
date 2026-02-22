@@ -1,9 +1,11 @@
 #pragma once
 
 #include <Core/Math/TMatrix4x4.h>
+#include <Core/Math/TVector3.h>
 #include <Core/Math/Transform.h>
-#include <vector>
+
 #include "Engine/Object/Component/GActorComponent.h"
+#include <vector>
 
 namespace TDME
 {
@@ -87,6 +89,24 @@ namespace TDME
          * @return const Matrix& 월드 Matrix
          */
         [[nodiscard]] const Matrix& GetWorldMatrix() const;
+
+        /**
+         * @brief World Forward Vector 반환
+         * @return Vector3 Forward Vector
+         */
+        [[nodiscard]] Vector3 GetForwardVector() const;
+
+        /**
+         * @brief World Up Vector 반환
+         * @return Vector3 Up Vector
+         */
+        [[nodiscard]] Vector3 GetUpVector() const;
+
+        /**
+         * @brief World Right Vector 반환
+         * @return Vector3 Right Vector
+         */
+        [[nodiscard]] Vector3 GetRightVector() const;
 
     protected:
         Transform m_transform;
