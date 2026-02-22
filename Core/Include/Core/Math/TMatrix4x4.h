@@ -4,6 +4,7 @@
 #include "Core/Math/TVector2.h"
 #include "Core/Math/TVector3.h"
 #include "Core/Math/TVector4.h"
+#include "MathConstants.h"
 
 namespace TDME
 {
@@ -111,7 +112,11 @@ namespace TDME
          */
         constexpr TMatrix4x4 Inverse() const
         {
-            T det    = Determinant();
+            T det = Determinant();
+            if (det > T(-Math::SmallNumber) && det < T(Math::SmallNumber))
+            {
+                return Identity();
+            }
             T invDet = T(1) / det;
 
             TMatrix4x4 result;

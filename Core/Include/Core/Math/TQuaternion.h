@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/CoreMacros.h"
+#include "Core/Math/TVector3.h"
 #include "TVector3.h"
 #include "TMatrix4x4.h"
 
@@ -130,6 +131,33 @@ namespace TDME
             TVector3<T> uuv = qv.Cross(uv);
 
             return v + (uv * W + uuv) * T(2);
+        }
+
+        /**
+         * @brief 쿼터니언으로 회전된 Z축 방향 벡터를 반환
+         * @return constexpr TVector3<T> 회전된 Z축 방향 벡터
+         */
+        constexpr TVector3<T> GetForwardVector() const
+        {
+            return RotateVector(TVector3<T>(T(0), T(0), T(1)));
+        }
+
+        /**
+         * @brief 쿼터니언으로 회전된 X축 방향 벡터를 반환
+         * @return constexpr TVector3<T> 회전된 X축 방향 벡터
+         */
+        constexpr TVector3<T> GetRightVector() const
+        {
+            return RotateVector(TVector3<T>(T(1), T(0), T(0)));
+        }
+
+        /**
+         * @brief 쿼터니언으로 회전된 Y축 방향 벡터를 반환
+         * @return constexpr TVector3<T> 회전된 Y축 방향 벡터
+         */
+        constexpr TVector3<T> GetUpVector() const
+        {
+            return RotateVector(TVector3<T>(T(0), T(1), T(0)));
         }
 
         //////////////////////////////////////////////////////////////

@@ -9,13 +9,59 @@
 namespace TDME
 {
     /**
+     * @brief 3D 이동 행렬 생성
+     * @tparam T 행렬 요소 타입
+     * @param x X 이동 거리
+     * @param y Y 이동 거리
+     * @param z Z 이동 거리
+     * @return TMatrix4x4<T> 3D 이동 행렬
+     */
+    template <typename T>
+    FORCE_INLINE constexpr TMatrix4x4<T> TranslationMatrix(T x, T y, T z)
+    {
+        return TMatrix4x4<T>(1, 0, 0, 0,
+                             0, 1, 0, 0,
+                             0, 0, 1, 0,
+                             x, y, z, 1);
+    }
+
+    /**
+     * @brief 3D 이동 행렬 생성 (벡터 사용)
+     * @tparam T 행렬 요소 타입
+     * @param position 이동 위치
+     * @return TMatrix4x4<T> 3D 이동 행렬
+     */
+    template <typename T>
+    FORCE_INLINE constexpr TMatrix4x4<T> TranslationMatrix(const TVector3<T>& position)
+    {
+        return TranslationMatrix(position.X, position.Y, position.Z);
+    }
+
+    /**
+     * @brief 3D 스케일 행렬 생성
+     * @tparam T 행렬 요소 타입
+     * @param x X 스케일 값 (기본값: 1)
+     * @param y Y 스케일 값 (기본값: 1)
+     * @param z Z 스케일 값 (기본값: 1)
+     * @return TMatrix4x4<T> 3D 스케일 행렬
+     */
+    template <typename T>
+    FORCE_INLINE constexpr TMatrix4x4<T> ScaleMatrix(T x = T(1), T y = T(1), T z = T(1))
+    {
+        return TMatrix4x4<T>(x, 0, 0, 0,
+                             0, y, 0, 0,
+                             0, 0, z, 0,
+                             0, 0, 0, 1);
+    }
+
+    /**
      * @brief 2D 이동 행렬 생성 (Z = 0 인 평면)
      * @param x X 이동 거리
      * @param y Y 이동 거리
      * @return TMatrix4x4<T> 2D 이동 행렬
      */
     template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Translation2D(T x, T y)
+    FORCE_INLINE constexpr TMatrix4x4<T> TranslationMatrix2D(T x, T y)
     {
         return TMatrix4x4<T>(1, 0, 0, 0,
                              0, 1, 0, 0,
@@ -30,9 +76,9 @@ namespace TDME
      * @return TMatrix4x4<T> 2D 이동 행렬
      */
     template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Translation2D(const TVector2<T>& position)
+    FORCE_INLINE constexpr TMatrix4x4<T> TranslationMatrix2D(const TVector2<T>& position)
     {
-        return Translation2D(position.X, position.Y);
+        return TranslationMatrix2D(position.X, position.Y);
     }
 
     /**
@@ -42,9 +88,9 @@ namespace TDME
      * @return TMatrix4x4<T> 2D 이동 행렬
      */
     template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Translation2D(const TVector3<T>& position)
+    FORCE_INLINE constexpr TMatrix4x4<T> TranslationMatrix2D(const TVector3<T>& position)
     {
-        return Translation2D(position.X, position.Y);
+        return TranslationMatrix2D(position.X, position.Y);
     }
 
     /**
@@ -55,7 +101,7 @@ namespace TDME
      * @return TMatrix4x4<T> 2D 회전 행렬
      */
     template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Rotation2D(T radian)
+    FORCE_INLINE constexpr TMatrix4x4<T> RotationMatrix2D(T radian)
     {
         T c = std::cos(radian);
         T s = std::sin(radian);
@@ -74,7 +120,7 @@ namespace TDME
      * @return TMatrix4x4<T> 2D 스케일 행렬
      */
     template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Scale2D(T x = T(1), T y = T(1))
+    FORCE_INLINE constexpr TMatrix4x4<T> ScaleMatrix2D(T x = T(1), T y = T(1))
     {
         return TMatrix4x4<T>(x, 0, 0, 0,
                              0, y, 0, 0,
@@ -89,9 +135,9 @@ namespace TDME
      * @return TMatrix4x4<T> 2D 스케일 행렬
      */
     template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Scale2D(T scale)
+    FORCE_INLINE constexpr TMatrix4x4<T> ScaleMatrix2D(T scale)
     {
-        return Scale2D(scale, scale);
+        return ScaleMatrix2D(scale, scale);
     }
 
     /**
@@ -101,9 +147,9 @@ namespace TDME
      * @return TMatrix4x4<T> 2D 스케일 행렬
      */
     template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Scale2D(const TVector2<T>& scale)
+    FORCE_INLINE constexpr TMatrix4x4<T> ScaleMatrix2D(const TVector2<T>& scale)
     {
-        return Scale2D(scale.X, scale.Y);
+        return ScaleMatrix2D(scale.X, scale.Y);
     }
 
     /**
@@ -113,56 +159,14 @@ namespace TDME
      * @return TMatrix4x4<T> 2D 스케일 행렬
      */
     template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Scale2D(const TVector3<T>& scale)
+    FORCE_INLINE constexpr TMatrix4x4<T> ScaleMatrix2D(const TVector3<T>& scale)
     {
-        return Scale2D(scale.X, scale.Y);
+        return ScaleMatrix2D(scale.X, scale.Y);
     }
 
-    /**
-     * @brief 3D 이동 행렬 생성
-     * @tparam T 행렬 요소 타입
-     * @param x X 이동 거리
-     * @param y Y 이동 거리
-     * @param z Z 이동 거리
-     * @return TMatrix4x4<T> 3D 이동 행렬
-     */
-    template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Translation3D(T x, T y, T z)
-    {
-        return TMatrix4x4<T>(1, 0, 0, 0,
-                             0, 1, 0, 0,
-                             0, 0, 1, 0,
-                             x, y, z, 1);
-    }
-
-    /**
-     * @brief 3D 이동 행렬 생성 (벡터 사용)
-     * @tparam T 행렬 요소 타입
-     * @param position 이동 위치
-     * @return TMatrix4x4<T> 3D 이동 행렬
-     */
-    template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Translation3D(const TVector3<T>& position)
-    {
-        return Translation3D(position.X, position.Y, position.Z);
-    }
-
-    /**
-     * @brief 3D 스케일 행렬 생성
-     * @tparam T 행렬 요소 타입
-     * @param x X 스케일 값 (기본값: 1)
-     * @param y Y 스케일 값 (기본값: 1)
-     * @param z Z 스케일 값 (기본값: 1)
-     * @return TMatrix4x4<T> 3D 스케일 행렬
-     */
-    template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> Scale3D(T x = T(1), T y = T(1), T z = T(1))
-    {
-        return TMatrix4x4<T>(x, 0, 0, 0,
-                             0, y, 0, 0,
-                             0, 0, z, 0,
-                             0, 0, 0, 1);
-    }
+    //////////////////////////////////////////////////////////////
+    // 벡터 변환 함수
+    //////////////////////////////////////////////////////////////
 
     /**
      * @brief 3D 점 변환 함수
@@ -172,7 +176,7 @@ namespace TDME
      * @return TVector3<T> 변환된 점
      */
     template <typename T>
-    FORCE_INLINE constexpr TMatrix4x4<T> TransformPoint(const TVector3<T>& point, const TMatrix4x4<T>& matrix)
+    FORCE_INLINE constexpr TVector3<T> TransformPosition(const TVector3<T>& point, const TMatrix4x4<T>& matrix)
     {
         // W = 1로 확장하여 변환 후 원근을 나누어 점으로 변환
         T x = point.X * matrix._11 + point.Y * matrix._21 + point.Z * matrix._31 + matrix._41;
@@ -187,10 +191,6 @@ namespace TDME
         return TVector3<T>(x, y, z);
     }
 
-    //////////////////////////////////////////////////////////////
-    // 벡터 변환 함수
-    //////////////////////////////////////////////////////////////
-
     /**
      * @brief 2D 점 변환 함수
      * @tparam T 행렬 요소 타입
@@ -199,7 +199,7 @@ namespace TDME
      * @return TVector2<T> 변환된 점
      */
     template <typename T>
-    FORCE_INLINE constexpr TVector2<T> TransformPoint2D(const TVector2<T>& point, const TMatrix4x4<T>& matrix)
+    FORCE_INLINE constexpr TVector2<T> TransformPosition2D(const TVector2<T>& point, const TMatrix4x4<T>& matrix)
     {
         T x = point.X * matrix._11 + point.Y * matrix._21 + matrix._41;
         T y = point.X * matrix._12 + point.Y * matrix._22 + matrix._42;
@@ -210,20 +210,6 @@ namespace TDME
             return TVector2<T>(x / w, y / w);
         }
         return TVector2<T>(x, y);
-    }
-
-    /**
-     * @brief 2D 벡터 변환 함수
-     * @tparam T 행렬 요소 타입
-     * @param vector 변환할 벡터
-     * @param matrix 변환 행렬
-     * @return TVector2<T> 변환된 벡터
-     */
-    template <typename T>
-    FORCE_INLINE constexpr TVector2<T> TransformVector2D(const TVector2<T>& vector, const TMatrix4x4<T>& matrix)
-    {
-        return TVector2<T>(vector.X * matrix._11 + vector.Y * matrix._21,
-                           vector.X * matrix._12 + vector.Y * matrix._22);
     }
 
     /**
@@ -239,6 +225,20 @@ namespace TDME
         return TVector3<T>(vector.X * matrix._11 + vector.Y * matrix._21 + vector.Z * matrix._31,
                            vector.X * matrix._12 + vector.Y * matrix._22 + vector.Z * matrix._32,
                            vector.X * matrix._13 + vector.Y * matrix._23 + vector.Z * matrix._33);
+    }
+
+    /**
+     * @brief 2D 벡터 변환 함수
+     * @tparam T 행렬 요소 타입
+     * @param vector 변환할 벡터
+     * @param matrix 변환 행렬
+     * @return TVector2<T> 변환된 벡터
+     */
+    template <typename T>
+    FORCE_INLINE constexpr TVector2<T> TransformVector2D(const TVector2<T>& vector, const TMatrix4x4<T>& matrix)
+    {
+        return TVector2<T>(vector.X * matrix._11 + vector.Y * matrix._21,
+                           vector.X * matrix._12 + vector.Y * matrix._22);
     }
 
     //////////////////////////////////////////////////////////////

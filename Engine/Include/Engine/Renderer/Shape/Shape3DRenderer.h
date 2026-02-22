@@ -71,7 +71,7 @@ namespace TDME
         // BuildSphereBuffers는 stacks/slices가 변경될 때만 다시 호출.
         // 같은 파라미터라면 이전에 만든 GPU 버퍼를 재사용 (Sphere의 모양은 버퍼에 고정되고, 크기(radius)는 월드 행렬의 스케일로 처리)
         //////////////////////////////////////////////////////////////
-        std::unique_ptr<IBuffer> m_sphereVB = nullptr; // 텍스처용 정점 버퍼 (Vertex2DPT)
+        std::unique_ptr<IBuffer> m_sphereVB = nullptr; // 텍스처용 정점 버퍼 (VertexPT)
         std::unique_ptr<IBuffer> m_sphereIB = nullptr; // 인덱스 버퍼 (uint16)
 
         uint32 m_cachedStacks = 0; // 캐싱된 stacks

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/CoreMacros.h"
+#include "MathConstants.h"
 #include "TVector3.h"
 #include "TVectorOperations.h"
 
@@ -71,14 +72,21 @@ namespace TDME
          * @details W 값으로 나누어 원근을 나눈 3차원 벡터로 변환
          * @return TVector3<T> 3차원 벡터
          */
-        FORCE_INLINE constexpr TVector3<T> ToCartesian() const { return TVector3<T>(X / W, Y / W, Z / W); }
+        FORCE_INLINE constexpr TVector3<T> ToCartesian() const
+        {
+            if (W > T(-Math::SmallNumber) && W < T(Math::SmallNumber))
+            {
+                return TVector3<T>(X, Y, Z); // W 가 0 에 가까우면 방향 벡터로 취급
+            }
+            return TVector3<T>(X / W, Y / W, Z / W);
+        }
 
         /**
          * @brief 3차원 벡터를 4차원 점 벡터로 반환
          * @param v 3차원 벡터
          * @return TVector4 4차원 점 벡터
          */
-        static FORCE_INLINE constexpr TVector4 Point(const TVector3<T>& v) { return TVector4(v, T(1)); }
+        static FORCE_INLINE constexpr TVector4 Position(const TVector3<T>& v) { return TVector4(v, T(1)); }
 
         /**
          * @brief 3차원 벡터를 4차원 벡터로 반환

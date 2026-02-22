@@ -2,6 +2,7 @@
 
 #include "Core/CoreMacros.h"
 #include "Core/CoreTypes.h"
+#include "MathConstants.h"
 #include <cmath>
 
 namespace TDME
@@ -63,6 +64,10 @@ namespace TDME
         INLINE Derived Normalized() const
         {
             T len = Length();
+            if (len < T(Math::SmallNumber))
+            {
+                return Derived{};
+            }
 
             Derived result;
             for (size_t i = 0; i < N; i++)
@@ -137,6 +142,21 @@ namespace TDME
         }
 
         /**
+         * @brief 두 벡터의 곱을 반환
+         * @param other 다른 벡터
+         * @return Derived 두 벡터의 곱 결과
+         */
+        constexpr Derived operator*(const Derived& other) const
+        {
+            Derived result;
+            for (size_t i = 0; i < N; i++)
+            {
+                result.Data[i] = Self().Data[i] * other.Data[i];
+            }
+            return result;
+        }
+
+        /**
          * @brief 벡터의 스칼라 나눗셈을 반환
          * @param scalar 스칼라값
          * @return Derived 벡터의 스칼라 나눗셈 결과
@@ -152,16 +172,99 @@ namespace TDME
         }
 
         /**
-         * @brief 두 벡터의 곱을 반환
+         * @brief 덧셈 대입 연산자 (+=)
          * @param other 다른 벡터
-         * @return Derived 두 벡터의 곱 결과
+         * @return const Derived& 덧셈 결과 자기 자긴
          */
-        constexpr Derived operator*(const Derived& other) const
+        constexpr Derived& operator+=(const Derived& other)
+        {
+            for (size_t i = 0; i < N; i++)
+            {
+                Self().Data[i] += other.Data[i];
+            }
+            return Self();
+        }
+
+        /**
+         * @brief 뺄셈 대입 연산자 (-=)
+         * @param other 다른 벡터
+         * @return constexpr Derived& 뺄셈 결과 자기 자신
+         */
+        constexpr Derived& operator-=(const Derived& other)
+        {
+            for (size_t i = 0; i < N; i++)
+            {
+                Self().Data[i] -= other.Data[i];
+            }
+            return Self();
+        }
+
+        /**
+         * @brief 스칼라 곱 대입 연산자 (*=)
+         * @param scalar 스칼라값
+         * @return constexpr Derived& 스칼라 곱 결과 자기 자신
+         */
+        constexpr Derived& operator*=(T scalar)
+        {
+            for (size_t i = 0; i < N; i++)
+            {
+                Self().Data[i] *= scalar;
+            }
+            return Self();
+        }
+
+        /**
+         * @brief 벡터 곱 대입 연산자 (*=)
+         * @param other 다른 벡터
+         * @return constexpr Derived& 벡터 곱 결과 자기 자신
+         */
+        constexpr Derived& operator*=(const Derived& other)
+        {
+            for (size_t i = 0; i < N; i++)
+            {
+                Self().Data[i] *= other.Data[i];
+            }
+            return Self();
+        }
+
+        /**
+         * @brief 스칼라 나눗셈 대입 연산자 (/=)
+         * @param scalar 스칼라값
+         * @return constexpr Derived& 스칼라 나눗셈 결과 자기 자신
+         */
+        constexpr Derived& operator/=(T scalar)
+        {
+            for (size_t i = 0; i < N; i++)
+            {
+                Self().Data[i] /= scalar;
+            }
+            return Self();
+        }
+
+        /**
+         * @brief 인덱스 연산자([])
+         * @param index 인덱스
+         * @return T& 인덱스에 해당하는 요소의 참조
+         */
+        constexpr T& operator[](size_t index) { return Self().Data[index]; }
+
+        /**
+         * @brief 인덱스 연산자([]) - 상수 버전
+         * @param index 인덱스
+         * @return const T& 인덱스에 해당하는 요소의 상수 참조
+         */
+        constexpr const T& operator[](size_t index) const { return Self().Data[index]; }
+
+        /**
+         * @brief 단항 부정 연산자 (-)
+         * @return constexpr Derived 부호 반전
+         */
+        constexpr Derived operator-() const
         {
             Derived result;
             for (size_t i = 0; i < N; i++)
             {
-                result.Data[i] = Self().Data[i] * other.Data[i];
+                result.Data[i] = -Self().Data[i];
             }
             return result;
         }
@@ -182,20 +285,6 @@ namespace TDME
             }
             return true;
         }
-
-        /**
-         * @brief 인덱스 연산자([])
-         * @param index 인덱스
-         * @return T& 인덱스에 해당하는 요소의 참조
-         */
-        constexpr T& operator[](size_t index) { return Self().Data[index]; }
-
-        /**
-         * @brief 인덱스 연산자([]) - 상수 버전
-         * @param index 인덱스
-         * @return const T& 인덱스에 해당하는 요소의 상수 참조
-         */
-        constexpr const T& operator[](size_t index) const { return Self().Data[index]; }
     };
 
 } // namespace TDME

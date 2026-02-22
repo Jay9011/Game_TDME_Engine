@@ -71,7 +71,7 @@ namespace TDME
     //////////////////////////////////////////////////////////////
     // 타입 별칭
     //////////////////////////////////////////////////////////////
-    // Vector 별칭칭
+    // Vector 별칭
 
     using Vector2F = TVector2<float>;  // float 2차원 벡터
     using Vector2D = TVector2<double>; // double 2차원 벡터

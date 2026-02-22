@@ -15,7 +15,9 @@ namespace TDME
         constexpr float DegToRad = Pi / 180.0f; // 1도를 라디안으로 변환
         constexpr float RadToDeg = 180.0f / Pi; // 1라디안을 도로 변환
 
-        constexpr float Epsilon = 1.1920928955078125e-07f;
+        constexpr float Epsilon          = 1.1920928955078125e-07f; // ≈ 약 0.0000001
+        constexpr float SmallNumber      = 1.e-8f;                  // ≈ 약 0.00000001
+        constexpr float KindaSmallNumber = 1.e-4f;                  // ≈ 약 0.0001
 
     } // namespace Math
 } // namespace TDME

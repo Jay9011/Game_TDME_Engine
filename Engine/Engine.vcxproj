@@ -159,15 +159,18 @@
     <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplayMode.h" />
     <ClInclude Include="Include\Engine\ApplicationCore\Display\DisplaySettings.h" />
     <ClInclude Include="Include\Engine\ApplicationCore\IApplication.h" />
+    <ClInclude Include="Include\Engine\EngineContext.h" />
     <ClInclude Include="Include\Engine\Input\EKeys.h" />
     <ClInclude Include="Include\Engine\Input\EKeyType.h" />
     <ClInclude Include="Include\Engine\ApplicationCore\IApplicationMessageHandler.h" />
     <ClInclude Include="Include\Engine\Input\Key.h" />
     <ClInclude Include="Include\Engine\Object\Actor\AActor.h" />
     <ClInclude Include="Include\Engine\Object\Component\GActorComponent.h" />
+    <ClInclude Include="Include\Engine\Object\Component\GCameraComponent.h" />
     <ClInclude Include="Include\Engine\Object\Component\GSceneComponent.h" />
     <ClInclude Include="Include\Engine\Object\GameObject.h" />
     <ClInclude Include="Include\Engine\Object\ILifecycle.h" />
+    <ClInclude Include="Include\Engine\Object\IRenderable.h" />
     <ClInclude Include="Include\Engine\Object\IUpdatable.h" />
     <ClInclude Include="Include\Engine\Renderer\EPivot.h" />
     <ClInclude Include="Include\Engine\Renderer\EPrimitiveType.h" />
@@ -208,12 +211,14 @@
     <ClInclude Include="Include\Engine\RHI\IRHIDevice.h" />
     <ClInclude Include="Include\Engine\RHI\Texture\ITexture.h" />
     <ClInclude Include="Include\Engine\RHI\Vertex\IVertexLayout.h" />
-    <ClInclude Include="Include\Engine\Renderer\Vertex2DTypes.h" />
+    <ClInclude Include="Include\Engine\Renderer\VertexTypes.h" />
     <ClInclude Include="Include\Engine\RHI\SwapChain\SwapChainDesc.h" />
     <ClInclude Include="Include\Engine\RHI\Texture\TextureDesc.h" />
     <ClInclude Include="Include\Engine\RHI\Vertex\VertexElement.h" />
     <ClInclude Include="Include\Engine\RHI\Vertex\VertexLayoutDesc.h" />
     <ClInclude Include="Include\Engine\Time\ITimer.h" />
+    <ClInclude Include="Include\Engine\World\Level.h" />
+    <ClInclude Include="Include\Engine\World\World.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -226,10 +231,13 @@
     <ClCompile Include="Source\Input\EKeys.cpp" />
     <ClCompile Include="Source\Object\Actor\AActor.cpp" />
     <ClCompile Include="Source\Object\Component\GActorComponent.cpp" />
+    <ClCompile Include="Source\Object\Component\GCameraComponent.cpp" />
     <ClCompile Include="Source\Object\Component\GSceneComponent.cpp" />
     <ClCompile Include="Source\Object\GameObject.cpp" />
     <ClCompile Include="Source\Renderer\Shape\Shape2DRenderer.cpp" />
     <ClCompile Include="Source\Renderer\Shape\Shape3DRenderer.cpp" />
+    <ClCompile Include="Source\World\Level.cpp" />
+    <ClCompile Include="Source\World\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

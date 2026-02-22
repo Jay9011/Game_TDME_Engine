@@ -16,7 +16,7 @@
 #include "Engine/RHI/Vertex/VertexLayoutDesc.h"
 #include "Engine/Renderer/IRenderer.h"
 #include "Engine/Renderer/EPrimitiveType.h"
-#include "Engine/Renderer/Vertex2DTypes.h"
+#include "Engine/Renderer/VertexTypes.h"
 
 #include <cmath>
 #include <vector>
@@ -47,7 +47,7 @@ namespace TDME
     {
         Color32 color32 = Color32::FromColor(color);
 
-        std::vector<Vertex2DPC> vertices;
+        std::vector<VertexPC> vertices;
         vertices.reserve(stacks * slices * 6);
 
         for (uint32 i = 0; i < stacks; i++)
@@ -88,7 +88,7 @@ namespace TDME
 
         m_renderer->SetWorldMatrix(worldMatrix);
         m_renderer->SetVertexLayout(m_colorLayout.get());
-        m_renderer->DrawPrimitives(EPrimitiveType::TriangleList, vertices.data(), static_cast<uint32>(vertices.size()), sizeof(Vertex2DPC));
+        m_renderer->DrawPrimitives(EPrimitiveType::TriangleList, vertices.data(), static_cast<uint32>(vertices.size()), sizeof(VertexPC));
     }
 
     void Shape3DRenderer::DrawTexturedSphere(const Matrix& worldMatrix, float radius, ITexture* texture, uint32 stacks, uint32 slices)
@@ -99,7 +99,7 @@ namespace TDME
             return;
 
         // 단위 구 버퍼 + 스케일 행렬로 반지름 적용
-        Matrix scaledWorld = Scale3D(radius, radius, radius) * worldMatrix;
+        Matrix scaledWorld = ScaleMatrix(radius, radius, radius) * worldMatrix;
 
         m_renderer->SetWorldMatrix(scaledWorld);
         m_renderer->SetVertexLayout(m_textureLayout.get());
@@ -119,8 +119,8 @@ namespace TDME
             return;
 
         // 1. 정점 생성 (단위 구, radius = 1)
-        const uint32            vertexCount = (stacks + 1) * (slices + 1);
-        std::vector<Vertex2DPT> vertices;
+        const uint32          vertexCount = (stacks + 1) * (slices + 1);
+        std::vector<VertexPT> vertices;
         vertices.reserve(vertexCount);
 
         for (uint32 i = 0; i <= stacks; i++)
@@ -175,8 +175,8 @@ namespace TDME
         BufferDesc vbDesc;
         vbDesc.Type     = EBufferType::Vertex;
         vbDesc.Usage    = EBufferUsage::Default;
-        vbDesc.ByteSize = static_cast<uint32>(vertices.size() * sizeof(Vertex2DPT));
-        vbDesc.Stride   = sizeof(Vertex2DPT);
+        vbDesc.ByteSize = static_cast<uint32>(vertices.size() * sizeof(VertexPT));
+        vbDesc.Stride   = sizeof(VertexPT);
 
         m_sphereVB = m_device->CreateBuffer(vbDesc, vertices.data());
 

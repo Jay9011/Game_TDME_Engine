@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Factory\Win32DX9Factory.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -161,6 +162,7 @@
     <ClCompile Include="Source\Object\Actor\APlanet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Game\Factory\Win32DX9Factory.h" />
     <ClInclude Include="Include\Game\Object\Actor\APlanet.h" />
     <ClInclude Include="Include\Game\Types\Color.h" />
     <ClInclude Include="pch.h" />

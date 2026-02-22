@@ -48,7 +48,7 @@
     <ClInclude Include="Include\Engine\RHI\Vertex\EVertexSemantic.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\Renderer\Vertex2DTypes.h">
+    <ClInclude Include="Include\Engine\Renderer\VertexTypes.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Engine\RHI\Vertex\VertexElement.h">
@@ -195,6 +195,21 @@
     <ClInclude Include="Include\Engine\Renderer\Shape\Shape3DRenderer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Engine\Object\IRenderable.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\World\World.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\World\Level.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\EngineContext.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\Object\Component\GCameraComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -219,6 +234,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Source\Renderer\Shape\Shape3DRenderer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\World.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Level.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Component\GCameraComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

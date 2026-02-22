@@ -37,15 +37,18 @@ namespace TDME
         }
     }
 
-    void APlanet::Render(Shape3DRenderer& renderer)
+    void APlanet::Render()
     {
+        if (!m_renderer)
+            return;
+
         if (m_texture) // 텍스처가 있으면 텍스처 기반으로 렌더링
         {
-            renderer.DrawTexturedSphere(m_body->GetWorldMatrix(), m_bodyRadius, m_texture);
+            m_renderer->DrawTexturedSphere(m_body->GetWorldMatrix(), m_bodyRadius, m_texture);
         }
         else // (폴백) 텍스처가 없으면 색상 기반으로 렌더링
         {
-            renderer.DrawSphere(m_body->GetWorldMatrix(), m_bodyRadius, m_color);
+            m_renderer->DrawSphere(m_body->GetWorldMatrix(), m_bodyRadius, m_color);
         }
     }
 

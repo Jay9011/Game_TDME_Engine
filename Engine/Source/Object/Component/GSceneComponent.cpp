@@ -7,7 +7,7 @@ namespace TDME
         : GActorComponent(), m_transform(), m_parent(nullptr), m_children()
     {
     }
-    
+
     GSceneComponent::~GSceneComponent()
     {
         DetachFromParent();
@@ -48,7 +48,7 @@ namespace TDME
             SetTransformDirty(); // 부모에서 분리되었으므로 World Matrix 캐시 무효화
         }
     }
-    
+
     //////////////////////////////////////////////////////////////
     // Getter / Setter
     //////////////////////////////////////////////////////////////
@@ -117,7 +117,7 @@ namespace TDME
 
         if (m_parent)
         {
-            // Loacl Matrix x Parent World Matrix (부모가 Dirty Flag면 부모도 재계산 수 캐시 반환)
+            // Local Matrix x Parent World Matrix (부모가 Dirty Flag면 부모도 재계산 후 캐시 반환)
             m_cachedWorldMatrix = localMatrix * m_parent->GetWorldMatrix();
         }
         else

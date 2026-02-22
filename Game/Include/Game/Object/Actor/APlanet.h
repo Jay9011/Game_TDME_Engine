@@ -3,6 +3,7 @@
 #include <Core/Types/Color.h>
 
 #include <Engine/Object/Actor/AActor.h>
+#include <Engine/Object/IRenderable.h>
 
 namespace TDME
 {
@@ -10,7 +11,7 @@ namespace TDME
     class GSceneComponent;
     class Shape3DRenderer;
 
-    class APlanet : public AActor
+    class APlanet : public AActor, public IRenderable
     {
     public:
         APlanet();
@@ -21,7 +22,7 @@ namespace TDME
         //////////////////////////////////////////////////////////////
 
         void Update(float deltaTime) override;
-        void Render(Shape3DRenderer& renderer);
+        void Render() override;
 
         //////////////////////////////////////////////////////////////
         // 메서드들
@@ -89,6 +90,12 @@ namespace TDME
          */
         void SetTexture(ITexture* texture) { m_texture = texture; }
 
+        /**
+         * @brief 렌더러 설정
+         * @param renderer 렌더러
+         */
+        void SetRenderer(Shape3DRenderer* renderer) { m_renderer = renderer; }
+
     private:
         GSceneComponent* m_orbit       = nullptr; // 공전 공간(Root Component)
         GSceneComponent* m_orbitOffset = nullptr; // 공전 반경 오프셋
@@ -100,5 +107,7 @@ namespace TDME
 
         Color     m_color   = Colors::WHITE; // 행성 색상
         ITexture* m_texture = nullptr;       // 행성 텍스처
+
+        Shape3DRenderer* m_renderer = nullptr;
     }; // class APlanet
 } // namespace TDME

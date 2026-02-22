@@ -24,4 +24,4 @@ namespace TDME
     {
         m_owner = nullptr;
     }
-}; // namespace TDME
+} // namespace TDME

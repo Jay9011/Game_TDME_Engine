@@ -32,21 +32,55 @@ namespace TDME
         Matrix ToMatrix() const
         {
             // 1. 스케일 행렬
-            Matrix scaleMatrix = Scale3D(Scale.X, Scale.Y, Scale.Z);
+            Matrix scaleMatrix = ScaleMatrix(Scale.X, Scale.Y, Scale.Z);
 
             // 2. 회전 행렬 (쿼터니언 => 행렬)
             Matrix rotationMatrix = Quaternion::ToMatrix(Rotation);
 
             // 3. 이동 행렬
-            Matrix translationMatrix = Translation3D(Position);
+            Matrix translationMatrix = TranslationMatrix(Position);
 
             // SRT 행렬 계산
             return scaleMatrix * rotationMatrix * translationMatrix;
         }
 
         //////////////////////////////////////////////////////////////
+        // 정적 함수
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 2D 값으로 Transform을 생성
+         * @param position 위치
+         * @param rotation 회전
+         * @param scale 스케일
+         * @return Transform 생성된 Transform
+         */
+        static constexpr Transform From2D(const Vector2& position, float rotation, const Vector2& scale = Vector2::One())
+        {
+            return Transform(Vector3(position.X, position.Y, 0), Quaternion::FromRotationZ(rotation), Vector3(scale.X, scale.Y, 1));
+        }
+
+        //////////////////////////////////////////////////////////////
         // Getter/Setter
         //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief Forward Vector 반환
+         * @return Vector3 Forward Vector
+         */
+        constexpr Vector3 GetForwardVector() const { return Rotation.GetForwardVector(); }
+
+        /**
+         * @brief Right Vector 반환
+         * @return Vector3 Right Vector
+         */
+        constexpr Vector3 GetRightVector() const { return Rotation.GetRightVector(); }
+
+        /**
+         * @brief Up Vector 반환
+         * @return Vector3 Up Vector
+         */
+        constexpr Vector3 GetUpVector() const { return Rotation.GetUpVector(); }
 
         /**
          * @brief 2D 위치 반환
@@ -105,20 +139,5 @@ namespace TDME
             Scale.Y = scale.Y;
         }
 
-        //////////////////////////////////////////////////////////////
-        // 정적 함수
-        //////////////////////////////////////////////////////////////
-
-        /**
-         * @brief 2D 값으로 Transform을 생성
-         * @param position 위치
-         * @param rotation 회전
-         * @param scale 스케일
-         * @return Transform 생성된 Transform
-         */
-        static constexpr Transform From2D(const Vector2& position, float rotation, const Vector2& scale = Vector2::One())
-        {
-            return Transform(Vector3(position.X, position.Y, 0), Quaternion::FromRotationZ(rotation), Vector3(scale.X, scale.Y, 1));
-        }
     }; // struct Transform
 } // namespace TDME
