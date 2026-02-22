@@ -31,19 +31,19 @@ namespace TDME
 
     void GCameraComponent::RotateYaw(float radian)
     {
-        Quaternion yawRotation = Quaternion::FromAxisAngle(m_transform.GetUpVector(), radian);
+        Quaternion yawRotation = Quaternion::FromAxisAngle(Vector3::Up(), radian);
         SetRotation((m_transform.Rotation * yawRotation).Normalized());
     }
 
     void GCameraComponent::RotatePitch(float radian)
     {
-        Quaternion pitchRotation = Quaternion::FromAxisAngle(m_transform.GetRightVector(), radian);
+        Quaternion pitchRotation = Quaternion::FromAxisAngle(Vector3::Right(), radian);
         SetRotation((m_transform.Rotation * pitchRotation).Normalized());
     }
 
     void GCameraComponent::RotateRoll(float radian)
     {
-        Quaternion rollRotation = Quaternion::FromAxisAngle(m_transform.GetForwardVector(), radian);
+        Quaternion rollRotation = Quaternion::FromAxisAngle(Vector3::Forward(), radian);
         SetRotation((m_transform.Rotation * rollRotation).Normalized());
     }
 

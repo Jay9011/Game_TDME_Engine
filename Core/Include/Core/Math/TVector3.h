@@ -78,6 +78,9 @@ namespace TDME
         static constexpr TVector3 UnitX() { return TVector3(T(1), T(0), T(0)); }
         static constexpr TVector3 UnitY() { return TVector3(T(0), T(1), T(0)); }
         static constexpr TVector3 UnitZ() { return TVector3(T(0), T(0), T(1)); }
+        static constexpr TVector3 Right() { return TVector3(T(1), T(0), T(0)); }
+        static constexpr TVector3 Up() { return TVector3(T(0), T(1), T(0)); }
+        static constexpr TVector3 Forward() { return TVector3(T(0), T(0), T(1)); }
     };
 
     //////////////////////////////////////////////////////////////
