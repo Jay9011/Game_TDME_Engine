@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Renderer_DX9/DX9Device.h"
 
-#include <Engine/RHI/SwapChain/SwapChainDesc.h>
-#include <Engine/RHI/Vertex/InputLayoutDesc.h>
+#include <Engine/RHI/Shader/IPixelShader.h>
+#include <Engine/RHI/Shader/IVertexShader.h>
 
 #include "Renderer_DX9/Buffer/DX9Buffer.h"
 #include "Renderer_DX9/State/DX9RasterizerState.h"

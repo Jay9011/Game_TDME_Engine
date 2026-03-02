@@ -3,6 +3,7 @@
 #include <Core/Math/TMatrix4x4.h>
 #include <Engine/RHI/IRHIContext.h>
 #include <Engine/RHI/IRHIDevice.h>
+#include <Engine/RHI/Buffer/IBuffer.h>
 #include <Engine/Renderer/EPrimitiveType.h>
 #include <Engine/Renderer/IRenderer.h>
 
@@ -219,9 +220,11 @@ namespace TDME
         void SetDevice(DX9Device* device);
 
     private:
-        DX9Device*        m_device          = nullptr;                      // Engine 디바이스 객체
-        IDirect3DDevice9* m_nativeDevice    = nullptr;                      // Direct3D 9 디바이스 객체
-        IInputLayout*     m_currentLayout   = nullptr;                      // 현재 사용 중인 정점 레이아웃
-        EPrimitiveType    m_currentTopology = EPrimitiveType::TriangleList; // 현재 사용 중인 프리미티브 타입
+        DX9Device*        m_device       = nullptr; // Engine 디바이스 객체
+        IDirect3DDevice9* m_nativeDevice = nullptr; // Direct3D 9 디바이스 객체
+
+        EPrimitiveType m_currentTopology     = EPrimitiveType::TriangleList; // 현재 사용 중인 프리미티브 타입
+        IInputLayout*  m_currentLayout       = nullptr;                      // 현재 사용 중인 정점 레이아웃
+        IBuffer*       m_currentVertexBuffer = nullptr;                      // 현재 사용 중인 정점 버퍼
     };
 } // namespace TDME

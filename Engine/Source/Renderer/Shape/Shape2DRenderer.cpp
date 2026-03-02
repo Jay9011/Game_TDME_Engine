@@ -8,7 +8,6 @@
 
 #include "Engine/RHI/IRHIDevice.h"
 #include "Engine/RHI/IRHIContext.h"
-#include "Engine/RHI/Pipeline/PipelineStateDesc.h"
 #include "Engine/Renderer/IRenderer.h"
 #include "Engine/Renderer/VertexTypes.h"
 

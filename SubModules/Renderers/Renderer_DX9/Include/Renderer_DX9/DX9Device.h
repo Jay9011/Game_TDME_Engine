@@ -4,9 +4,10 @@
 #include <Engine/RHI/Pipeline/PipelineStateDesc.h>
 
 #include "DX9Renderer.h"
+
 #include <d3d9.h>
-#include <wrl/client.h>
 #include <memory>
+#include <wrl/client.h>
 
 namespace TDME
 {

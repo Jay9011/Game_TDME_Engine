@@ -38,6 +38,7 @@ namespace TDME
         if (!renderer->Initialize(window))
             return context;
 
+        context.Context  = renderer.get();
         context.Device   = std::move(device);
         context.Renderer = std::move(renderer);
 

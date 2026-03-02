@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Engine/ApplicationCore/IApplication.h"
+#include <Engine/ApplicationCore/IWindow.h>
 #include "Engine/ApplicationCore/WindowDesc.h"
 #include "Engine/RHI/IRHIDevice.h"
 #include "Engine/RHI/IRHIContext.h"
 #include "Engine/RHI/SwapChain/SwapChainDesc.h"
 #include "Engine/Time/ITimer.h"
 #include "Engine/Input/IInputDevice.h"
+#include "Engine/Input/EKeys.h"
 #include "Engine/Renderer/IRenderer.h"
 
 #include <memory>

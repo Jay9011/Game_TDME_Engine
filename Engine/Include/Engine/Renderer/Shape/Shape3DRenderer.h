@@ -25,7 +25,7 @@ namespace TDME
     {
     public:
         explicit Shape3DRenderer(IRenderer* renderer, IRHIContext* context, IRHIDevice* device);
-        ~Shape3DRenderer() = default;
+        ~Shape3DRenderer();
 
         /**
          * @brief 구(Sphere) 그리기

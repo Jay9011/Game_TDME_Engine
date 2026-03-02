@@ -2,6 +2,13 @@
 
 #include <Core/CoreTypes.h>
 
+#include "Engine/RHI/Buffer/BufferDesc.h"
+#include "Engine/RHI/Pipeline/PipelineStateDesc.h"
+#include "Engine/RHI/SwapChain/SwapChainDesc.h"
+#include "Engine/RHI/Texture/TextureDesc.h"
+#include "Engine/RHI/State/Blend/BlendStateDesc.h"
+#include "Engine/RHI/State/DepthStencil/DepthStencilStateDesc.h"
+
 #include <memory>
 
 namespace TDME
@@ -17,14 +24,6 @@ namespace TDME
     class IPipelineState;
     class IRasterizerState;
     class IVertexShader;
-    struct BufferDesc;
-    struct BlendStateDesc;
-    struct DepthStencilStateDesc;
-    struct SwapChainDesc;
-    struct TextureDesc;
-    struct InputLayoutDesc;
-    struct PipelineStateDesc;
-    struct RasterizerStateDesc;
 
     /**
      * @brief RHI 디바이스 인터페이스

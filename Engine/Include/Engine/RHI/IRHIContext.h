@@ -2,7 +2,9 @@
 
 #include <Core/CoreTypes.h>
 #include <Core/Geometry/TRect.h>
+#include <Core/Types/Color.h>
 
+#include "Engine/RHI/Viewport.h"
 #include "Engine/RHI/Shader/EShaderStage.h"
 
 namespace TDME
@@ -10,8 +12,6 @@ namespace TDME
     class IPipelineState;
     class IBuffer;
     class ITexture;
-    struct Color;
-    struct Viewport;
 
     /**
      * @brief RHI 컨텍스트 인터페이스

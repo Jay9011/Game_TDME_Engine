@@ -8,9 +8,6 @@
 #include <Core/Types/Color32.h>
 #include <Engine/RHI/Buffer/IBuffer.h>
 #include <Engine/RHI/IRHIDevice.h>
-#include <Engine/RHI/State/Blend/BlendStateDesc.h>
-#include <Engine/RHI/State/DepthStencil/DepthStencilStateDesc.h>
-#include <Engine/RHI/State/Rasterizer/RasterizerStateDesc.h>
 #include <Engine/RHI/Texture/ITexture.h>
 #include <Engine/RHI/Viewport.h>
 
@@ -50,9 +47,11 @@ namespace TDME
 
     void DX9Renderer::Shutdown()
     {
-        m_currentLayout = nullptr;
-        m_nativeDevice  = nullptr;
-        m_device        = nullptr;
+        m_currentVertexBuffer = nullptr;
+        m_currentLayout       = nullptr;
+
+        m_nativeDevice = nullptr;
+        m_device       = nullptr;
     }
 
     void DX9Renderer::BeginFrame(const Color& clearColor)
@@ -159,6 +158,11 @@ namespace TDME
         if (!buffer)
             return;
 
+        if (slot == 0)
+        {
+            m_currentVertexBuffer = buffer;
+        }
+
         IDirect3DVertexBuffer9* nativeVB = static_cast<IDirect3DVertexBuffer9*>(buffer->GetNativeHandle());
         m_nativeDevice->SetStreamSource(slot, nativeVB, 0, buffer->GetStride());
     }
@@ -254,11 +258,17 @@ namespace TDME
         if (primitiveCount == 0)
             return;
 
+        uint32 numVertices = 0xFFFF;
+        if (m_currentVertexBuffer)
+        {
+            numVertices = m_currentVertexBuffer->GetByteSize() / m_currentVertexBuffer->GetStride();
+        }
+
         m_nativeDevice->DrawIndexedPrimitive(
             ToDX9PrimitiveType(m_currentTopology),
             baseVertex,    // BaseVertexIndex: 인덱스에 더할 오프셋. 여러 메시를 하나의 정점 버퍼에 합칠 때 사용. (0 = 없음)
             0,             // MinVertexIndex: 참조되는 최소 정점 인덱스.
-            0xFFFF,        // NumVertices: 참조되는 정점 범위.
+            numVertices,   // NumVertices: 참조되는 정점 범위.
             startIndex,    // StartIndex: 인덱스 버퍼에서 읽기 시작하는 위치. 하나의 인덱스 버퍼에 여러 메시의 인덱스를 합칠 때 사용.
             primitiveCount // PrimitiveCount - 그릴 프리미티브 수
         );

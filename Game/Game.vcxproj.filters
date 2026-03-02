@@ -43,6 +43,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Assets\Shaders\Basic.hlsl" />
+    <None Include="Assets\Shaders\Basic.hlsl" />
   </ItemGroup>
 </Project>

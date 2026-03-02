@@ -8,8 +8,7 @@
 
 #include "Engine/RHI/IRHIDevice.h"
 #include "Engine/RHI/IRHIContext.h"
-#include "Engine/RHI/Buffer/BufferDesc.h"
-#include "Engine/RHI/Pipeline/PipelineStateDesc.h"
+#include "Engine/RHI/Pipeline/IPipelineState.h"
 #include "Engine/Renderer/IRenderer.h"
 #include "Engine/Renderer/VertexTypes.h"
 
@@ -17,6 +16,8 @@
 
 namespace TDME
 {
+    Shape3DRenderer::~Shape3DRenderer() = default;
+
     Shape3DRenderer::Shape3DRenderer(IRenderer* renderer, IRHIContext* context, IRHIDevice* device)
         : m_renderer(renderer), m_context(context), m_device(device)
     {

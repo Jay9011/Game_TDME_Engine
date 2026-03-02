@@ -1,30 +1,17 @@
 #include "pch.h"
 
-#include <Core/Math/MathConstants.h>
 #include <Core/IO/FileUtility.h>
 #include <Core/Image/BMPLoader.h>
 #include <Core/Image/ImageData.h>
-#include <Core/Types/Color.h>
-#include <Engine/ApplicationCore/IWindow.h>
 #include <Engine/EngineContext.h>
-#include <Engine/Input/EKeys.h>
-#include <Engine/RHI/IRHIDevice.h>
-#include <Engine/RHI/State/IRasterizerState.h>
-#include <Engine/RHI/State/IBlendState.h>
-#include <Engine/RHI/State/IDepthStencilState.h>
-#include <Engine/RHI/State/Rasterizer/ECullMode.h>
-#include <Engine/RHI/State/Rasterizer/EFillMode.h>
-#include <Engine/RHI/State/Rasterizer/RasterizerStateDesc.h>
-#include <Engine/RHI/Texture/ETextureFormat.h>
+#include <Engine/RHI/Pipeline/IPipelineState.h>
 #include <Engine/RHI/Texture/ITexture.h>
-#include <Engine/RHI/Texture/TextureDesc.h>
 #include <Engine/Renderer/Shape/Shape3DRenderer.h>
 #include <Engine/World/World.h>
 #include <Engine/Object/Component/GCameraComponent.h>
 
 #include "Game/Factory/Win32DX9Factory.h"
 #include "Game/Object/Actor/APlanet.h"
-#include <memory>
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow)
@@ -58,31 +45,30 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     int fillIndex = 0;
     int cullIndex = 0;
 
-    std::unique_ptr<TDME::IRasterizerState> rsStates[FILL_COUNT][CULL_COUNT];
+    std::unique_ptr<TDME::IPipelineState> psoStates[FILL_COUNT][CULL_COUNT];
     for (int i = 0; i < FILL_COUNT; i++)
     {
         for (int j = 0; j < CULL_COUNT; j++)
         {
-            TDME::RasterizerStateDesc rsDesc;
-            rsDesc.FillMode = fillModes[i];
-            rsDesc.CullMode = cullModes[j];
-            rsStates[i][j]  = engine.Device->CreateRasterizerState(rsDesc);
+            TDME::PipelineStateDesc psoDesc;
+
+            // Rasterizer
+            psoDesc.RasterizerState.FillMode = fillModes[i];
+            psoDesc.RasterizerState.CullMode = cullModes[j];
+
+            // Blend
+            psoDesc.BlendState.BlendEnable = false;
+
+            // DepthStencil
+            psoDesc.DepthStencilState.DepthEnable      = true;
+            psoDesc.DepthStencilState.DepthWriteEnable = true;
+            psoDesc.DepthStencilState.DepthFunc        = TDME::EComparisonFunc::Less;
+
+            psoStates[i][j] = engine.Device->CreatePipelineState(psoDesc);
         }
     }
 
-    TDME::BlendStateDesc bsDesc;
-    bsDesc.BlendEnable = false;
-    auto blendState    = engine.Device->CreateBlendState(bsDesc);
-
-    TDME::DepthStencilStateDesc dsDesc;
-    dsDesc.DepthEnable      = true;
-    dsDesc.DepthWriteEnable = true;
-    dsDesc.DepthFunc        = TDME::EComparisonFunc::Less;
-    auto depthStencilState  = engine.Device->CreateDepthStencilState(dsDesc);
-
-    engine.Context->SetRasterizerState(rsStates[fillIndex][cullIndex].get());
-    engine.Context->SetBlendState(blendState.get());
-    engine.Context->SetDepthStencilState(depthStencilState.get());
+    engine.Context->SetPipelineState(psoStates[fillIndex][cullIndex].get());
 
     // 3. Camera 설정
     TDME::GCameraComponent camera;
@@ -91,13 +77,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     float           aspect = static_cast<float>(engine.Window->GetWidth()) / static_cast<float>(engine.Window->GetHeight());
     camera.SetPerspective(fovY, aspect, 0.1f, 1000.0f);
     camera.SetPosition(TDME::Vector3(0.f, 0.f, -500.f));
-    engine.Context->SetProjectionMatrix(camera.GetProjectionMatrix());
+    engine.Renderer->SetProjectionMatrix(camera.GetProjectionMatrix());
 
     constexpr float cameraMoveSpeed   = 200.0f;
     constexpr float cameraRotateSpeed = 1.5f;
 
     // 4. Shape3DRenderer 생성
-    TDME::Shape3DRenderer shape3D(engine.Renderer.get(), engine.Device.get());
+    TDME::Shape3DRenderer shape3D(engine.Renderer.get(), engine.Context, engine.Device.get());
 
     // 5. Texture 로딩
     auto LoadTexture = [&engine](const char* path) -> std::unique_ptr<TDME::ITexture>
@@ -187,12 +173,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         if (engine.Input->IsKeyPressed(TDME::EKeys::F1))
         {
             fillIndex = (fillIndex + 1) % FILL_COUNT;
-            engine.Context->SetRasterizerState(rsStates[fillIndex][cullIndex].get());
+            engine.Context->SetPipelineState(psoStates[fillIndex][cullIndex].get());
         }
         if (engine.Input->IsKeyPressed(TDME::EKeys::F2))
         {
             cullIndex = (cullIndex + 1) % CULL_COUNT;
-            engine.Context->SetRasterizerState(rsStates[fillIndex][cullIndex].get());
+            engine.Context->SetPipelineState(psoStates[fillIndex][cullIndex].get());
         }
 
         //////////////////////////////////////////////////////////////
@@ -229,7 +215,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         if (engine.Input->IsKeyDown(TDME::EKeys::E))
             camera.RotateRoll(rotateStep);
 
-        engine.Context->SetViewMatrix(camera.GetViewMatrix());
+        engine.Renderer->SetViewMatrix(camera.GetViewMatrix());
 
         //////////////////////////////////////////////////////////////
         // 게임 Update 로직
