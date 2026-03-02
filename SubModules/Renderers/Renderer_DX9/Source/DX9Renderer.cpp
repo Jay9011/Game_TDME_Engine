@@ -1,28 +1,28 @@
 #include "pch.h"
 #include "Renderer_DX9/DX9Renderer.h"
 
+#include <Core/CoreTypes.h>
 #include <Core/Math/TVector2.h>
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/Transformations.h>
 #include <Core/Types/Color32.h>
 #include <Engine/RHI/Buffer/IBuffer.h>
+#include <Engine/RHI/IRHIDevice.h>
+#include <Engine/RHI/State/Blend/BlendStateDesc.h>
 #include <Engine/RHI/State/DepthStencil/DepthStencilStateDesc.h>
 #include <Engine/RHI/State/Rasterizer/RasterizerStateDesc.h>
-#include <Engine/RHI/Vertex/IVertexLayout.h>
-#include <Engine/RHI/State/IRasterizerState.h>
-#include <Engine/RHI/State/IBlendState.h>
-#include <Engine/RHI/State/IDepthStencilState.h>
 #include <Engine/RHI/Texture/ITexture.h>
+#include <Engine/RHI/Viewport.h>
 
 #include "Renderer_DX9/DX9Device.h"
 #include "Renderer_DX9/Vertex/DX9VertexLayout.h"
+#include "Renderer_DX9/Pipeline/DX9PipelineState.h"
 #include "Renderer_DX9/DX9TypeConversion.h"
 
 //////////////////////////////////////////////////////////////
 // Matrix 와 D3DMATRIX 호환성 검증
 //////////////////////////////////////////////////////////////
 static_assert(sizeof(TDME::Matrix) == sizeof(D3DMATRIX), "Matrix and D3DMATRIX must have the same size");
-static_assert(sizeof(TDME::Matrix) == sizeof(float) * 16, "Matrix must be 16 bytes (16 floats)");
 
 namespace TDME
 {
@@ -34,12 +34,14 @@ namespace TDME
     {
     }
 
+    //////////////////////////////////////////////////////////////
+    // IRenderer
+    //////////////////////////////////////////////////////////////
+
     bool DX9Renderer::Initialize(IWindow* window)
     {
         if (!m_device || !m_nativeDevice)
-        {
             return false;
-        }
 
         m_nativeDevice->SetRenderState(D3DRS_LIGHTING, FALSE); // DX9 전용: 고정 기능 라이팅 비활성화 (셰이더에서 처리 예정)
 
@@ -55,13 +57,8 @@ namespace TDME
 
     void DX9Renderer::BeginFrame(const Color& clearColor)
     {
-        // Color -> D3DCOLOR 변환
-        D3DCOLOR backColor = D3DCOLOR_XRGB(
-            static_cast<uint8>(clearColor.R * 255),
-            static_cast<uint8>(clearColor.G * 255),
-            static_cast<uint8>(clearColor.B * 255));
-
-        m_nativeDevice->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, backColor, 1.0f, 0);
+        ClearRenderTarget(clearColor);
+        ClearDepthStencil(1.0f, 0);
         m_nativeDevice->BeginScene();
     }
 
@@ -85,80 +82,9 @@ namespace TDME
         m_nativeDevice->SetTransform(D3DTS_PROJECTION, reinterpret_cast<const D3DMATRIX*>(&matrix));
     }
 
-    void DX9Renderer::SetRasterizerState(IRasterizerState* state)
-    {
-        if (!state)
-            return;
-
-        const RasterizerStateDesc& desc = state->GetDesc();
-        m_nativeDevice->SetRenderState(D3DRS_CULLMODE, ToDX9CullMode(desc.CullMode));
-        m_nativeDevice->SetRenderState(D3DRS_FILLMODE, ToDX9FillMode(desc.FillMode));
-    }
-
-    void DX9Renderer::SetBlendState(IBlendState* state)
-    {
-        if (!state)
-            return;
-
-        const BlendStateDesc& desc = state->GetDesc();
-        m_nativeDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, desc.BlendEnable ? TRUE : FALSE);
-
-        if (desc.BlendEnable)
-        {
-            m_nativeDevice->SetRenderState(D3DRS_SRCBLEND, ToDX9BlendFactor(desc.SrcBlend));
-            m_nativeDevice->SetRenderState(D3DRS_DESTBLEND, ToDX9BlendFactor(desc.DestBlend));
-            m_nativeDevice->SetRenderState(D3DRS_BLENDOP, ToDX9BlendOp(desc.BlendOp));
-        }
-    }
-
-    void DX9Renderer::SetDepthStencilState(IDepthStencilState* state)
-    {
-        if (!state)
-            return;
-
-        const DepthStencilStateDesc& desc = state->GetDesc();
-        m_nativeDevice->SetRenderState(D3DRS_ZENABLE, desc.DepthEnable ? TRUE : FALSE);
-        m_nativeDevice->SetRenderState(D3DRS_ZWRITEENABLE, desc.DepthWriteEnable ? TRUE : FALSE);
-        m_nativeDevice->SetRenderState(D3DRS_ZFUNC, ToDX9ComparisonFunc(desc.DepthFunc));
-    }
-
-    void DX9Renderer::SetTexture(uint32 slot, ITexture* texture)
-    {
-        if (!m_nativeDevice)
-            return;
-
-        if (texture)
-        {
-            IDirect3DTexture9* nativeTexture = static_cast<IDirect3DTexture9*>(texture->GetNativeHandle());
-            m_nativeDevice->SetTexture(slot, nativeTexture);
-        }
-        else
-        {
-            m_nativeDevice->SetTexture(slot, nullptr);
-        }
-    }
-
     void DX9Renderer::ApplyRenderSettings(const RenderSettings& settings)
     {
         // TODO: 구현
-    }
-
-    void DX9Renderer::SetVertexLayout(IVertexLayout* layout)
-    {
-        if (m_currentLayout == layout)
-            return;
-
-        m_currentLayout = layout;
-
-        if (layout)
-        {
-            DX9VertexLayout* dx9Layout = static_cast<DX9VertexLayout*>(layout);
-            m_nativeDevice->SetVertexDeclaration(dx9Layout->GetNativeDeclaration());
-        }
-        else
-        {
-            m_nativeDevice->SetVertexDeclaration(nullptr);
-        }
     }
 
     void DX9Renderer::DrawSprite(const SpriteDesc& sprite)
@@ -183,35 +109,181 @@ namespace TDME
         m_nativeDevice->DrawPrimitiveUP(ToDX9PrimitiveType(type), primitiveCount, vertices, stride);
     }
 
-    void DX9Renderer::DrawIndexedPrimitives(EPrimitiveType type, IBuffer* vertexBuffer, IBuffer* indexBuffer, uint32 indexCount)
+    //////////////////////////////////////////////////////////////
+    // IRHIContext
+    //////////////////////////////////////////////////////////////
+
+    void DX9Renderer::SetPipelineState(IPipelineState* pso)
     {
-        if (!vertexBuffer || !indexBuffer || indexCount == 0)
+        // DX9에는 PSO가 없으므로, Desc 를 분해하여 각 상태 객체를 설정
+        if (!pso)
             return;
 
-        // 1. 정점 버퍼 바인딩 (Stream 0)
-        IDirect3DVertexBuffer9* nativeVB = static_cast<IDirect3DVertexBuffer9*>(vertexBuffer->GetNativeHandle());
-        m_nativeDevice->SetStreamSource(0, nativeVB, 0, vertexBuffer->GetStride());
+        DX9PipelineState* dx9Pso = static_cast<DX9PipelineState*>(pso);
 
-        // 2. 인덱스 버퍼 바인딩
-        IDirect3DIndexBuffer9* nativeIB = static_cast<IDirect3DIndexBuffer9*>(indexBuffer->GetNativeHandle());
+        // Rasterizer State
+        const RasterizerStateDesc& rs = dx9Pso->RasterizerState;
+        m_nativeDevice->SetRenderState(D3DRS_CULLMODE, ToDX9CullMode(rs.CullMode));
+        m_nativeDevice->SetRenderState(D3DRS_FILLMODE, ToDX9FillMode(rs.FillMode));
+
+        // Blend State
+        const BlendStateDesc& bs = dx9Pso->BlendState;
+        m_nativeDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, bs.BlendEnable ? TRUE : FALSE);
+        if (bs.BlendEnable)
+        {
+            m_nativeDevice->SetRenderState(D3DRS_SRCBLEND, ToDX9BlendFactor(bs.SrcBlend));
+            m_nativeDevice->SetRenderState(D3DRS_DESTBLEND, ToDX9BlendFactor(bs.DestBlend));
+            m_nativeDevice->SetRenderState(D3DRS_BLENDOP, ToDX9BlendOp(bs.BlendOp));
+        }
+
+        // DepthStencil State
+        const DepthStencilStateDesc& ds = dx9Pso->DepthStencilState;
+        m_nativeDevice->SetRenderState(D3DRS_ZENABLE, ds.DepthEnable ? TRUE : FALSE);
+        m_nativeDevice->SetRenderState(D3DRS_ZWRITEENABLE, ds.DepthWriteEnable ? TRUE : FALSE);
+        m_nativeDevice->SetRenderState(D3DRS_ZFUNC, ToDX9ComparisonFunc(ds.DepthFunc));
+
+        // InputLayout
+        if (dx9Pso->InputLayout && m_currentLayout != dx9Pso->InputLayout)
+        {
+            m_currentLayout            = dx9Pso->InputLayout;
+            DX9VertexLayout* dx9Layout = static_cast<DX9VertexLayout*>(m_currentLayout);
+            m_nativeDevice->SetVertexDeclaration(dx9Layout->GetNativeDeclaration());
+        }
+
+        // Topology 저장
+        m_currentTopology = dx9Pso->TopologyType;
+    }
+
+    void DX9Renderer::SetVertexBuffer(uint32 slot, IBuffer* buffer)
+    {
+        if (!buffer)
+            return;
+
+        IDirect3DVertexBuffer9* nativeVB = static_cast<IDirect3DVertexBuffer9*>(buffer->GetNativeHandle());
+        m_nativeDevice->SetStreamSource(slot, nativeVB, 0, buffer->GetStride());
+    }
+
+    void DX9Renderer::SetIndexBuffer(IBuffer* buffer)
+    {
+        if (!buffer)
+            return;
+
+        IDirect3DIndexBuffer9* nativeIB = static_cast<IDirect3DIndexBuffer9*>(buffer->GetNativeHandle());
         m_nativeDevice->SetIndices(nativeIB);
+    }
 
-        // 3. 인덱스 기반 Draw Call
-        const uint32 primitiveCount = CalcPrimitiveCount(type, indexCount);
+    void DX9Renderer::SetViewport(const Viewport& viewport)
+    {
+        D3DVIEWPORT9 vp;
+        vp.X      = static_cast<DWORD>(viewport.X);
+        vp.Y      = static_cast<DWORD>(viewport.Y);
+        vp.Width  = static_cast<DWORD>(viewport.Width);
+        vp.Height = static_cast<DWORD>(viewport.Height);
+        vp.MinZ   = viewport.MinDepth;
+        vp.MaxZ   = viewport.MaxDepth;
+
+        m_nativeDevice->SetViewport(&vp);
+    }
+
+    void DX9Renderer::SetScissorRect(const RectI& rect)
+    {
+        RECT d3dRect = {rect.Left(), rect.Top(), rect.Right(), rect.Bottom()};
+        m_nativeDevice->SetScissorRect(&d3dRect);
+    }
+
+    void DX9Renderer::SetConstantBuffer(EShaderStage stage, uint32 slot, IBuffer* buffer)
+    {
+        // TODO: 구현
+    }
+
+    void DX9Renderer::SetTexture(EShaderStage stage, uint32 slot, ITexture* texture)
+    {
+        if (texture)
+        {
+            IDirect3DTexture9* nativeTex = static_cast<IDirect3DTexture9*>(texture->GetNativeHandle());
+            m_nativeDevice->SetTexture(slot, nativeTex);
+        }
+        else
+        {
+            m_nativeDevice->SetTexture(slot, nullptr);
+        }
+    }
+
+    void* DX9Renderer::MapBuffer(IBuffer* buffer)
+    {
+        if (!buffer)
+            return nullptr;
+
+        void* data         = nullptr;
+        auto* nativeHandle = buffer->GetNativeHandle();
+
+        // TODO: 버퍼 타입별 분기 (DX9는 버퍼 타입에 따라 Lock 호출이 다름)
+        return data;
+    }
+
+    void DX9Renderer::UnmapBuffer(IBuffer* buffer)
+    {
+        if (!buffer)
+            return;
+
+        // TODO: 버퍼 타입별 Unlock 분기
+    }
+
+    void DX9Renderer::UpdateBuffer(IBuffer* buffer, const void* data, uint32 size)
+    {
+        void* mapped = MapBuffer(buffer);
+        if (mapped)
+        {
+            memcpy(mapped, data, size);
+            UnmapBuffer(buffer);
+        }
+    }
+
+    void DX9Renderer::Draw(uint32 vertexCount, uint32 startVertex)
+    {
+        uint32 primitiveCount = CalcPrimitiveCount(m_currentTopology, vertexCount);
         if (primitiveCount == 0)
             return;
 
-        // 정점 수 = 버퍼 전체 크기 / stride
-        const uint32 vertexCount = vertexBuffer->GetByteSize() / vertexBuffer->GetStride();
+        m_nativeDevice->DrawPrimitive(ToDX9PrimitiveType(m_currentTopology), startVertex, primitiveCount);
+    }
+
+    void DX9Renderer::DrawIndexed(uint32 indexCount, uint32 startIndex, int32 baseVertex)
+    {
+        uint32 primitiveCount = CalcPrimitiveCount(m_currentTopology, indexCount);
+        if (primitiveCount == 0)
+            return;
 
         m_nativeDevice->DrawIndexedPrimitive(
-            ToDX9PrimitiveType(type),
-            0,             // BaseVertexIndex: 인덱스에 더할 오프셋. 여러 메시를 하나의 정점 버퍼에 합칠 때 사용. (0 = 없음)
+            ToDX9PrimitiveType(m_currentTopology),
+            baseVertex,    // BaseVertexIndex: 인덱스에 더할 오프셋. 여러 메시를 하나의 정점 버퍼에 합칠 때 사용. (0 = 없음)
             0,             // MinVertexIndex: 참조되는 최소 정점 인덱스.
-            vertexCount,   // NumVertices: 참조되는 정점 범위.
-            0,             // StartIndex: 인덱스 버퍼에서 읽기 시작하는 위치. 하나의 인덱스 버퍼에 여러 메시의 인덱스를 합칠 때 사용.
+            0xFFFF,        // NumVertices: 참조되는 정점 범위.
+            startIndex,    // StartIndex: 인덱스 버퍼에서 읽기 시작하는 위치. 하나의 인덱스 버퍼에 여러 메시의 인덱스를 합칠 때 사용.
             primitiveCount // PrimitiveCount - 그릴 프리미티브 수
         );
+    }
+
+    void DX9Renderer::ClearRenderTarget(const Color& color)
+    {
+        // Color -> D3DCOLOR 변환
+        D3DCOLOR backColor = D3DCOLOR_XRGB(
+            static_cast<uint8>(color.R * 255),
+            static_cast<uint8>(color.G * 255),
+            static_cast<uint8>(color.B * 255));
+
+        m_nativeDevice->Clear(0, nullptr, D3DCLEAR_TARGET, backColor, 1.0f, 0);
+    }
+
+    void DX9Renderer::ClearDepthStencil(float depth, uint8 stencil)
+    {
+        DWORD flags = D3DCLEAR_ZBUFFER;
+        if (stencil != 0)
+        {
+            flags |= D3DCLEAR_STENCIL;
+        }
+
+        m_nativeDevice->Clear(0, nullptr, flags, 0, depth, stencil);
     }
 
     //////////////////////////////////////////////////////////////

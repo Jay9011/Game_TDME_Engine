@@ -4,13 +4,14 @@
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/TVector2.h>
 
-#include "Engine/RHI/Vertex/IVertexLayout.h"
+#include "Engine/RHI/Pipeline/IPipelineState.h"
 
 #include <memory>
 
 namespace TDME
 {
     class IRenderer;
+    class IRHIContext;
     class IRHIDevice;
     struct Color;
 
@@ -20,7 +21,7 @@ namespace TDME
     class Shape2DRenderer
     {
     public:
-        explicit Shape2DRenderer(IRenderer* renderer, IRHIDevice* device);
+        explicit Shape2DRenderer(IRenderer* renderer, IRHIContext* context, IRHIDevice* device);
         ~Shape2DRenderer() = default;
 
         /**
@@ -115,13 +116,14 @@ namespace TDME
         void DrawCircle(const Matrix& worldMatrix, float radius, const Color& color, uint32 segments = 32);
 
     private:
-        IRenderer*  m_renderer = nullptr;
-        IRHIDevice* m_device   = nullptr;
+        IRenderer*   m_renderer = nullptr;
+        IRHIContext* m_context  = nullptr;
+        IRHIDevice*  m_device   = nullptr;
 
         /**
-         * @brief 2D 정점 레이아웃
-         * @see TDME::IVertexLayout
+         * @brief 2D 정점 파이프라인 상태 객체
+         * @see TDME::IPipelineState
          */
-        std::unique_ptr<IVertexLayout> m_colorLayout;
+        std::unique_ptr<IPipelineState> m_colorPSO;
     };
 } // namespace TDME

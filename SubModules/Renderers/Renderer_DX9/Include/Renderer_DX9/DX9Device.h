@@ -1,7 +1,9 @@
 #pragma once
 
 #include <Engine/RHI/IRHIDevice.h>
+#include <Engine/RHI/Pipeline/PipelineStateDesc.h>
 
+#include "DX9Renderer.h"
 #include <d3d9.h>
 #include <wrl/client.h>
 #include <memory>
@@ -29,9 +31,12 @@ namespace TDME
          */
         void Shutdown() override;
 
-        //////////////////////////////////////////////////////////////
-        // SwapChain
-        //////////////////////////////////////////////////////////////
+        /**
+         * @brief 즉시 실행 컨텍스트 반환
+         * @return IRHIContext* 관찰용 포인터
+         */
+        [[nodiscard]] IRHIContext* GetImmediateContext() override;
+
         /**
          * @brief 화면에 렌더링 결과 표현
          */
@@ -45,9 +50,14 @@ namespace TDME
          */
         bool ResizeSwapChain(uint32 width, uint32 height) override;
 
-        //////////////////////////////////////////////////////////////
-        // 상태 객체 생성
-        //////////////////////////////////////////////////////////////
+        /**
+         * @brief 파이프라인 상태 객체 생성
+         * @param desc PSO 설정 구조체 (셰이더, InputLayout, 상태 객체, 토폴로지)
+         * @return std::unique_ptr<IPipelineState> 생성된 PSO (소유권은 호출자)
+         * @see TDME::IPipelineState
+         * @see TDME::PipelineStateDesc
+         */
+        [[nodiscard]] std::unique_ptr<IPipelineState> CreatePipelineState(const PipelineStateDesc& desc) override;
 
         /**
          * @brief 래스터라이저 상태 객체 생성
@@ -76,18 +86,14 @@ namespace TDME
          */
         [[nodiscard]] std::unique_ptr<IDepthStencilState> CreateDepthStencilState(const DepthStencilStateDesc& desc) override;
 
-        //////////////////////////////////////////////////////////////
-        // 리소스 생성
-        //////////////////////////////////////////////////////////////
-
         /**
          * @brief Vertex 레이아웃 생성
          * @param desc 정점 레이아웃 정보 구조체
          * @return 생성된 정점 레이아웃 포인터 (소유권은 호출자가 가져가야함)
-         * @see TDME::IVertexLayout
-         * @see TDME::VertexLayoutDesc
+         * @see TDME::IInputLayout
+         * @see TDME::InputLayoutDesc
          */
-        [[nodiscard]] std::unique_ptr<IVertexLayout> CreateVertexLayout(const VertexLayoutDesc& desc) override;
+        [[nodiscard]] std::unique_ptr<IInputLayout> CreateInputLayout(const InputLayoutDesc& desc) override;
 
         /**
          * @brief GPU 버퍼 객체 생성 (Vertex/Index)
@@ -109,8 +115,26 @@ namespace TDME
          */
         [[nodiscard]] std::unique_ptr<ITexture> CreateTexture(const TextureDesc& desc, const void* initialData = nullptr) override;
 
+        /**
+         * @brief Vertex 셰이더 생성
+         * @param byteCode 컴파일된 셰이더 바이트코드
+         * @param byteCodeSize 바이트코드 크기
+         * @return std::unique_ptr<IVertexShader> 생성된 Vertex 셰이더 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IVertexShader
+         */
+        [[nodiscard]] std::unique_ptr<IVertexShader> CreateVertexShader(const void* byteCode, uint32 byteCodeSize) override;
+
+        /**
+         * @brief Pixel 셰이더 생성
+         * @param byteCode 컴파일된 셰이더 바이트코드
+         * @param byteCodeSize 바이트코드 크기
+         * @return std::unique_ptr<IPixelShader> 생성된 Pixel 셰이더 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IPixelShader
+         */
+        [[nodiscard]] std::unique_ptr<IPixelShader> CreatePixelShader(const void* byteCode, uint32 byteCodeSize) override;
+
         //////////////////////////////////////////////////////////////
-        // Getter
+        // Getter / Setter
         //////////////////////////////////////////////////////////////
 
         /**
@@ -119,6 +143,13 @@ namespace TDME
          * @see IDirect3DDevice9
          */
         IDirect3DDevice9* GetNativeDevice() const { return m_device.Get(); }
+
+        /**
+         * @brief 렌더러 설정
+         * @param renderer 렌더러 포인터
+         * @see TDME::DX9Renderer
+         */
+        void SetRenderer(DX9Renderer* renderer) { m_renderer = renderer; }
 
     private:
         /**
@@ -160,5 +191,7 @@ namespace TDME
          * @see Direct3DDevice9::Present()
          */
         ComPtr<IDirect3DDevice9> m_device;
+
+        DX9Renderer* m_renderer;
     };
 } // namespace TDME

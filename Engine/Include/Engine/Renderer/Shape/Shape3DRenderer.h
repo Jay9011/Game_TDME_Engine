@@ -5,13 +5,14 @@
 
 #include "Engine/RHI/IRHIDevice.h"
 #include "Engine/RHI/Buffer/IBuffer.h"
-#include "Engine/RHI/Vertex/IVertexLayout.h"
+#include "Engine/RHI/Vertex/IInputLayout.h"
 #include <memory>
 
 namespace TDME
 {
     struct Color;
     class IRenderer;
+    class IRHIContext;
     class IRHIDevice;
     class ITexture;
 
@@ -23,7 +24,7 @@ namespace TDME
     class Shape3DRenderer
     {
     public:
-        explicit Shape3DRenderer(IRenderer* renderer, IRHIDevice* device);
+        explicit Shape3DRenderer(IRenderer* renderer, IRHIContext* context, IRHIDevice* device);
         ~Shape3DRenderer() = default;
 
         /**
@@ -60,11 +61,12 @@ namespace TDME
         void BuildSphereBuffers(uint32 stacks, uint32 slices);
 
     private:
-        IRHIDevice* m_device   = nullptr;
-        IRenderer*  m_renderer = nullptr;
+        IRHIDevice*  m_device   = nullptr;
+        IRHIContext* m_context  = nullptr;
+        IRenderer*   m_renderer = nullptr;
 
-        std::unique_ptr<IVertexLayout> m_colorLayout   = nullptr; // 3D 정점 레이아웃 (Position, Color)
-        std::unique_ptr<IVertexLayout> m_textureLayout = nullptr; // 3D 정점 레이아웃 (Position, UV)
+        std::unique_ptr<IPipelineState> m_colorPSO   = nullptr; // 3D 정점 레이아웃 (Position, Color)
+        std::unique_ptr<IPipelineState> m_texturePSO = nullptr; // 3D 정점 레이아웃 (Position, UV)
 
         //////////////////////////////////////////////////////////////
         // Sphere GPU 버퍼 (캐싱 전략)

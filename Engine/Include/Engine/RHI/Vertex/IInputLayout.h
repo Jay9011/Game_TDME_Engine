@@ -5,16 +5,16 @@
 namespace TDME
 {
     /**
-     * @brief Vertex 레이아웃 인터페이스
+     * @brief Input 레이아웃 인터페이스
      * @details 플랫폼별 네이티브 정점 레이아웃 객체의 추상화
      * @note DX9: IDirect3DVertexDeclaration9
      * @note DX11: ID3D11InputLayout
      * @note Vulkan: VkPipelineVertexInputStateCreateInfo
      */
-    class IVertexLayout
+    class IInputLayout
     {
     public:
-        virtual ~IVertexLayout() = default;
+        virtual ~IInputLayout() = default;
 
         /**
          * @brief 정점 하나의 바이트 크기 반환

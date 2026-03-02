@@ -2,26 +2,19 @@
 
 #include <Core/CoreTypes.h>
 #include <Core/Math/TMatrix4x4.h>
-#include <Core/Math/TVector2.h>
 
-#include "EPrimitiveType.h"
+#include "Engine/Renderer/EPrimitiveType.h"
 
 namespace TDME
 {
-    class IBuffer;
     class IWindow;
-    class ITexture;
-    class IVertexLayout;
-    class IRasterizerState;
-    class IBlendState;
-    class IDepthStencilState;
     struct SpriteDesc;
     struct RenderSettings;
     struct Color;
 
     /**
-     * @brief 렌더러 인터페이스
-     * @note 렌더러 기능을 제공하는 인터페이스
+     * @brief 고수준 렌더러 인터페이스
+     * @details 프레임 관리 및 고수준 렌더링 기능 담당
      */
     class IRenderer
     {
@@ -41,6 +34,10 @@ namespace TDME
          */
         virtual void Shutdown() = 0;
 
+        //////////////////////////////////////////////////////////////
+        // 프레임 관리
+        //////////////////////////////////////////////////////////////
+
         /**
          * @brief 프레임을 시작합니다.
          * @note 백버퍼를 클리어하고 프레임을 시작.
@@ -56,7 +53,7 @@ namespace TDME
         virtual void EndFrame() = 0;
 
         //////////////////////////////////////////////////////////////
-        // 행렬 설정 (World, View, Projection)
+        // 행렬 설정
         //////////////////////////////////////////////////////////////
 
         /**
@@ -81,44 +78,7 @@ namespace TDME
         virtual void SetProjectionMatrix(const Matrix& matrix) = 0;
 
         //////////////////////////////////////////////////////////////
-        // 상태 객체 바인딩
-        //////////////////////////////////////////////////////////////
-
-        /**
-         * @brief 래스터라이저 상태 바인딩
-         * @param state 래스터라이저 상태 객체 (nullptr이면 무시)
-         * @see TDME::IRasterizerState
-         */
-        virtual void SetRasterizerState(IRasterizerState* state) = 0;
-
-        /**
-         * @brief 블렌딩 상태 바인딩
-         * @param state 블렌딩 상태 객체 (nullptr이면 무시)
-         * @see TDME::IBlendState
-         */
-        virtual void SetBlendState(IBlendState* state) = 0;
-
-        /**
-         * @brief 깊이/스텐실 상태 바인딩
-         * @param state 깊이/스텐실 상태 객체 (nullptr이면 무시)
-         * @see TDME::IDepthStencilState
-         */
-        virtual void SetDepthStencilState(IDepthStencilState* state) = 0;
-
-        //////////////////////////////////////////////////////////////
-        // 리소스 바인딩
-        //////////////////////////////////////////////////////////////
-
-        /**
-         * @brief 텍스처를 지정 슬롯에 바인딩
-         * @param slot 텍스처 슬롯 번호 (0부터 시작)
-         * @param texture 바인딩할 텍스처 (nullptr이면 해당 슬롯 해제)
-         * @see TDME::ITexture
-         */
-        virtual void SetTexture(uint32 slot, ITexture* texture) = 0;
-
-        //////////////////////////////////////////////////////////////
-        // 렌더링 설정
+        // 렌더링
         //////////////////////////////////////////////////////////////
 
         /**
@@ -128,10 +88,6 @@ namespace TDME
          */
         virtual void ApplyRenderSettings(const RenderSettings& settings) = 0;
 
-        //////////////////////////////////////////////////////////////
-        // 스프라이트 랜더링
-        //////////////////////////////////////////////////////////////
-
         /**
          * @brief 스프라이트 랜더링
          * @param sprite 스프라이트 파라미터
@@ -139,40 +95,14 @@ namespace TDME
          */
         virtual void DrawSprite(const SpriteDesc& sprite) = 0;
 
-        //////////////////////////////////////////////////////////////
-        // 저수준 프리미티브 렌더링
-        //////////////////////////////////////////////////////////////
-
         /**
-         * @brief 정점 레이아웃 설정
-         * @param layout 정점 레이아웃 (nullptr 면 해제)
-         * @see TDME::IVertexLayout
-         */
-        virtual void SetVertexLayout(IVertexLayout* layout) = 0;
-
-        /**
-         * @brief 프리미티브 타입 렌더링 (점, 선, 면)
+         * @brief CPU 메모리 기반 즉시 프리미티브 타입 렌더링 (점, 선, 면)
          * @param type 프리미티브 타입
-         * @param vertices 정점 데이터 포인터
+         * @param vertices CPU 정점 데이터 포인터
          * @param vertexCount 정점 개수
          * @param stride 정점 하나의 바이트 크기
          * @see TDME::EPrimitiveType
-         * @see TDME::void*
-         * @see TDME::uint32
          */
         virtual void DrawPrimitives(EPrimitiveType type, const void* vertices, uint32 vertexCount, uint32 stride) = 0;
-
-        /**
-         * @brief 인덱스 기반 프리미티브 렌더링
-         * @note GPU 버퍼를 사용하므로 stride는 vertexBuffer에서 직접 가져옴.
-         * @note indexCount는 버퍼의 전체가 아닌 일부만 렌더링 할 수 있도록 할 수 있도록 함.
-         * @param type 프리미티브 타입
-         * @param vertexBuffer 정점 버퍼
-         * @param indexBuffer 인덱스 버퍼
-         * @param indexCount 인덱스 개수
-         * @see TDME::EPrimitiveType
-         * @see TDME::IBuffer
-         */
-        virtual void DrawIndexedPrimitives(EPrimitiveType type, IBuffer* vertexBuffer, IBuffer* indexBuffer, uint32 indexCount) = 0;
     };
 } // namespace TDME

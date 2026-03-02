@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Engine/RHI/Vertex/IVertexLayout.h>
+#include <Engine/RHI/Vertex/IInputLayout.h>
 
 #include <d3d9.h>
 #include <wrl/client.h>
@@ -9,9 +9,9 @@ namespace TDME
 {
     using Microsoft::WRL::ComPtr; // ComPtr은 스마트 포인터와 비슷하게 사용하도록 별칭 선언 (namespace 충돌 염려 없을 것 같음)
 
-    struct VertexLayoutDesc;
+    struct InputLayoutDesc;
 
-    class DX9VertexLayout : public IVertexLayout
+    class DX9VertexLayout : public IInputLayout
     {
     public:
         /**
@@ -19,7 +19,7 @@ namespace TDME
          * @param device Direct3D 렌더링 디바이스
          * @param desc 버텍스 레이아웃 정보 구조체
          */
-        DX9VertexLayout(IDirect3DDevice9* device, const VertexLayoutDesc& desc);
+        DX9VertexLayout(IDirect3DDevice9* device, const InputLayoutDesc& desc);
         ~DX9VertexLayout() override = default;
 
         /**

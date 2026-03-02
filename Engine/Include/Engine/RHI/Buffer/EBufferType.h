@@ -12,5 +12,6 @@ namespace TDME
     {
         Vertex, // 정점 버퍼
         Index,  // 인덱스 버퍼
+        Constant, // 상수 버퍼 (셰이더에 데이터 전달용)
     };
 } // namespace TDME

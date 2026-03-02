@@ -2,7 +2,7 @@
 #include "Renderer_DX9/DX9Device.h"
 
 #include <Engine/RHI/SwapChain/SwapChainDesc.h>
-#include <Engine/RHI/Vertex/VertexLayoutDesc.h>
+#include <Engine/RHI/Vertex/InputLayoutDesc.h>
 
 #include "Renderer_DX9/Buffer/DX9Buffer.h"
 #include "Renderer_DX9/State/DX9RasterizerState.h"
@@ -10,6 +10,7 @@
 #include "Renderer_DX9/State/DX9DepthStencilState.h"
 #include "Renderer_DX9/Texture/DX9Texture.h"
 #include "Renderer_DX9/Vertex/DX9VertexLayout.h"
+#include "Renderer_DX9/Pipeline/DX9PipelineState.h"
 #include <memory>
 
 namespace TDME
@@ -75,6 +76,11 @@ namespace TDME
         m_d3d.Reset();
     }
 
+    IRHIContext* DX9Device::GetImmediateContext()
+    {
+        return m_renderer;
+    }
+
     void DX9Device::Present()
     {
         if (m_device)
@@ -87,6 +93,26 @@ namespace TDME
     {
         // TODO: 구현 필요
         return true;
+    }
+
+    std::unique_ptr<IPipelineState> DX9Device::CreatePipelineState(const PipelineStateDesc& desc)
+    {
+        std::unique_ptr<DX9PipelineState> pso = std::make_unique<DX9PipelineState>();
+
+        // Desc 값을 PSO 객체에 복사
+        pso->RasterizerState   = desc.RasterizerState;
+        pso->BlendState        = desc.BlendState;
+        pso->DepthStencilState = desc.DepthStencilState;
+        pso->TopologyType      = desc.TopologyType;
+
+        // InputLayout 생성 (VertexDeclaration)
+        if (desc.InputLayout.Stride > 0)
+        {
+            pso->OwnedInputLayout = CreateInputLayout(desc.InputLayout);
+            pso->InputLayout      = pso->OwnedInputLayout.get();
+        }
+
+        return pso;
     }
 
     std::unique_ptr<IRasterizerState> DX9Device::CreateRasterizerState(const RasterizerStateDesc& desc)
@@ -104,7 +130,7 @@ namespace TDME
         return std::make_unique<DX9DepthStencilState>(desc);
     }
 
-    std::unique_ptr<IVertexLayout> DX9Device::CreateVertexLayout(const VertexLayoutDesc& desc)
+    std::unique_ptr<IInputLayout> DX9Device::CreateInputLayout(const InputLayoutDesc& desc)
     {
         if (!m_device)
         {
@@ -142,5 +168,15 @@ namespace TDME
         }
 
         return texture;
+    }
+
+    std::unique_ptr<IVertexShader> DX9Device::CreateVertexShader(const void* byteCode, uint32 byteCodeSize)
+    {
+        return nullptr;
+    }
+
+    std::unique_ptr<IPixelShader> DX9Device::CreatePixelShader(const void* byteCode, uint32 byteCodeSize)
+    {
+        return nullptr;
     }
 } // namespace TDME

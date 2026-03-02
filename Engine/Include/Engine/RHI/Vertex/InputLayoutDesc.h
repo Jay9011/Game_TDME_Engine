@@ -30,23 +30,23 @@ namespace TDME
     }
 
     /**
-     * @brief Vertex 레이아웃 (구조체 집합) 정의
-     * @details VertexElement들의 집합으로 Vertext 구조를 정의
+     * @brief Input Layout (구조체 집합) 정의
+     * @details VertexElement들의 집합으로 Input Layout을 정의
      * @ref VertexElement "VertexElement"
      */
-    struct VertexLayoutDesc
+    struct InputLayoutDesc
     {
         std::vector<VertexElement> Elements;
         uint32                     Stride = 0; // Vertex 하나의 바이트 크기
 
         /**
-         * @brief Vertex 레이아웃에 새로운 요소를 추가
+         * @brief Input Layout에 새로운 요소를 추가
          * @param semantic 속성 의미 (Position, TexCoord 등)
          * @param format 데이터 포멧
          * @param semanticIndex 동일 시멘틱의 인덱스 (TEXCOORD0, TEXCOORD1 등)
-         * @return VertexLayoutDesc& 자기 자신의 참조(메서드 체이닝 가능)
+         * @return InputLayoutDesc& 자기 자신의 참조(메서드 체이닝 가능)
          */
-        VertexLayoutDesc& Add(EVertexSemantic semantic, EVertexFormat format, uint8 semanticIndex = 0)
+        InputLayoutDesc& Add(EVertexSemantic semantic, EVertexFormat format, uint8 semanticIndex = 0)
         {
             uint16 offset = static_cast<uint16>(Stride);
             Elements.emplace_back(semantic, format, offset, semanticIndex);
@@ -55,13 +55,13 @@ namespace TDME
         }
 
         /**
-         * @brief Vertex 레이아웃의 요소 개수를 반환
+         * @brief Input Layout의 요소 개수를 반환
          * @return 요소 개수
          */
         FORCE_INLINE size_t GetElementCount() const { return Elements.size(); }
 
         /**
-         * @brief Vertex 레이아웃의 초기화
+         * @brief Input Layout의 초기화
          */
         FORCE_INLINE void Clear()
         {

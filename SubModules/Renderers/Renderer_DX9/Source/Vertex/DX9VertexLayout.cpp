@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Renderer_DX9/Vertex/DX9VertexLayout.h"
 
-#include <Engine/RHI/Vertex/VertexLayoutDesc.h>
+#include <Engine/RHI/Vertex/InputLayoutDesc.h>
 
 #include "Renderer_DX9/DX9TypeConversion.h"
 #include <d3d9.h>
@@ -9,7 +9,7 @@
 
 namespace TDME
 {
-    DX9VertexLayout::DX9VertexLayout(IDirect3DDevice9* device, const VertexLayoutDesc& desc)
+    DX9VertexLayout::DX9VertexLayout(IDirect3DDevice9* device, const InputLayoutDesc& desc)
         : m_stride(desc.Stride), m_elementCount(desc.GetElementCount())
     {
         std::vector<D3DVERTEXELEMENT9> elements; // D3DVERTEXELEMENT9 배열 구성

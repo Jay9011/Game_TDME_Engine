@@ -1,32 +1,28 @@
 #include "pch.h"
 #include "Engine/Renderer/Shape/Shape2DRenderer.h"
 
-#include <Core/CoreTypes.h>
-#include <Core/Math/MathConstants.h>
+#include <Core/Types/Color32.h>
+#include <Core/Math/TVector2.h>
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/Transformations.h>
-#include <Core/Math/TVector2.h>
-#include <Core/Types/Color32.h>
-#include <vector>
-#include "Engine/Renderer/EPrimitiveType.h"
+
+#include "Engine/RHI/IRHIDevice.h"
+#include "Engine/RHI/IRHIContext.h"
+#include "Engine/RHI/Pipeline/PipelineStateDesc.h"
 #include "Engine/Renderer/IRenderer.h"
 #include "Engine/Renderer/VertexTypes.h"
-#include "Engine/RHI/IRHIDevice.h"
-#include "Engine/RHI/Vertex/EVertexFormat.h"
-#include "Engine/RHI/Vertex/EVertexSemantic.h"
-#include "Engine/RHI/Vertex/VertexLayoutDesc.h"
 
 namespace TDME
 {
-    Shape2DRenderer::Shape2DRenderer(IRenderer* renderer, IRHIDevice* device)
-        : m_renderer(renderer), m_device(device)
+    Shape2DRenderer::Shape2DRenderer(IRenderer* renderer, IRHIContext* context, IRHIDevice* device)
+        : m_renderer(renderer), m_context(context), m_device(device)
     {
-        VertexLayoutDesc layoutDesc;
-        layoutDesc
+        PipelineStateDesc psoDesc;
+        psoDesc.InputLayout
             .Add(EVertexSemantic::Position, EVertexFormat::Float3)
             .Add(EVertexSemantic::Color, EVertexFormat::Color);
 
-        m_colorLayout = m_device->CreateVertexLayout(layoutDesc);
+        m_colorPSO = m_device->CreatePipelineState(psoDesc);
     }
 
     void Shape2DRenderer::DrawLine(const Vector2& start, const Vector2& end, const Color& color)
@@ -44,7 +40,7 @@ namespace TDME
         };
 
         m_renderer->SetWorldMatrix(worldMatrix);
-        m_renderer->SetVertexLayout(m_colorLayout.get());
+        m_context->SetPipelineState(m_colorPSO.get());
         m_renderer->DrawPrimitives(EPrimitiveType::LineList, vertices, 2, sizeof(VertexPC));
     }
 
@@ -68,7 +64,7 @@ namespace TDME
         };
 
         m_renderer->SetWorldMatrix(worldMatrix);
-        m_renderer->SetVertexLayout(m_colorLayout.get());
+        m_context->SetPipelineState(m_colorPSO.get());
         m_renderer->DrawPrimitives(EPrimitiveType::TriangleList, vertices, 3, sizeof(VertexPC));
     }
 
@@ -96,7 +92,7 @@ namespace TDME
         };
 
         m_renderer->SetWorldMatrix(worldMatrix);
-        m_renderer->SetVertexLayout(m_colorLayout.get());
+        m_context->SetPipelineState(m_colorPSO.get());
         m_renderer->DrawPrimitives(EPrimitiveType::TriangleList, vertices, 6, sizeof(VertexPC));
     }
 
@@ -126,7 +122,7 @@ namespace TDME
         }
 
         m_renderer->SetWorldMatrix(worldMatrix);
-        m_renderer->SetVertexLayout(m_colorLayout.get());
+        m_context->SetPipelineState(m_colorPSO.get());
         m_renderer->DrawPrimitives(EPrimitiveType::TriangleFan, vertices.data(), static_cast<uint32>(vertices.size()), sizeof(VertexPC));
     }
 } // namespace TDME

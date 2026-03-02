@@ -54,10 +54,10 @@
     <ClInclude Include="Include\Engine\RHI\Vertex\VertexElement.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\Vertex\VertexLayoutDesc.h">
+    <ClInclude Include="Include\Engine\RHI\Vertex\InputLayoutDesc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Engine\RHI\Vertex\IVertexLayout.h">
+    <ClInclude Include="Include\Engine\RHI\Vertex\IInputLayout.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Engine\RHI\Adapter\EGPUVendor.h">
@@ -208,6 +208,33 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Include\Engine\Object\Component\GCameraComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Shader\EShaderType.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Shader\IShader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Shader\IVertexShader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Shader\IPixelShader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\IRHIContext.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Shader\EShaderStage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Pipeline\IPipelineState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Pipeline\PipelineStateDesc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Engine\RHI\Viewport.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

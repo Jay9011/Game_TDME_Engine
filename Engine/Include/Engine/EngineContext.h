@@ -2,10 +2,11 @@
 
 #include "Engine/ApplicationCore/IApplication.h"
 #include "Engine/ApplicationCore/WindowDesc.h"
-#include "Engine/Input/IInputDevice.h"
-#include "Engine/Time/ITimer.h"
 #include "Engine/RHI/IRHIDevice.h"
+#include "Engine/RHI/IRHIContext.h"
 #include "Engine/RHI/SwapChain/SwapChainDesc.h"
+#include "Engine/Time/ITimer.h"
+#include "Engine/Input/IInputDevice.h"
 #include "Engine/Renderer/IRenderer.h"
 
 #include <memory>
@@ -33,6 +34,7 @@ namespace TDME
         std::unique_ptr<IApplication> Application;
         std::unique_ptr<IRHIDevice>   Device;
         std::unique_ptr<IRenderer>    Renderer;
+        IRHIContext*                  Context = nullptr;
         std::unique_ptr<ITimer>       Timer;
 
         IWindow*      Window = nullptr;
@@ -45,7 +47,7 @@ namespace TDME
          */
         [[nodiscard]] bool IsValid() const
         {
-            return Application && Device && Renderer && Timer && Window && Input;
+            return Application && Device && Renderer && Context && Timer && Window && Input;
         }
     };
 

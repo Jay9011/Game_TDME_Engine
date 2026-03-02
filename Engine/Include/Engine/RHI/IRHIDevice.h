@@ -7,19 +7,24 @@
 namespace TDME
 {
     class IWindow;
-    class ITexture;
+    class IRHIContext;
     class IBuffer;
-    class IVertexLayout;
-    class IRasterizerState;
     class IBlendState;
     class IDepthStencilState;
-    struct SwapChainDesc;
-    struct TextureDesc;
+    class ITexture;
+    class IInputLayout;
+    class IPixelShader;
+    class IPipelineState;
+    class IRasterizerState;
+    class IVertexShader;
     struct BufferDesc;
-    struct VertexLayoutDesc;
-    struct RasterizerStateDesc;
     struct BlendStateDesc;
     struct DepthStencilStateDesc;
+    struct SwapChainDesc;
+    struct TextureDesc;
+    struct InputLayoutDesc;
+    struct PipelineStateDesc;
+    struct RasterizerStateDesc;
 
     /**
      * @brief RHI 디바이스 인터페이스
@@ -43,9 +48,16 @@ namespace TDME
          */
         virtual void Shutdown() = 0;
 
+        /**
+         * @brief 즉시 실행 컨텍스트 반환
+         * @return IRHIContext* 관찰용 포인터
+         */
+        [[nodiscard]] virtual IRHIContext* GetImmediateContext() = 0;
+
         //////////////////////////////////////////////////////////////
         // SwapChain
         //////////////////////////////////////////////////////////////
+
         /**
          * @brief 화면에 렌더링 결과 표현
          */
@@ -60,8 +72,17 @@ namespace TDME
         virtual bool ResizeSwapChain(uint32 width, uint32 height) = 0;
 
         //////////////////////////////////////////////////////////////
-        // 상태 객체 생성
+        // State Object 생성
         //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief 파이프라인 상태 객체 생성
+         * @param desc PSO 설정 구조체 (셰이더, InputLayout, 상태 객체, 토폴로지)
+         * @return std::unique_ptr<IPipelineState> 생성된 PSO (소유권은 호출자)
+         * @see TDME::IPipelineState
+         * @see TDME::PipelineStateDesc
+         */
+        [[nodiscard]] virtual std::unique_ptr<IPipelineState> CreatePipelineState(const PipelineStateDesc& desc) = 0;
 
         /**
          * @brief 래스터라이저 상태 객체 생성
@@ -91,17 +112,39 @@ namespace TDME
         [[nodiscard]] virtual std::unique_ptr<IDepthStencilState> CreateDepthStencilState(const DepthStencilStateDesc& desc) = 0;
 
         //////////////////////////////////////////////////////////////
-        // 리소스 생성
+        // Shader 생성
         //////////////////////////////////////////////////////////////
 
         /**
-         * @brief Vertex 레이아웃 생성
-         * @param desc 정점 레이아웃 정보 구조체
-         * @return 생성된 정점 레이아웃 포인터 (소유권은 호출자가 가져가야함)
-         * @see TDME::IVertexLayout
-         * @see TDME::VertexLayoutDesc
+         * @brief Vertex 셰이더 생성
+         * @param byteCode 컴파일된 셰이더 바이트코드
+         * @param byteCodeSize 바이트코드 크기
+         * @return std::unique_ptr<IVertexShader> 생성된 Vertex 셰이더 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IVertexShader
          */
-        [[nodiscard]] virtual std::unique_ptr<IVertexLayout> CreateVertexLayout(const VertexLayoutDesc& desc) = 0;
+        [[nodiscard]] virtual std::unique_ptr<IVertexShader> CreateVertexShader(const void* byteCode, uint32 byteCodeSize) = 0;
+
+        /**
+         * @brief Pixel 셰이더 생성
+         * @param byteCode 컴파일된 셰이더 바이트코드
+         * @param byteCodeSize 바이트코드 크기
+         * @return std::unique_ptr<IPixelShader> 생성된 Pixel 셰이더 객체 (소유권은 호출자가 가져가야함)
+         * @see TDME::IPixelShader
+         */
+        [[nodiscard]] virtual std::unique_ptr<IPixelShader> CreatePixelShader(const void* byteCode, uint32 byteCodeSize) = 0;
+
+        //////////////////////////////////////////////////////////////
+        // Resource 생성
+        //////////////////////////////////////////////////////////////
+
+        /**
+         * @brief Input Layout 생성
+         * @param desc 정점 레이아웃 정보 구조체
+         * @return std::unique_ptr<IInputLayout> 생성된 정점 레이아웃 포인터 (소유권은 호출자가 가져가야함)
+         * @see TDME::IInputLayout
+         * @see TDME::InputLayoutDesc
+         */
+        [[nodiscard]] virtual std::unique_ptr<IInputLayout> CreateInputLayout(const InputLayoutDesc& desc) = 0;
 
         /**
          * @brief GPU 버퍼 객체 생성 (Vertex/Index)

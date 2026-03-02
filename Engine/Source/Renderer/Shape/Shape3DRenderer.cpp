@@ -1,46 +1,40 @@
 #include "pch.h"
 #include "Engine/Renderer/Shape/Shape3DRenderer.h"
 
-#include <Core/CoreTypes.h>
-#include <Core/Math/MathConstants.h>
 #include <Core/Math/TMatrix4x4.h>
 #include <Core/Math/TVector3.h>
 #include <Core/Math/Transformations.h>
 #include <Core/Types/Color32.h>
 
 #include "Engine/RHI/IRHIDevice.h"
+#include "Engine/RHI/IRHIContext.h"
 #include "Engine/RHI/Buffer/BufferDesc.h"
-#include "Engine/RHI/Buffer/EBufferUsage.h"
-#include "Engine/RHI/Vertex/EVertexFormat.h"
-#include "Engine/RHI/Vertex/EVertexSemantic.h"
-#include "Engine/RHI/Vertex/VertexLayoutDesc.h"
+#include "Engine/RHI/Pipeline/PipelineStateDesc.h"
 #include "Engine/Renderer/IRenderer.h"
-#include "Engine/Renderer/EPrimitiveType.h"
 #include "Engine/Renderer/VertexTypes.h"
 
 #include <cmath>
-#include <vector>
 
 namespace TDME
 {
-    Shape3DRenderer::Shape3DRenderer(IRenderer* renderer, IRHIDevice* device)
-        : m_renderer(renderer), m_device(device)
+    Shape3DRenderer::Shape3DRenderer(IRenderer* renderer, IRHIContext* context, IRHIDevice* device)
+        : m_renderer(renderer), m_context(context), m_device(device)
     {
-        // 1. Color Vertex 레이아웃
-        VertexLayoutDesc colorDesc;
-        colorDesc
+        // 1. Color PSO
+        PipelineStateDesc colorPsoDesc;
+        colorPsoDesc.InputLayout
             .Add(EVertexSemantic::Position, EVertexFormat::Float3)
             .Add(EVertexSemantic::Color, EVertexFormat::Color);
 
-        m_colorLayout = m_device->CreateVertexLayout(colorDesc);
+        m_colorPSO = m_device->CreatePipelineState(colorPsoDesc);
 
-        // 2. TexCoord Vertex 레이아웃
-        VertexLayoutDesc textureDesc;
-        textureDesc
+        // 2. Texture PSO
+        PipelineStateDesc texturePsoDesc;
+        texturePsoDesc.InputLayout
             .Add(EVertexSemantic::Position, EVertexFormat::Float3)
             .Add(EVertexSemantic::TexCoord, EVertexFormat::Float2);
 
-        m_textureLayout = m_device->CreateVertexLayout(textureDesc);
+        m_texturePSO = m_device->CreatePipelineState(texturePsoDesc);
     }
 
     void Shape3DRenderer::DrawSphere(const Matrix& worldMatrix, float radius, const Color& color, uint32 stacks, uint32 slices)
@@ -87,7 +81,7 @@ namespace TDME
         }
 
         m_renderer->SetWorldMatrix(worldMatrix);
-        m_renderer->SetVertexLayout(m_colorLayout.get());
+        m_context->SetPipelineState(m_colorPSO.get());
         m_renderer->DrawPrimitives(EPrimitiveType::TriangleList, vertices.data(), static_cast<uint32>(vertices.size()), sizeof(VertexPC));
     }
 
@@ -102,10 +96,12 @@ namespace TDME
         Matrix scaledWorld = ScaleMatrix(radius, radius, radius) * worldMatrix;
 
         m_renderer->SetWorldMatrix(scaledWorld);
-        m_renderer->SetVertexLayout(m_textureLayout.get());
-        m_renderer->SetTexture(0, texture);
-        m_renderer->DrawIndexedPrimitives(EPrimitiveType::TriangleList, m_sphereVB.get(), m_sphereIB.get(), m_indexCount);
-        m_renderer->SetTexture(0, nullptr);
+        m_context->SetPipelineState(m_texturePSO.get());
+        m_context->SetVertexBuffer(0, m_sphereVB.get());
+        m_context->SetIndexBuffer(m_sphereIB.get());
+        m_context->SetTexture(EShaderStage::Pixel, 0, texture);
+        m_context->DrawIndexed(m_indexCount);
+        m_context->SetTexture(EShaderStage::Pixel, 0, nullptr);
     }
 
     //////////////////////////////////////////////////////////////

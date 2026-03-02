@@ -80,9 +80,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     dsDesc.DepthFunc        = TDME::EComparisonFunc::Less;
     auto depthStencilState  = engine.Device->CreateDepthStencilState(dsDesc);
 
-    engine.Renderer->SetRasterizerState(rsStates[fillIndex][cullIndex].get());
-    engine.Renderer->SetBlendState(blendState.get());
-    engine.Renderer->SetDepthStencilState(depthStencilState.get());
+    engine.Context->SetRasterizerState(rsStates[fillIndex][cullIndex].get());
+    engine.Context->SetBlendState(blendState.get());
+    engine.Context->SetDepthStencilState(depthStencilState.get());
 
     // 3. Camera 설정
     TDME::GCameraComponent camera;
@@ -91,7 +91,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     float           aspect = static_cast<float>(engine.Window->GetWidth()) / static_cast<float>(engine.Window->GetHeight());
     camera.SetPerspective(fovY, aspect, 0.1f, 1000.0f);
     camera.SetPosition(TDME::Vector3(0.f, 0.f, -500.f));
-    engine.Renderer->SetProjectionMatrix(camera.GetProjectionMatrix());
+    engine.Context->SetProjectionMatrix(camera.GetProjectionMatrix());
 
     constexpr float cameraMoveSpeed   = 200.0f;
     constexpr float cameraRotateSpeed = 1.5f;
@@ -187,12 +187,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         if (engine.Input->IsKeyPressed(TDME::EKeys::F1))
         {
             fillIndex = (fillIndex + 1) % FILL_COUNT;
-            engine.Renderer->SetRasterizerState(rsStates[fillIndex][cullIndex].get());
+            engine.Context->SetRasterizerState(rsStates[fillIndex][cullIndex].get());
         }
         if (engine.Input->IsKeyPressed(TDME::EKeys::F2))
         {
             cullIndex = (cullIndex + 1) % CULL_COUNT;
-            engine.Renderer->SetRasterizerState(rsStates[fillIndex][cullIndex].get());
+            engine.Context->SetRasterizerState(rsStates[fillIndex][cullIndex].get());
         }
 
         //////////////////////////////////////////////////////////////
@@ -229,7 +229,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         if (engine.Input->IsKeyDown(TDME::EKeys::E))
             camera.RotateRoll(rotateStep);
 
-        engine.Renderer->SetViewMatrix(camera.GetViewMatrix());
+        engine.Context->SetViewMatrix(camera.GetViewMatrix());
 
         //////////////////////////////////////////////////////////////
         // 게임 Update 로직

@@ -159,6 +159,7 @@
     <ClInclude Include="Include\Renderer_DX9\DX9Device.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9Renderer.h" />
     <ClInclude Include="Include\Renderer_DX9\DX9TypeConversion.h" />
+    <ClInclude Include="Include\Renderer_DX9\Pipeline\DX9PipelineState.h" />
     <ClInclude Include="Include\Renderer_DX9\State\DX9BlendState.h" />
     <ClInclude Include="Include\Renderer_DX9\State\DX9DepthStencilState.h" />
     <ClInclude Include="Include\Renderer_DX9\State\DX9RasterizerState.h" />
