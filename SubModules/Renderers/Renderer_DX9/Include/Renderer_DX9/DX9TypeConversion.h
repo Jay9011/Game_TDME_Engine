@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Core/CoreMacros.h>
+#include <Engine/RHI/SwapChain/ESwapEffect.h>
 #include <Engine/RHI/State/Blend/EBlendFactor.h>
 #include <Engine/RHI/State/Blend/EBlendOp.h>
 #include <Engine/RHI/State/DepthStencil/EComparisonFunc.h>
@@ -11,6 +12,7 @@
 #include <Engine/RHI/Vertex/EVertexFormat.h>
 #include <Engine/Renderer/EPrimitiveType.h>
 
+#include <cassert>
 #include <d3d9.h>
 #include <d3d9types.h>
 
@@ -32,8 +34,18 @@ namespace TDME
         case EVertexSemantic::Binormal:     return D3DDECLUSAGE_BINORMAL;
         case EVertexSemantic::BlendWeight:  return D3DDECLUSAGE_BLENDWEIGHT;
         case EVertexSemantic::BlendIndices: return D3DDECLUSAGE_BLENDINDICES;
-        default:                            return D3DDECLUSAGE_POSITION;
+        //////////////////////////////////////////////////////////////
+        // 미지원
+        //////////////////////////////////////////////////////////////
+        case EVertexSemantic::SV_Position:
+        case EVertexSemantic::SV_VertexID:
+        case EVertexSemantic::SV_InstanceID:
+            assert(false && "SV_ semantics are not supported in DX9");
+            return D3DDECLUSAGE_POSITION;
         }
+
+        assert(false && "Unknown vertex semantic");
+        return D3DDECLUSAGE_POSITION;
     }
 
     constexpr FORCE_INLINE D3DDECLTYPE ToDX9Type(EVertexFormat format)
@@ -101,18 +113,40 @@ namespace TDME
     }
 
     //////////////////////////////////////////////////////////////
+    // SwapChain 관련 변환 함수
+    //////////////////////////////////////////////////////////////
+
+    constexpr FORCE_INLINE D3DSWAPEFFECT ToDX9SwapEffect(ESwapEffect effect)
+    {
+        switch (effect)
+        {
+        case ESwapEffect::Discard:        return D3DSWAPEFFECT_DISCARD;
+        case ESwapEffect::Sequential:     return D3DSWAPEFFECT_FLIP;
+        case ESwapEffect::FlipDiscard:    return D3DSWAPEFFECT_DISCARD;
+        case ESwapEffect::FlipSequential: return D3DSWAPEFFECT_FLIP;
+        default:                          return D3DSWAPEFFECT_DISCARD;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////
     // State 관련 변환 함수
     //////////////////////////////////////////////////////////////
 
-    constexpr FORCE_INLINE DWORD ToDX9CullMode(ECullMode mode)
+    constexpr FORCE_INLINE DWORD ToDX9CullMode(ECullMode mode, bool frontCounterClockwise = false)
     {
         switch (mode)
         {
-        case ECullMode::None:  return D3DCULL_NONE; // 양면 렌더링
-        case ECullMode::Front: return D3DCULL_CW;   // Clockwise (시계방향), DX9에서 CW(시계방향)가 Front face
-        case ECullMode::Back:  return D3DCULL_CCW;  // Counter-Clockwise (반시계방향), DX9에서 CCW(반시계방향)가 Back face
-        default:               return D3DCULL_NONE;
+        case ECullMode::None: return D3DCULL_NONE;
+        case ECullMode::Front:
+            // Front face 컬링: FrontCCW이면 CCW를 컬링, 아니면 CW를 컬링
+            return frontCounterClockwise ? D3DCULL_CCW : D3DCULL_CW;
+        case ECullMode::Back:
+            // Back face 컬링: FrontCCW이면 CW를 컬링, 아니면 CCW를 컬링
+            return frontCounterClockwise ? D3DCULL_CW : D3DCULL_CCW;
         }
+
+        assert(false && "Unknown cull mode");
+        return D3DCULL_NONE;
     }
 
     constexpr FORCE_INLINE DWORD ToDX9FillMode(EFillMode mode)

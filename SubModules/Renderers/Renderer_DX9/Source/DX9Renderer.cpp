@@ -122,8 +122,9 @@ namespace TDME
 
         // Rasterizer State
         const RasterizerStateDesc& rs = dx9Pso->RasterizerState;
-        m_nativeDevice->SetRenderState(D3DRS_CULLMODE, ToDX9CullMode(rs.CullMode));
+        m_nativeDevice->SetRenderState(D3DRS_CULLMODE, ToDX9CullMode(rs.CullMode, rs.FrontCounterClockwise));
         m_nativeDevice->SetRenderState(D3DRS_FILLMODE, ToDX9FillMode(rs.FillMode));
+        m_nativeDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, rs.ScissorEnable ? TRUE : FALSE);
 
         // Blend State
         const BlendStateDesc& bs = dx9Pso->BlendState;

@@ -11,6 +11,8 @@
 #include "Renderer_DX9/Texture/DX9Texture.h"
 #include "Renderer_DX9/Vertex/DX9VertexLayout.h"
 #include "Renderer_DX9/Pipeline/DX9PipelineState.h"
+
+#include "Renderer_DX9/DX9TypeConversion.h"
 #include <memory>
 
 namespace TDME
@@ -36,11 +38,11 @@ namespace TDME
         // 2. Present Parameters 설정 (화면에 그림을 어떻게 표시할 것인가를 설정하는 구조체, Swap Chain 을 어떻게 구성할지 설정하는 구조체)
         D3DPRESENT_PARAMETERS d3dParam  = {};
         d3dParam.Windowed               = true;
-        d3dParam.SwapEffect             = D3DSWAPEFFECT_DISCARD;         // D3DSWAPEFFECT_DISCARD: 백 버퍼의 내용을 프론트에 복사 후, 백 버퍼의 내용은 버림. D3DSWAPEFFECT_FLIP: 진짜 포인터 교체
-        d3dParam.BackBufferFormat       = D3DFMT_UNKNOWN;                // D3DFMT_UNKNOWN: 윈도우 모드에서 현재 데스크톱과 같은 포멧을 사용하라. (전체화면 모드에서는 명시적으로 포멧을 지정해야 함)
-        d3dParam.BackBufferCount        = swapChainDesc.BackBufferCount; // 백 버퍼의 개수.
-        d3dParam.EnableAutoDepthStencil = true;                          // 깊이 버퍼를 자동으로 생성할지 여부.
-        d3dParam.AutoDepthStencilFormat = D3DFMT_D24S8;                  // D3DFMT_D24S8: 24비트 깊이 + 8비트 스텐실
+        d3dParam.SwapEffect             = ToDX9SwapEffect(swapChainDesc.SwapEffect); // D3DSWAPEFFECT_DISCARD: 백 버퍼의 내용을 프론트에 복사 후, 백 버퍼의 내용은 버림. D3DSWAPEFFECT_FLIP: 진짜 포인터 교체
+        d3dParam.BackBufferFormat       = D3DFMT_UNKNOWN;                            // D3DFMT_UNKNOWN: 윈도우 모드에서 현재 데스크톱과 같은 포멧을 사용하라. (전체화면 모드에서는 명시적으로 포멧을 지정해야 함)
+        d3dParam.BackBufferCount        = swapChainDesc.BackBufferCount;             // 백 버퍼의 개수.
+        d3dParam.EnableAutoDepthStencil = true;                                      // 깊이 버퍼를 자동으로 생성할지 여부.
+        d3dParam.AutoDepthStencilFormat = D3DFMT_D24S8;                              // D3DFMT_D24S8: 24비트 깊이 + 8비트 스텐실
         d3dParam.hDeviceWindow          = static_cast<HWND>(window->GetNativeHandle());
 
         // VSync 설정

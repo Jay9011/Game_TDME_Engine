@@ -17,5 +17,11 @@ namespace TDME
         EFillMode FillMode = EFillMode::Solid;
         /** @brief 컬링 모드 */
         ECullMode CullMode = ECullMode::Back;
+        /** @brief 반시계 방향 앞면 여부 */
+        bool FrontCounterClockwise = false;
+        /** @brief 깊이 클리핑 여부 */
+        bool DepthClipEnable = true;
+        /** @brief 사각형 클리핑 여부 */
+        bool ScissorEnable = false;
     };
 } // namespace TDME
