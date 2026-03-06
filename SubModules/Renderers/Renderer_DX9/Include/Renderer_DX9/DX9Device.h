@@ -193,6 +193,6 @@ namespace TDME
          */
         ComPtr<IDirect3DDevice9> m_device;
 
-        DX9Renderer* m_renderer;
+        DX9Renderer* m_renderer = nullptr;
     };
 } // namespace TDME

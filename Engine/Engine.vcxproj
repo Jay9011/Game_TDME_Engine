@@ -175,6 +175,7 @@
     <ClInclude Include="Include\Engine\Renderer\EPivot.h" />
     <ClInclude Include="Include\Engine\Renderer\EPrimitiveType.h" />
     <ClInclude Include="Include\Engine\Renderer\RenderSettings.h" />
+    <ClInclude Include="Include\Engine\Renderer\ShaderParameters\TransformConstants.h" />
     <ClInclude Include="Include\Engine\Renderer\Shape\Shape2DRenderer.h" />
     <ClInclude Include="Include\Engine\Renderer\Shape\Shape3DRenderer.h" />
     <ClInclude Include="Include\Engine\Renderer\SpriteDesc.h" />

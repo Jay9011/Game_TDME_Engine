@@ -4,6 +4,9 @@
 
 namespace TDME
 {
+    /**
+     * @brief Vertex Shader 인터페이스
+     */
     class IVertexShader : public IShader
     {
     public:

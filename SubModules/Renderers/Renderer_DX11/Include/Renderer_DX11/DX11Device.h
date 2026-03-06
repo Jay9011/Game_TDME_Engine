@@ -4,10 +4,13 @@
 
 #include <wrl/client.h>
 #include <d3d11.h>
+#include <memory>
 
 namespace TDME
 {
     using Microsoft::WRL::ComPtr;
+
+    class DX11Context;
 
     /**
      * @brief DX11 Device 클래스
@@ -179,6 +182,9 @@ namespace TDME
         ComPtr<ID3D11Device>        m_device;
         ComPtr<ID3D11DeviceContext> m_context;
         ComPtr<IDXGISwapChain>      m_swapChain;
+
+        // Immediate Context (즉시 실행용)
+        std::unique_ptr<DX11Context> m_dx11Context;
 
         // Render Target
         ComPtr<ID3D11RenderTargetView> m_renderTargetView;

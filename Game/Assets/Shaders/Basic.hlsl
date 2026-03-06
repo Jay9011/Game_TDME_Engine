@@ -10,12 +10,7 @@
 //////////////////////////////////////////////////////////////
 // Constant Buffer
 //////////////////////////////////////////////////////////////
-cbuffer Transform : register(b0)	// Constant Buffer (b = buffer)
-{
-	matrix World;	// 추후 조명 계산에서 World 좌표가 필요하므로 분리 전달
-	matrix View;
-	matrix Projection;
-};
+#include "Common/Transform.hlsli"
 
 //////////////////////////////////////////////////////////////
 // Vertex Shader
@@ -54,4 +49,12 @@ SamplerState Sampler0 : register(s0);
 float4 PS_MAIN(VS_OUTPUT input) :SV_Target
 {
 	return DiffuseMap.Sample(Sampler0, input.TexCoord);
+}
+
+//////////////////////////////////////////////////////////////
+// Pixel Shader (Solid Color - 렌더링 검증용)
+//////////////////////////////////////////////////////////////
+float4 PS_SOLID(VS_OUTPUT input) : SV_Target
+{
+	return float4(1.0f, 1.0f, 0.0f, 1.0f); // Yellow
 }

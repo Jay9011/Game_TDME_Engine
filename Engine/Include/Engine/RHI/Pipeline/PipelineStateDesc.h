@@ -1,16 +1,15 @@
 #pragma once
 
-#include "Engine/Renderer/EPrimitiveType.h"
+#include "Engine/RHI/Shader/IPixelShader.h"
+#include "Engine/RHI/Shader/IVertexShader.h"
 #include "Engine/RHI/State/Blend/BlendStateDesc.h"
 #include "Engine/RHI/State/DepthStencil/DepthStencilStateDesc.h"
 #include "Engine/RHI/State/Rasterizer/RasterizerStateDesc.h"
 #include "Engine/RHI/Vertex/InputLayoutDesc.h"
+#include "Engine/Renderer/EPrimitiveType.h"
 
 namespace TDME
 {
-    class IVertexShader;
-    class IPixelShader;
-
     /**
      * @brief PSO 생성 구조체
      * @details CreatePipelineState()에 전달하여 PSO 생성.

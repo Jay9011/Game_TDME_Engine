@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Core/CoreMacros.h>
+#include <Engine/RHI/Buffer/EBufferType.h>
 #include <Engine/RHI/SwapChain/ESwapEffect.h>
 #include <Engine/RHI/State/Blend/EBlendFactor.h>
 #include <Engine/RHI/State/Blend/EBlendOp.h>
@@ -215,5 +216,22 @@ namespace TDME
         case EComparisonFunc::Always:       return D3D11_COMPARISON_ALWAYS;
         default:                            return D3D11_COMPARISON_LESS;
         }
+    }
+
+    //////////////////////////////////////////////////////////////
+    // Buffer 관련 변환 함수
+    //////////////////////////////////////////////////////////////
+
+    constexpr FORCE_INLINE D3D11_BIND_FLAG ToDX11BindFlags(EBufferType type)
+    {
+        switch (type)
+        {
+        case EBufferType::Vertex:   return D3D11_BIND_VERTEX_BUFFER;
+        case EBufferType::Index:    return D3D11_BIND_INDEX_BUFFER;
+        case EBufferType::Constant: return D3D11_BIND_CONSTANT_BUFFER;
+        }
+
+        assert(false && "Unknown buffer type");
+        return D3D11_BIND_VERTEX_BUFFER;
     }
 } // namespace TDME

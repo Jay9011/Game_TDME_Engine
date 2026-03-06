@@ -2,6 +2,7 @@
 
 #include "EBufferType.h"
 #include "EBufferUsage.h"
+#include "BufferDesc.h"
 
 namespace TDME
 {

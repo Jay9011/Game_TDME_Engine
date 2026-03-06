@@ -11,7 +11,8 @@ CompileFlags:
     - D:/Projects/GameProjects/P2DME/SubModules/Platforms/Platform_Windows/Include
     - -isystem
     - D:/Projects/GameProjects/P2DME/SubModules/Renderers/Renderer_DX9/Include
-
+    - -isystem
+    - D:/Projects/GameProjects/P2DME/SubModules/Renderers/Renderer_DX11/Include
     - -std=c++17
     - -DWIN32
     - -D_DEBUG

@@ -4,6 +4,7 @@
 #include <Core/Math/TMatrix4x4.h>
 
 #include "Engine/Renderer/EPrimitiveType.h"
+#include "Engine/Renderer/ShaderParameters/TransformConstants.h"
 
 namespace TDME
 {

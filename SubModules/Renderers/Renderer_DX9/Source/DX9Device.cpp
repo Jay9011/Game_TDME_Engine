@@ -17,9 +17,7 @@
 
 namespace TDME
 {
-    DX9Device::DX9Device() : m_d3d(nullptr), m_device(nullptr)
-    {
-    }
+    DX9Device::DX9Device() = default;
 
     DX9Device::~DX9Device()
     {

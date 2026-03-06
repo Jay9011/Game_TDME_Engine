@@ -2,9 +2,18 @@
 #include "Renderer_DX11/DX11Device.h"
 
 #include <Engine/ApplicationCore/IWindow.h>
+#include <Engine/RHI/Vertex/IInputLayout.h>
+#include <Engine/RHI/Texture/ITexture.h>
+#include <Engine/RHI/State/IDepthStencilState.h>
+#include <Engine/RHI/State/IBlendState.h>
+#include <Engine/RHI/State/IRasterizerState.h>
 
+#include "Renderer_DX11/DX11Context.h"
 #include "Renderer_DX11/DX11TypeConversion.h"
 #include "Renderer_DX11/Pipeline/DX11PipelineState.h"
+#include "Renderer_DX11/Buffer/DX11Buffer.h"
+#include "Renderer_DX11/Shader/DX11VertexShader.h"
+#include "Renderer_DX11/Shader/DX11PixelShader.h"
 
 namespace TDME
 {
@@ -59,6 +68,8 @@ namespace TDME
         if (FAILED(hr))
             return false;
 
+        m_dx11Context = std::make_unique<DX11Context>(this, m_context.Get()); // 생성된 Immediate Context를 DX11Context로 래핑
+
         // 3. Render Target View + Depth Stencil View 생성
         if (!CreateRenderTargetAndDepthStencil(window->GetWidth(), window->GetHeight()))
         {
@@ -70,6 +81,8 @@ namespace TDME
 
     void DX11Device::Shutdown()
     {
+        m_dx11Context.reset();
+
         if (m_context)
             m_context->ClearState();
 
@@ -83,8 +96,7 @@ namespace TDME
 
     IRHIContext* DX11Device::GetImmediateContext()
     {
-        // TODO: 구현 필요
-        return nullptr;
+        return m_dx11Context.get();
     }
 
     void DX11Device::Present()
@@ -164,7 +176,55 @@ namespace TDME
         // 4. Topology 변환
         pso->Topology = ToDX11Topology(desc.TopologyType);
 
-        // TODO: 5. Input Layout + Shader 구현
+        // 5. Shader Binding
+        if (desc.VS)
+        {
+            DX11VertexShader* dx11VS = static_cast<DX11VertexShader*>(desc.VS);
+
+            pso->VS = dx11VS->GetNativeShader();
+        }
+
+        if (desc.PS)
+        {
+            DX11PixelShader* dx11PS = static_cast<DX11PixelShader*>(desc.PS);
+
+            pso->PS = dx11PS->GetNativeShader();
+        }
+
+        // 6. Input Layout 생성
+        if (desc.InputLayout.Stride > 0 && desc.VS)
+        {
+            DX11VertexShader* dx11VS = static_cast<DX11VertexShader*>(desc.VS);
+
+            // VertexElement -> D3D11_INPUT_ELEMENT_DESC 변환
+            std::vector<D3D11_INPUT_ELEMENT_DESC> elements;
+            elements.reserve(desc.InputLayout.Elements.size());
+
+            for (const VertexElement& elem : desc.InputLayout.Elements)
+            {
+                D3D11_INPUT_ELEMENT_DESC d3dElem = {};
+
+                d3dElem.SemanticName         = ToInputLayoutSemanticName(elem.Semantic);
+                d3dElem.SemanticIndex        = elem.SemanticIndex;
+                d3dElem.Format               = ToDX11Format(elem.Format);
+                d3dElem.InputSlot            = 0;
+                d3dElem.AlignedByteOffset    = elem.Offset;                 // 바이트 오프셋, InputLayoutDesc::Add()에서 이미 계산된 바이트 오프셋 사용. (D3D11_APPEND_ALIGNED_ELEMENT: 이전 요소의 크기만큼 오프셋 증가, 자동 계산)
+                d3dElem.InputSlotClass       = D3D11_INPUT_PER_VERTEX_DATA; // PER_VERTEX_DATA: 일반 정점 데이터. PER_INSTANCE_DATA: 인스턴스별 데이터.
+                d3dElem.InstanceDataStepRate = 0;
+                elements.push_back(d3dElem);
+            }
+
+            HRESULT hr = m_device->CreateInputLayout(
+                elements.data(),                    // D3D11_INPUT_ELEMENT_DESC 배열
+                static_cast<UINT>(elements.size()), // D3D11_INPUT_ELEMENT_DESC 개수
+                dx11VS->GetByteCode(),              // VS 바이트코드 포인터
+                dx11VS->GetByteCodeSize(),          // VS 바이트코드 크기
+                pso->InputLayout.GetAddressOf()     // 생성된 Input Layout 객체의 포인터를 저장할 포인터
+            );
+
+            if (FAILED(hr))
+                return nullptr;
+        }
 
         return pso;
     } // std::unique_ptr<IPipelineState> DX11Device::CreatePipelineState(const PipelineStateDesc& desc)
@@ -189,26 +249,35 @@ namespace TDME
 
     std::unique_ptr<IVertexShader> DX11Device::CreateVertexShader(const void* byteCode, uint32 byteCodeSize)
     {
-        // TODO: 구현 필요
-        return nullptr;
+        std::unique_ptr<DX11VertexShader> shader = std::make_unique<DX11VertexShader>(m_device.Get(), byteCode, byteCodeSize);
+        if (!shader->IsValid())
+            return nullptr;
+
+        return shader;
     }
 
     std::unique_ptr<IPixelShader> DX11Device::CreatePixelShader(const void* byteCode, uint32 byteCodeSize)
     {
-        // TODO: 구현 필요
-        return nullptr;
+        std::unique_ptr<DX11PixelShader> shader = std::make_unique<DX11PixelShader>(m_device.Get(), byteCode, byteCodeSize);
+        if (!shader->IsValid())
+            return nullptr;
+
+        return shader;
     }
 
     std::unique_ptr<IInputLayout> DX11Device::CreateInputLayout(const InputLayoutDesc& desc)
     {
-        // TODO: 구현 필요
+        // NOTE: VS 바이트 코드 필요. CreatePipelineState 내부에서 직접 생성
         return nullptr;
     }
 
     std::unique_ptr<IBuffer> DX11Device::CreateBuffer(const BufferDesc& desc, const void* initialData)
     {
-        // TODO: 구현 필요
-        return nullptr;
+        std::unique_ptr<DX11Buffer> buffer = std::make_unique<DX11Buffer>(m_device.Get(), desc, initialData);
+        if (!buffer->IsValid())
+            return nullptr;
+
+        return buffer;
     }
 
     std::unique_ptr<ITexture> DX11Device::CreateTexture(const TextureDesc& desc, const void* initialData)
